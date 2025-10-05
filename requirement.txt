@@ -1,5 +1,7 @@
 mcp
+mcp[server]
 langchain
+langgraph
 pydantic 
 python-dontenv
 fastapi
