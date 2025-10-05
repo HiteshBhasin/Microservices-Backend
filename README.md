@@ -20,6 +20,8 @@ ops360-backend/
 │   ├── connecteam_client.py    # calls Connecteam MCP server
 │   ├── mailchimp_client.py     # calls MailChimp MCP server
 │   ├── gmail_client.py         # calls Gmail MCP server
+│   ├── doorloop_client.py      # calls Doorloop MCP server  
+│   ├── Monday_client.py        # calls Monday MCP server 
 │
 ├── mcp_servers/                # Each MCP server exposes tools to wrap APIs
 │   ├── __init__.py
@@ -28,6 +30,8 @@ ops360-backend/
 │   ├── connecteam_server.py    # MCP server exposing Connecteam tools
 │   ├── mailchimp_server.py     # MCP server exposing MailChimp tools
 │   ├── gmail_server.py         # MCP server exposing Gmail tools
+│   ├── doorloop_server.py      # MCP server exposing Doorloop tools
+│   ├── Monday_server.py        # MCP server exposing Monday.com tools    
 │
 ├── models/                     # Pydantic schemas for FastAPI routes
 │   ├── __init__.py
@@ -40,8 +44,6 @@ ops360-backend/
 │   ├── db.py                   # Database connection (PostgreSQL, Redis)
 │   ├── event_bus.py            # RabbitMQ / Pub-Sub setup
 │   ├── security.py             # Auth/JWT helpers
-│
-├── static/                     # Optional static files
 │
 ├── tests/                      # Unit & integration tests
 │   ├── test_bookings.py
