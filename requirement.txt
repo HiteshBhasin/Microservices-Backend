@@ -1,0 +1,6 @@
+mcp
+langchain
+langraph 
+pydantic 
+python-dontenv
+fastapi
