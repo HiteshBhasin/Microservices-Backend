@@ -4,3 +4,5 @@ langraph
 pydantic 
 python-dontenv
 fastapi
+httpx 
+uvicorn[standard]
