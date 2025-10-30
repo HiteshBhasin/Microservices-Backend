@@ -269,21 +269,8 @@ def _write_pdf_from_text(text: str, out_path: str) -> None:
     except Exception:
         pass
 
-    # Fallback: use pypdf to create a blank page and attach the report as a file
-    try:
-        from pypdf import PdfWriter
-
-        writer = PdfWriter()
-        writer.add_blank_page(width=612, height=792)
-        # attach as report.json
-        writer.add_attachment("report.json", text.encode("utf-8"))
-        with open(out_path, "wb") as fh:
-            writer.write(fh)
-        return
-    except Exception:
-        raise RuntimeError(
-            "No PDF generator available: install reportlab or fpdf, or ensure pypdf >= 3.0 is installed"
-        )
+    # No pypdf fallback any more — require reportlab or fpdf to be installed.
+    raise RuntimeError("No PDF generator available: install reportlab or fpdf")
 
 
 @mcp.tool()

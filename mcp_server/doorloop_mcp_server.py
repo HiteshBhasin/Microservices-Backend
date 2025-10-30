@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import requests
+from fpdf import FPDF
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 from reportlab.lib.pagesizes import letter
@@ -355,8 +356,7 @@ def _write_pdf_from_text(text: str, out_path: str) -> None:
         pass
 
     try:
-        from fpdf import FPDF
-
+        
         pdf = FPDF()
         pdf.add_page()
         pdf.set_auto_page_break(auto=True, margin=15)
@@ -368,19 +368,8 @@ def _write_pdf_from_text(text: str, out_path: str) -> None:
     except Exception:
         pass
 
-    try:
-        
-
-        writer = PdfWriter()
-        writer.add_blank_page(width=612, height=792)
-        writer.add_attachment("report.json", text.encode("utf-8"))
-        with open(out_path, "wb") as fh:
-            writer.write(fh)
-        return
-    except Exception:
-        raise RuntimeError(
-            "No PDF generator available: install reportlab or fpdf, or ensure pypdf >= 3.0 is installed"
-        )
+    # No pypdf fallback any more — require reportlab or fpdf to be installed.
+    raise RuntimeError("No PDF generator available: install reportlab or fpdf")
 
 
 @mcp.tool()
