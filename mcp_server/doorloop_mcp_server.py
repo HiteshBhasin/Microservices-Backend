@@ -114,20 +114,20 @@ def retrieve_leases():
         return {"error": "Request failed", "exception": str(exc)}
 
 
-
-def id_retriever(name:str):
+@mcp.tool()
+def id_retriever(name:str):# this return id full name required
+    """ this function retrive the full id from the first name"""
     guest_list_wrapper = retrieve_tenants() 
     tenant_list = guest_list_wrapper.get("data", [])  # default to empty list if missing
-   
+    
     for tenants in tenant_list:
        if not name:
-           print(tenants.get("firstName"))
+           print(tenants.get("name"))
        else:
-           if tenants.get("fullName")==name:
-               return tenants.get("id")
-    if name:
-        print("no tenant found of this name")
-            
+           if tenants.get("name")==name:
+                return tenants.get("id")
+   
+# print(id_retriever('Adeola Adeleye'))
 
 
 
@@ -135,11 +135,11 @@ def id_retriever(name:str):
 
 
 
-# if __name__ == "__main__":
-#     result = retrieve_tenants()
-#     individiual_result = retrieve_a_tenants("65b16b77300d35d0d1a06be8")
-#     lease_result = retrieve_leases()
-#     try:
-#         print(json.dumps(individiual_result, indent=2, ensure_ascii=False))
-#     except Exception:
-#         print(individiual_result)
+if __name__ == "__main__":
+    result = retrieve_tenants()
+    individiual_result = retrieve_a_tenants("65b16b77300d35d0d1a06be8")
+    lease_result = retrieve_leases()
+    try:
+        print(json.dumps(individiual_result, indent=2, ensure_ascii=False))
+    except Exception:
+        print(individiual_result)
