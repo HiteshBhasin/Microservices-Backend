@@ -3,18 +3,11 @@ import sys
 import json
 import requests
 from mcp.server.fastmcp import FastMCP
-from fpdf import FPDF
 from dotenv import load_dotenv
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Preformatted
 from reportlab.lib.units import inch
-import io
-
-try:
-    sys.stdout.reconfigure(encoding="utf-8")
-except Exception:
-    pass
 
 
 load_dotenv()
@@ -257,7 +250,7 @@ def _write_pdf_from_text(text: str, out_path: str) -> None:
 
     # Try fpdf
     try:
-        
+        from fpdf import FPDF
 
         pdf = FPDF()
         pdf.add_page()

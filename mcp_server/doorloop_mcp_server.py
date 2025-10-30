@@ -2,19 +2,12 @@ import os
 import sys
 import json
 import requests
-from fpdf import FPDF
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Preformatted
 from reportlab.lib.units import inch
-
-#Try to ensure UTF-8 stdout when running as a script; ignore if unsupported.
-try:
-    sys.stdout.reconfigure(encoding="utf-8")
-except Exception:
-    pass
 
 load_dotenv()
 mcp = FastMCP("doorloop_server")
@@ -356,7 +349,8 @@ def _write_pdf_from_text(text: str, out_path: str) -> None:
         pass
 
     try:
-        
+        from fpdf import FPDF
+
         pdf = FPDF()
         pdf.add_page()
         pdf.set_auto_page_break(auto=True, margin=15)
