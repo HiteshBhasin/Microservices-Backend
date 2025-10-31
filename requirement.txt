@@ -7,3 +7,5 @@ python-dotenv
 fastapi
 httpx
 uvicorn[standard]
+slowapi
+pypdf
