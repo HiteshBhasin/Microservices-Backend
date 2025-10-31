@@ -4,10 +4,8 @@ import json
 import requests
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Preformatted
-from reportlab.lib.units import inch
+# PDF libraries are imported dynamically inside the writer function so the module
+# can be imported even if reportlab/fpdf are not installed in the environment.
 
 load_dotenv()
 mcp = FastMCP("doorloop_server")
@@ -37,10 +35,14 @@ def retrieve_tenants():
             except Exception:
                 return {"status": response.status_code, "body": response.text[:1000]}
         else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
             return {
                 "error": "Failed to fetch tenants",
                 "status": response.status_code,
-                "response": response.json(),
+                "response": resp_json,
             }
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
@@ -70,10 +72,14 @@ def retrieve_a_tenants(id):
             except Exception:
                 return {"status": response.status_code, "body": response.text[:1000]}
         else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
             return {
                 "error": "Failed to fetch tenants",
                 "status": response.status_code,
-                "response": response.json,
+                "response": resp_json,
             }
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
@@ -103,10 +109,14 @@ def retrieve_leases():
             except Exception:
                 return {"status": response.status_code, "body": response.text[:1000]}
         else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
             return {
                 "error": "Failed to fetch tenants",
                 "status": response.status_code,
-                "response": response.json(),
+                "response": resp_json,
             }
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
@@ -326,6 +336,12 @@ def _write_pdf_from_text(text: str, out_path: str) -> None:
         # Use Platypus Preformatted so JSON/plain-text is wrapped and paginated nicely.
       
 
+        # Import reportlab lazily so missing optional deps don't break module import.
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.platypus import SimpleDocTemplate, Preformatted
+        from reportlab.lib.units import inch
+
         doc = SimpleDocTemplate(
             out_path,
             pagesize=letter,
@@ -382,8 +398,11 @@ def generate_properties_report_pdf(out_path: str = "doorloop_properties_report.p
 
 
 if __name__ == "__main__":
-    # Run the FastMCP server using stdio transport. This keeps the process
-    # alive and exposes the defined @mcp.tool() functions to MCP clients.
-    # Previously this script executed helper functions at import which caused
-    # the process to exit immediately when spawned by the service launcher.
-    mcp.run(transport="stdio")
+    try:
+      
+        # Run the FastMCP server using stdio transport. This keeps the process
+        # alive and exposes the defined @mcp.tool() functions to MCP clients.
+        mcp.run(transport="stdio")
+        
+    except Exception as e:
+        print(f"Error: {e}")

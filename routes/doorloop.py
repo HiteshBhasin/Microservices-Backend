@@ -1,30 +1,34 @@
-from fastapi import APIRouter, Query, Body, HTTPException, status
+from fastapi import APIRouter, Query, Body, HTTPException, status, Request
 from fastapi.responses import FileResponse
 from typing import Any, Dict
 import os
 from uuid import uuid4
-
 from services.doorloop_services import DoorloopClient
 
 router = APIRouter()
 
+def _require_api_key() -> str:
+    key = os.getenv("DOORLOOP_API_KEY")
+    if not key:
+        raise HTTPException(
+            status_code=400,
+            detail="DOORLOOP_API_KEY not configured; set it in .env or environment"
+        )
+    return key
 
 def _unwrap_result(resp: Dict[str, Any]) -> Any:
-    """Normalize the client response: raise on 'error', return 'result' if present."""
     if not isinstance(resp, dict):
         return resp
     if "error" in resp:
-        detail = resp.get("error")
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=detail)
+        raise HTTPException(status_code=500, detail=str(resp["error"]))
     if "result" in resp:
         return resp["result"]
-    return resp
+    return resp or {"message": "Empty response from MCP service"}
 
 
 @router.get("/tenants")
 async def get_tenants():
-    if not os.getenv("DOORLOOP_API_KEY"):
-        raise HTTPException(status_code=400, detail="DOORLOOP_API_KEY not configured; set it in .env or environment")
+    _require_api_key()
     svc = DoorloopClient()
     resp = await svc.retrieve_tenants()
     return _unwrap_result(resp)
@@ -32,8 +36,7 @@ async def get_tenants():
 
 @router.get("/properties")
 async def get_properties(limit: int = Query(100, ge=1)):
-    if not os.getenv("DOORLOOP_API_KEY"):
-        raise HTTPException(status_code=400, detail="DOORLOOP_API_KEY not configured; set it in .env or environment")
+    _require_api_key()
     svc = DoorloopClient()
     resp = await svc.retrieve_properties()
     return _unwrap_result(resp)
@@ -41,17 +44,15 @@ async def get_properties(limit: int = Query(100, ge=1)):
 
 @router.get("/tenant/{tenant_id}")
 async def get_tenant(tenant_id: str):
-    if not os.getenv("DOORLOOP_API_KEY"):
-        raise HTTPException(status_code=400, detail="DOORLOOP_API_KEY not configured; set it in .env or environment")
+    _require_api_key()
     svc = DoorloopClient()
-    resp = await svc.retrieve_a_tenants(tenant_id)
+    resp = await svc.retrieve_a_tenant(tenant_id)
     return _unwrap_result(resp)
 
 
 @router.get("/leases")
 async def get_leases():
-    if not os.getenv("DOORLOOP_API_KEY"):
-        raise HTTPException(status_code=400, detail="DOORLOOP_API_KEY not configured; set it in .env or environment")
+    _require_api_key()
     svc = DoorloopClient()
     resp = await svc.retrieve_leases()
     return _unwrap_result(resp)
@@ -59,8 +60,7 @@ async def get_leases():
 
 @router.get("/properties/report")
 async def properties_report():
-    if not os.getenv("DOORLOOP_API_KEY"):
-        raise HTTPException(status_code=400, detail="DOORLOOP_API_KEY not configured; set it in .env or environment")
+    _require_api_key()
     svc = DoorloopClient()
     resp = await svc.generate_properties_report()
     return _unwrap_result(resp)
@@ -68,29 +68,15 @@ async def properties_report():
 
 @router.get("/properties/report/pdf")
 async def properties_report_pdf():
-    """Generate a PDF report on the server and return it as a FileResponse.
-
-    The MCP tool writes a PDF file and returns a dict containing 'pdf_path'.
-    We request a unique filename to avoid collisions.
-    """
-    if not os.getenv("DOORLOOP_API_KEY"):
-        raise HTTPException(status_code=400, detail="DOORLOOP_API_KEY not configured; set it in .env or environment")
+    """Generate a PDF report and return as a downloadable file."""
+    _require_api_key()
     svc = DoorloopClient()
     filename = f"doorloop_properties_report_{uuid4().hex}.pdf"
     resp = await svc.generate_properties_report_pdf(out_path=filename)
     out = _unwrap_result(resp)
 
-    pdf_path = None
-    if isinstance(out, dict) and out.get("pdf_path"):
-        pdf_path = out.get("pdf_path")
-    elif isinstance(resp, dict) and resp.get("pdf_path"):
-        pdf_path = resp.get("pdf_path")
-
-    if not pdf_path:
-        raise HTTPException(status_code=500, detail={"error": "PDF not generated", "result": out})
-
-    if not os.path.exists(pdf_path):
-        raise HTTPException(status_code=404, detail=f"PDF not found: {pdf_path}")
+    pdf_path = out.get("pdf_path") if isinstance(out, dict) else None
+    if not pdf_path or not os.path.exists(pdf_path):
+        raise HTTPException(status_code=500, detail="PDF not found or not generated")
 
     return FileResponse(path=pdf_path, media_type="application/pdf", filename=os.path.basename(pdf_path))
-
