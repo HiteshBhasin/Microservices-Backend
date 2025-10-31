@@ -282,8 +282,6 @@ def generate_tasks_report_pdf(limit: int = 100, out_path: str = "connecteam_task
     return report
 
 if __name__ == "__main__":
-    result = retrieve_tenants()
-    try:
-        print(json.dumps(result, indent=2, ensure_ascii=False))
-    except Exception:
-        print(result)
+    # Run the FastMCP server using stdio transport. This keeps the process
+    # alive and exposes the defined @mcp.tool() functions to MCP clients.
+    mcp.run(transport="stdio")

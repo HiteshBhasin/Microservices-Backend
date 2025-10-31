@@ -382,11 +382,8 @@ def generate_properties_report_pdf(out_path: str = "doorloop_properties_report.p
 
 
 if __name__ == "__main__":
-    result = retrieve_tenants()
-    individiual_result = retrieve_a_tenants("65b16b77300d35d0d1a06be8")
-    lease_result = retrieve_leases()
-    properties_res = retrieve_properties()
-    try:
-        print(json.dumps(properties_res, indent=2, ensure_ascii=False))
-    except Exception:
-        print(properties_res)
+    # Run the FastMCP server using stdio transport. This keeps the process
+    # alive and exposes the defined @mcp.tool() functions to MCP clients.
+    # Previously this script executed helper functions at import which caused
+    # the process to exit immediately when spawned by the service launcher.
+    mcp.run(transport="stdio")

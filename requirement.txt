@@ -9,3 +9,7 @@ httpx
 uvicorn[standard]
 slowapi
 pypdf
+
+# Testing
+pytest
+pytest-asyncio
