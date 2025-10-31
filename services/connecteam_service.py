@@ -2,6 +2,7 @@ from .base_mcp_client import BaseMCPserver, ServiceFactory
 from typing import Any, Dict
 import asyncio
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +14,9 @@ except Exception:
         from . import connecteam_direct as direct
     except Exception:
         direct = None
+
+# Read toggle from environment: when USE_DIRECT is falsey (0/false/no) we do NOT use direct fallback
+USE_DIRECT = os.getenv("USE_DIRECT", "1").strip().lower() not in ("0", "false", "no")
 
 
 class ConnecteamService(BaseMCPserver):
@@ -34,21 +38,33 @@ class ConnecteamClient:
     async def _get_service(self) -> ConnecteamService:
         return await ServiceFactory.get_service(ConnecteamService, self.server_path)
 
-    async def _mcp_call(self, tool_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+    async def _mcp_call(self, tool_name: str, args: Dict[str, Any]) -> Any:
         service = await self._get_service()
         async with service as mcp_service:
             return await mcp_service.call_tool(tool_name, args)
 
-    async def _call_with_fallback(self, tool_name: str, args: Dict[str, Any], direct_func=None) -> Dict[str, Any]:
+    async def _call_with_fallback(self, tool_name: str, args: Dict[str, Any], direct_func=None) -> Any:
         try:
             return await asyncio.wait_for(self._mcp_call(tool_name, args), timeout=10)
         except Exception as exc:
-            logger.warning("MCP call %s failed: %s; falling back to direct call if available", tool_name, exc)
-            if direct_func and direct is not None:
+            logger.warning("MCP call %s failed; exc=%s; will %s fallback", tool_name, exc, "attempt" if USE_DIRECT else "NOT attempt")
+            logger.debug("MCP call exception details", exc_info=True)
+            if USE_DIRECT and direct_func and direct is not None:
                 try:
-                    return await direct_func()
+                    result = await direct_func()
                 except TypeError:
-                    return await direct_func(**args)
+                    result = await direct_func(**args)
+                # Log a compact summary of the result for debugging
+                try:
+                    if isinstance(result, dict):
+                        logger.debug("Direct fallback result keys=%s", list(result.keys()))
+                    elif isinstance(result, list):
+                        logger.debug("Direct fallback result list_len=%d", len(result))
+                    else:
+                        logger.debug("Direct fallback result type=%s", type(result))
+                except Exception:
+                    logger.debug("Direct fallback result (unable to summarize)", exc_info=True)
+                return result
             raise
 
     async def retrieve_tenants(self) -> Dict[str, Any]:

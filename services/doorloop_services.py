@@ -2,6 +2,7 @@ from .base_mcp_client import BaseMCPserver, ServiceFactory
 from typing import Any, Dict
 import logging
 import asyncio
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -9,11 +10,13 @@ logger = logging.getLogger(__name__)
 try:
     from services import doorloop_direct as direct
 except Exception:
-    # relative import fallback when run as a script
     try:
         from . import doorloop_direct as direct
     except Exception:
         direct = None
+
+# Read toggle from environment: when USE_DIRECT is falsey (0/false/no) we do NOT use direct fallback
+USE_DIRECT = os.getenv("USE_DIRECT", "1").strip().lower() not in ("0", "false", "no")
 
 
 class DoorloopService(BaseMCPserver):
@@ -39,18 +42,26 @@ class DoorloopClient:
             return await mcp_service.call_tool(tool_name, args)
 
     async def _call_with_fallback(self, tool_name: str, args: Dict[str, Any], direct_func=None) -> Dict[str, Any]:
-        """Attempt MCP call, fallback to direct in-process function if available."""
+        """Attempt MCP call, fallback to direct in-process function if available.
+
+        Respects the `USE_DIRECT` env toggle. When `USE_DIRECT` is false (0/false/no)
+        the method will not attempt the in-process fallback and will raise the
+        original MCP exception.
+        """
         try:
             return await asyncio.wait_for(self._mcp_call(tool_name, args), timeout=10)
         except Exception as exc:
-            logger.warning("MCP call %s failed: %s; falling back to direct call if available", tool_name, exc)
-            if direct_func and direct is not None:
+            # Log full exception (stack trace) to help debugging MCP stdio failures
+            logger.warning("MCP call %s failed; exc=%s; will %s fallback", tool_name, exc, "attempt" if USE_DIRECT else "NOT attempt")
+            logger.debug("MCP call exception details", exc_info=True)
+            if USE_DIRECT and direct_func and direct is not None:
                 try:
                     # direct_func is an async function exported by services/doorloop_direct
                     return await direct_func()
                 except TypeError:
                     # direct_func may expect args
                     return await direct_func(**args)
+            # Re-raise so the caller sees the original failure when fallback disabled
             raise
 
     async def retrieve_tenants(self) -> Dict[str, Any]:
