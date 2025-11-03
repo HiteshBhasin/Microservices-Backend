@@ -69,28 +69,28 @@ async def delete_task(task_id: str):
     return _unwrap_result(resp)
 
 
-@router.get("/tasks/report")
-async def tasks_report(limit: int = Query(100, ge=1)):
-    service = ConnecteamClient()
-    resp = await service.generate_tasks_report(limit=limit)
-    return _unwrap_result(resp)
+# @router.get("/tasks/report")
+# async def tasks_report(limit: int = Query(100, ge=1)):
+#     service = ConnecteamClient()
+#     # resp = await service.generate_tasks_report(limit=limit)
+#     return _unwrap_result(resp)
 
 
-@router.get("/tasks/report/pdf")
-async def tasks_report_pdf(limit: int = Query(100, ge=1)):
-    """Generate a PDF report on the server and return it as a FileResponse.
+# @router.get("/tasks/report/pdf")
+# async def tasks_report_pdf(limit: int = Query(100, ge=1)):
+#     """Generate a PDF report on the server and return it as a FileResponse.
 
-    The MCP tool writes a PDF file and returns a dict containing 'pdf_path'.
-    """
-    service = ConnecteamClient()
-    resp = await service.generate_tasks_report_pdf(limit=limit)
-    out = _unwrap_result(resp)
-    # If the MCP tool returned a dict with 'pdf_path', serve the file
-    pdf_path = None
-    if isinstance(out, dict) and out.get("pdf_path"):
-        pdf_path = out.get("pdf_path")
-    elif isinstance(resp, dict) and resp.get("pdf_path"):
-        pdf_path = resp.get("pdf_path")
+#     The MCP tool writes a PDF file and returns a dict containing 'pdf_path'.
+#     """
+#     service = ConnecteamClient()
+#     # resp = await service.generate_tasks_report_pdf(limit=limit)
+#     out = _unwrap_result(resp)
+#     # If the MCP tool returned a dict with 'pdf_path', serve the file
+#     pdf_path = None
+#     if isinstance(out, dict) and out.get("pdf_path"):
+#         pdf_path = out.get("pdf_path")
+#     elif isinstance(resp, dict) and resp.get("pdf_path"):
+#         pdf_path = resp.get("pdf_path")
 
     if not pdf_path:
         raise HTTPException(status_code=500, detail={"error": "PDF not generated", "result": out})

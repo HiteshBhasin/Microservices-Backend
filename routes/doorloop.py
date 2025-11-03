@@ -66,14 +66,14 @@ async def properties_report():
     return _unwrap_result(resp)
 
 
-@router.get("/properties/report/pdf")
-async def properties_report_pdf():
-    """Generate a PDF report and return as a downloadable file."""
-    _require_api_key()
-    svc = DoorloopClient()
-    filename = f"doorloop_properties_report_{uuid4().hex}.pdf"
-    resp = await svc.generate_properties_report_pdf(out_path=filename)
-    out = _unwrap_result(resp)
+# @router.get("/properties/report/pdf")
+# async def properties_report_pdf():
+#     """Generate a PDF report and return as a downloadable file."""
+#     _require_api_key()
+#     svc = DoorloopClient()
+#     filename = f"doorloop_properties_report_{uuid4().hex}.pdf"
+#     resp = await svc.generate_properties_report_pdf(out_path=filename)
+#     out = _unwrap_result(resp)
 
     pdf_path = out.get("pdf_path") if isinstance(out, dict) else None
     if not pdf_path or not os.path.exists(pdf_path):

@@ -85,11 +85,11 @@ class ConnecteamClient:
     async def delete_task(self, task_id: str) -> Dict[str, Any]:
         return await self._call_with_fallback("delete_task", {"task_id": task_id}, direct_func=(lambda: direct.delete_task(task_id) if direct else None))
 
-    async def generate_tasks_report(self, limit: int = 100) -> Dict[str, Any]:
-        return await self._call_with_fallback("generate_tasks_report", {"limit": limit}, direct_func=(lambda: direct.generate_tasks_report(limit) if direct else None))
+    # async def generate_tasks_report(self, limit: int = 100) -> Dict[str, Any]:
+        # return await self._call_with_fallback("generate_tasks_report", {"limit": limit}, direct_func=(lambda: direct.generate_tasks_report(limit) if direct else None))
 
-    async def generate_tasks_report_pdf(self, limit: int = 100, out_path: str = "connecteam_tasks_report.pdf") -> Dict[str, Any]:
-        return await self._call_with_fallback("generate_tasks_report_pdf", {"limit": limit, "out_path": out_path}, direct_func=(lambda: direct.generate_tasks_report_pdf(limit, out_path) if direct else None))
+    # async def generate_tasks_report_pdf(self, limit: int = 100, out_path: str = "connecteam_tasks_report.pdf") -> Dict[str, Any]:
+        # return await self._call_with_fallback("generate_tasks_report_pdf", {"limit": limit, "out_path": out_path}, direct_func=(lambda: direct.generate_tasks_report_pdf(limit, out_path) if direct else None))
 
 
 __all__ = ["ConnecteamService", "ConnecteamClient"]

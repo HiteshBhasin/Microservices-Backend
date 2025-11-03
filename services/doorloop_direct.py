@@ -34,15 +34,15 @@ async def retrieve_leases() -> Dict[str, Any]:
     return await asyncio.to_thread(dl.retrieve_leases)
 
 
-async def generate_properties_report() -> Dict[str, Any]:
-    dl = _import_server_module()
-    return await asyncio.to_thread(dl.generate_properties_report)
+# async def generate_properties_report() -> Dict[str, Any]:
+#     dl = _import_server_module()
+#     return await asyncio.to_thread(dl.generate_properties_report)
 
 
-async def generate_properties_report_pdf(out_path: str = "doorloop_properties_report.pdf") -> Dict[str, Any]:
-    dl = _import_server_module()
-    # call the module-level function that writes a PDF and returns a dict
-    return await asyncio.to_thread(dl.generate_properties_report_pdf, out_path)
+# async def generate_properties_report_pdf(out_path: str = "doorloop_properties_report.pdf") -> Dict[str, Any]:
+#     dl = _import_server_module()
+#     # call the module-level function that writes a PDF and returns a dict
+#     return await asyncio.to_thread(dl.generate_properties_report_pdf, out_path)
 
 
 __all__ = [
@@ -50,6 +50,6 @@ __all__ = [
     "retrieve_properties",
     "retrieve_a_tenants",
     "retrieve_leases",
-    "generate_properties_report",
-    "generate_properties_report_pdf",
+    # "generate_properties_report",
+    # "generate_properties_report_pdf",
 ]
