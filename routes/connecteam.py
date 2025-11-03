@@ -1,10 +1,17 @@
 from fastapi import APIRouter, Query, Body, HTTPException, status
-from fastapi.responses import FileResponse
-from typing import Any, Dict, Optional
+from typing import Any, Dict
+from enum import Enum
 from services.connecteam_service import ConnecteamClient
 import os
 
 router = APIRouter()
+
+class TaskStatus(str, Enum):
+    """Valid task status values for Connecteam API"""
+    draft = "draft"
+    published = "published" 
+    completed = "completed"
+    all = "all"
 
 
 def _unwrap_result(resp: Dict[str, Any]) -> Any:
@@ -32,12 +39,13 @@ async def get_tenants():
 
 @router.get("/tasks")
 async def get_tasks(
-    limit: int = Query(10, ge=1, le=100),
-    offset: int = Query(0, ge=0),
-    status: str = Query("active"),
+    limit: int = Query(10, ge=1, le=100, description="Number of tasks to return (1-100)"),
+    offset: int = Query(0, ge=0, description="Number of tasks to skip for pagination"),
+    status: TaskStatus = Query(TaskStatus.all, description="Task status filter"),
 ):
+    """Get tasks from Connecteam with pagination and status filtering."""
     service = ConnecteamClient()
-    resp = await service.list_tasks(limit=limit, offset=offset, status=status)
+    resp = await service.list_tasks(limit=limit, offset=offset, status=status.value)
     return _unwrap_result(resp)
 
 
@@ -67,35 +75,3 @@ async def delete_task(task_id: str):
     service = ConnecteamClient()
     resp = await service.delete_task(task_id)
     return _unwrap_result(resp)
-
-
-# @router.get("/tasks/report")
-# async def tasks_report(limit: int = Query(100, ge=1)):
-#     service = ConnecteamClient()
-#     # resp = await service.generate_tasks_report(limit=limit)
-#     return _unwrap_result(resp)
-
-
-# @router.get("/tasks/report/pdf")
-# async def tasks_report_pdf(limit: int = Query(100, ge=1)):
-#     """Generate a PDF report on the server and return it as a FileResponse.
-
-#     The MCP tool writes a PDF file and returns a dict containing 'pdf_path'.
-#     """
-#     service = ConnecteamClient()
-#     # resp = await service.generate_tasks_report_pdf(limit=limit)
-#     out = _unwrap_result(resp)
-#     # If the MCP tool returned a dict with 'pdf_path', serve the file
-#     pdf_path = None
-#     if isinstance(out, dict) and out.get("pdf_path"):
-#         pdf_path = out.get("pdf_path")
-#     elif isinstance(resp, dict) and resp.get("pdf_path"):
-#         pdf_path = resp.get("pdf_path")
-
-    if not pdf_path:
-        raise HTTPException(status_code=500, detail={"error": "PDF not generated", "result": out})
-
-    if not os.path.exists(pdf_path):
-        raise HTTPException(status_code=404, detail=f"PDF not found: {pdf_path}")
-
-    return FileResponse(path=pdf_path, media_type="application/pdf", filename=os.path.basename(pdf_path))

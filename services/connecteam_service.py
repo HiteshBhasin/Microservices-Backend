@@ -70,7 +70,8 @@ class ConnecteamClient:
     async def retrieve_tenants(self) -> Dict[str, Any]:
         return await self._call_with_fallback("retrieve_tenants", {}, direct_func=(getattr(direct, "retrieve_tenants") if direct else None))
 
-    async def list_tasks(self, limit: int = 10, offset: int = 0, status: str = "active") -> Dict[str, Any]:
+    async def list_tasks(self, limit: int = 10, offset: int = 0, status: str = "all") -> Dict[str, Any]:
+        # Note: taskboard_id will be taken from environment variable CONNECTEAM_TASKBOARD_ID in the MCP server
         return await self._call_with_fallback("list_tasks", {"limit": limit, "offset": offset, "status": status}, direct_func=(getattr(direct, "list_tasks") if direct else None))
 
     async def get_task(self, task_id: str) -> Dict[str, Any]:

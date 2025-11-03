@@ -14,9 +14,11 @@ async def retrieve_tenants() -> Dict[str, Any]:
     return await asyncio.to_thread(ct.retrieve_tenants)
 
 
-async def list_tasks(limit: int = 10, offset: int = 0, status: str = "active") -> Dict[str, Any]:
+async def list_tasks(limit: int = 10, offset: int = 0, status: str = "all") -> Dict[str, Any]:
     ct = _import_server_module()
-    return await asyncio.to_thread(ct.list_tasks, limit, offset, status)
+    # The MCP server function signature is: list_tasks(status, limit, offset, taskboard_id=None)
+    # taskboard_id will be read from environment variable inside the function
+    return await asyncio.to_thread(ct.list_tasks, status, limit, offset)
 
 
 async def get_task(task_id: str) -> Dict[str, Any]:

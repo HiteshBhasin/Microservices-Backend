@@ -31,9 +31,11 @@ async def lifespan(app: FastAPI):
     # Startup code
     logging.getLogger().setLevel(logging.INFO)
     missing = []
+    # Use ROOT path since MCP server scripts are in project root, not app directory
     for path in ("mcp_server/connectteam_mcp_server.py", "mcp_server/doorloop_mcp_server.py"):
-        if not os.path.exists(path):
-            missing.append(path)
+        full_path = ROOT / path
+        if not full_path.exists():
+            missing.append(str(full_path))
     if missing:
         logging.warning("Missing MCP server scripts: %s", missing)
     else:

@@ -3,7 +3,6 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from pathlib import Path
 import os
-from mcp.types import CallToolRequest, ListToolsRequest, CallToolRequestParams
 import asyncio
 from typing import Dict, Any
 from abc import ABC
