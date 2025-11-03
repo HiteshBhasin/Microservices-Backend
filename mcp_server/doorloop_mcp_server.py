@@ -158,6 +158,44 @@ def retrieve_properties():
         return {"error": "Request failed", "exception": str(exc)}
 
 @mcp.tool()
+def retrieve_doorloop_communication():
+    """Retrieve tenant data from the DoorLoop API"""
+    api_key = os.getenv("DOORLOOP_API_KEY")
+    if not api_key:
+        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
+    endpoint =f"{base_url.rstrip('/')}/api/communications"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+    try: # If the response is JSON return that, otherwise include a short text body for debugging
+        response = requests.get(endpoint, headers=headers, timeout=10)
+        content_type = response.headers.get("Content-Type", "")
+        if response.ok:
+            if "application/json" in content_type:
+                return response.json()  # Try to parse JSON even if header is missing
+            try:
+                return response.json()
+            except Exception:
+                return {"status": response.status_code, "body": response.text[:1000]}
+        else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
+            return {
+                "error": "Failed to fetch tenants",
+                "status": response.status_code,
+                "response": resp_json,
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+    
+    
+@mcp.tool()
 def retrieve_properties_id(id:str):
     """Retrieve tenant data from the DoorLoop API"""
     api_key = os.getenv("DOORLOOP_API_KEY")

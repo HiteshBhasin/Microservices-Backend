@@ -4,10 +4,7 @@ import json
 import requests
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Preformatted
-from reportlab.lib.units import inch
+
 
 
 load_dotenv()
@@ -50,16 +47,24 @@ def retrieve_tenants():
         return {"error": "Request failed", "exception": str(exc)}
     
 # --- Connecteam task CRUD MCP tools (append-only) ---------------------------------
-mcp.tool()
-def list_tasks(limit: int = 10, offset: int = 0, status: str = "active"):
+@mcp.tool()
+def list_tasks(status: str = "all", limit: int = 10, offset: int = 0, taskboard_id: str | None = None):
     """List tasks with simple pagination and status filter."""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
     if not api_key:
         return {"error": "CONNECTTEAM_API_KEY not found in environment variables"}
 
+    # Use provided taskboard_id or fallback to environment variable
+    if not taskboard_id:
+        taskboard_id = os.getenv("CONNECTEAM_TASKBOARD_ID")
+    
+    if not taskboard_id:
+        return {"error": "taskboard_id is required. Provide it as parameter or set CONNECTEAM_TASKBOARD_ID environment variable"}
+
     base_url = os.getenv("CONNECTTEAM_API_BASE", "https://api.connecteam.com")
-    endpoint = f"{base_url.rstrip('/')}/tasks/v1/tasks"
-    params = {"limit": limit, "offset": offset, "status": status}
+    # Correct URL format: https://api.connecteam.com/tasks/v1/taskboards/taskBoardId/tasks?status=all&limit=10&offset=0
+    endpoint = f"{base_url.rstrip('/')}/tasks/v1/taskboards/{taskboard_id}/tasks"
+    params = {"status": status, "limit": limit, "offset": offset}
     headers = {"x-api-key": api_key, "accept": "application/json"}
     try:
         resp = requests.get(endpoint, headers=headers, params=params, timeout=10)
@@ -72,7 +77,7 @@ def list_tasks(limit: int = 10, offset: int = 0, status: str = "active"):
         return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
 
 
-mcp.tool()
+@mcp.tool()
 def get_task(task_id: str):
     """Get a single task by id."""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
@@ -93,7 +98,7 @@ def get_task(task_id: str):
         return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
 
 
-mcp.tool()
+@mcp.tool()
 def create_task(payload: dict):
     """Create a task. `payload` should be the task JSON body per Connecteam API."""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
@@ -114,7 +119,7 @@ def create_task(payload: dict):
         return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
 
 
-mcp.tool()
+@mcp.tool()
 def update_task(task_id: str, payload: dict):
     """Update a task. Uses PUT (if the API supports PATCH, change method accordingly)."""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
@@ -135,7 +140,7 @@ def update_task(task_id: str, payload: dict):
         return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
 
 
-mcp.tool()
+@mcp.tool()
 def delete_task(task_id: str):
     """Delete a task by id."""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
@@ -152,6 +157,27 @@ def delete_task(task_id: str):
 
     if resp.status_code in (200, 204):
         return {"ok": True, "status": resp.status_code}
+    try:
+        return resp.json()
+    except Exception:
+        return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
+
+
+@mcp.tool()
+def list_taskboards():
+    """List all available taskboards to help discover taskboard IDs."""
+    api_key = os.getenv("CONNECTTEAM_API_KEY")
+    if not api_key:
+        return {"error": "CONNECTTEAM_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("CONNECTTEAM_API_BASE", "https://api.connecteam.com")
+    endpoint = f"{base_url.rstrip('/')}/tasks/v1/taskboards"
+    headers = {"x-api-key": api_key, "accept": "application/json"}
+    try:
+        resp = requests.get(endpoint, headers=headers, timeout=10)
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
     try:
         return resp.json()
     except Exception:

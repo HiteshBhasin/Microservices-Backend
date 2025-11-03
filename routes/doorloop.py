@@ -58,6 +58,15 @@ async def get_leases():
     return _unwrap_result(resp)
 
 
+@router.get("/communications")
+async def get_communications():
+    """Retrieve DoorLoop communications data."""
+    _require_api_key()
+    svc = DoorloopClient()
+    resp = await svc.retrieve_doorloop_communication()
+    return _unwrap_result(resp)
+
+
 @router.get("/balance-sheet/report")
 async def balance_sheet_report():
     """Generate DoorLoop balance sheet report with PDF."""
