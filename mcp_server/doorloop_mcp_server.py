@@ -4,6 +4,7 @@ import json
 import requests
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
+from utils.Report_gen import DoorLoopReportGenerator
 # PDF libraries are imported dynamically inside the writer function so the module
 # can be imported even if reportlab/fpdf are not installed in the environment.
 
@@ -46,7 +47,6 @@ def retrieve_tenants():
             }
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
-
 
 
 
@@ -190,96 +190,104 @@ def retrieve_properties_id(id:str):
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
 
-
 @mcp.tool()
-def id_retriever_prop(name:str):# this return id full name required
-    """ this function retrive the full id from the first name"""
-    guest_list_wrapper = retrieve_tenants() 
-    tenant_list = guest_list_wrapper.get("data", [])  # default to empty list if missing
-    
-
-    for tenant in tenant_list:
-        if tenant.get("name") == name:
-            tenant_id = tenant.get("id")
-            # Extract property IDs from prospectInfo
-            interests = tenant.get("prospectInfo", {}).get("interests", [])
-            property_ids = [interest.get("property") for interest in interests if "property" in interest]
-            
-            return {
-                "tenant_id": retrieve_a_tenants(tenant_id),
-                "property_ids": retrieve_properties_id(property_ids[0])
-            }
-
-
-# --- DoorLoop properties CRUD MCP tools (appended) -------------------------------
-@mcp.tool()
-def create_property(payload: dict):
-    """Create a DoorLoop property. `payload` should be a dict matching the DoorLoop API."""
+def generate_report():
+    """Fetch DoorLoop balancesheet (safe, debuggable)."""
+    import os, requests
     api_key = os.getenv("DOORLOOP_API_KEY")
     if not api_key:
         return {"error": "DOORLOOP_API_KEY not found in environment variables"}
 
     base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
-    endpoint = f"{base_url.rstrip('/')}/api/properties"
-    headers = {"Authorization": f"Bearer {api_key}", "accept": "application/json", "content-type": "application/json"}
-    try:
-        resp = requests.post(endpoint, headers=headers, json=payload, timeout=10)
-    except requests.exceptions.RequestException as exc:
-        return {"error": "Request failed", "exception": str(exc)}
-
-    try:
-        return resp.json()
-    except Exception:
-        return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
-
-
-@mcp.tool()
-def update_property(prop_id: str, payload: dict):
-    """Update a DoorLoop property by id."""
-    api_key = os.getenv("DOORLOOP_API_KEY")
-    if not api_key:
-        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
-
-    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
-    endpoint = f"{base_url.rstrip('/')}/api/properties/{prop_id}"
-    headers = {"Authorization": f"Bearer {api_key}", "accept": "application/json", "content-type": "application/json"}
-    try:
-        resp = requests.put(endpoint, headers=headers, json=payload, timeout=10)
-    except requests.exceptions.RequestException as exc:
-        return {"error": "Request failed", "exception": str(exc)}
-
-    try:
-        return resp.json()
-    except Exception:
-        return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
-
-@mcp.tool()
-def delete_property(prop_id: str):
-    """Delete a DoorLoop property by id."""
-    api_key = os.getenv("DOORLOOP_API_KEY")
-    if not api_key:
-        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
-
-    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
-    endpoint = f"{base_url.rstrip('/')}/api/properties/{prop_id}"
+    # NOTE: verify the exact report path and query parameter names with DoorLoop docs
+    endpoint = f"{base_url.rstrip('/')}/api/reports/balance-sheet-summary?filter_accountingMethod=CASH"
     headers = {"Authorization": f"Bearer {api_key}", "accept": "application/json"}
+
     try:
-        resp = requests.delete(endpoint, headers=headers, timeout=10)
+        resp = requests.get(endpoint, headers=headers, timeout=15)
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
 
-    if resp.status_code in (200, 204):
-        return {"ok": True, "status": resp.status_code}
+    # Basic debug info
+    result = {"status": resp.status_code, "content_type": resp.headers.get("Content-Type", "")}
+
+    # Try parse JSON
     try:
-        return resp.json()
-    except Exception:
-        return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
+        j = resp.json()
+    except ValueError:
+        # response not JSON
+        result["body"] = resp.text[:2000]
+        return result
 
+    # If status not OK, return JSON body for debugging
+    if not resp.ok:
+        result["body_json"] = j
+        return result
 
+    # Try to normalize with pandas if available
+    try:
+        import pandas as pd
+    except ModuleNotFoundError:
+        # return raw JSON when pandas not installed
+        return {"result": j, "note": "pandas not installed; install it to normalize"}
+
+    # Choose the data payload we'll normalize (try likely keys)
+    data = None
+    if isinstance(j, dict):
+        for candidate in ("rent_roll", "data", "items", "results", "tenants", "report", "rows"):
+            if candidate in j and isinstance(j[candidate], (list, dict)):
+                data = j[candidate]
+                break
+        if data is None:
+            # pick first list value if any
+            for v in j.values():
+                if isinstance(v, list):
+                    data = v
+                    break
+    else:
+        data = j
+
+    # Normalize safely
+    try:
+        if data is None:
+            df = pd.DataFrame()  # empty
+        else:
+            df = pd.json_normalize(data)
+            df = df.rename(columns={"undepositedFundsSplits.ePaymentsTotal":"undeposited ePayments",
+                                    "undepositedFundsSplits.manualEntriesTotal":"undeposited manualEntries"})
+            print(df.columns)
+            # Fix: fillna needs to be assigned back or use inplace=True
+            df = df.fillna(0)  # Returns new DataFrame with NaN replaced by 0
+            # Alternative: df.fillna(0, inplace=True)  # Modifies original DataFrame
+        return generate_pdf(df,"Doorloop-Balance-Sheet.pdf", "Doorloop Balance Sheet Report")
+    except Exception as exc:
+        return {"error": "Normalization failed", "exception": str(exc), "raw": j}
+
+@mcp.tool()
+def generate_pdf(report, name: str, title: str):
+    """Generate PDF report from DataFrame data."""
+    if hasattr(report, 'values') and hasattr(report, 'columns'):
+        # Create report generator instance with extra wide columns
+        generator = DoorLoopReportGenerator(
+            col_width=4.5,           # Even wider columns
+            row_height=1.0,          # Taller rows for better spacing
+            font_size=11,            # Larger body text size
+            header_font_size=12,     # Larger header text size
+            max_text_width=40        # More characters before text wrapping
+        )
+        
+        # Generate the PDF with Nest Host branding
+        report_info = generator.generate_pdf(
+            df=report, 
+            filename=name,
+            title=f"Nest Host - {title}"
+        )
+        return report_info
+    else:
+        return {"error": "Invalid report data - not a pandas DataFrame"}
 
 if __name__ == "__main__":
     try:
-        
         # Run the FastMCP server using stdio transport. This keeps the process
         # alive and exposes the defined @mcp.tool() functions to MCP clients.
         mcp.run(transport="stdio")

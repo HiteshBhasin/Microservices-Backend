@@ -76,15 +76,9 @@ class DoorloopClient:
     async def retrieve_leases(self) -> Dict[str, Any]:
         return await self._call_with_fallback("retrieve_leases", {}, direct_func=(getattr(direct, "retrieve_leases") if direct else None))
 
-    async def generate_properties_report(self) -> Dict[str, Any]:
-        return await self._call_with_fallback("generate_properties_report", {}, direct_func=(getattr(direct, "generate_properties_report") if direct else None))
-
-    # async def generate_properties_report_pdf(self, out_path: str = "doorloop_properties_report.pdf") -> Dict[str, Any]:
-    #     return await self._call_with_fallback(
-    #         "generate_properties_report_pdf",
-    #         {"out_path": out_path},
-    #         direct_func=(lambda: direct.generate_properties_report_pdf(out_path) if direct else None),
-    #     )
+    async def generate_report(self) -> Dict[str, Any]:
+        """Generate DoorLoop balance sheet report with PDF."""
+        return await self._call_with_fallback("generate_report", {}, direct_func=(getattr(direct, "generate_report") if direct else None))
 
 
 __all__ = ["DoorloopClient", "DoorloopService"]

@@ -196,6 +196,5 @@ class DoorLoopReportGenerator:
             "status": "success"
         }
 
-# Usage with extra wide columns to prevent cutting
 
     

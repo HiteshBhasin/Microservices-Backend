@@ -1,13 +1,12 @@
-from fastapi import APIRouter, Query, Body, HTTPException, status, Request
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, HTTPException
 from typing import Any, Dict
 import os
-from uuid import uuid4
 from services.doorloop_services import DoorloopClient
 
 router = APIRouter()
-# Generalized api key function.
+
 def _require_api_key() -> str:
+    """Ensure DoorLoop API key is configured."""
     key = os.getenv("DOORLOOP_API_KEY")
     if not key:
         raise HTTPException(
@@ -15,8 +14,9 @@ def _require_api_key() -> str:
             detail="DOORLOOP_API_KEY not configured; set it in .env or environment"
         )
     return key
-#This function is a response handler for MCP (Model Context Protocol) service calls
+
 def _unwrap_result(resp: Dict[str, Any]) -> Any:
+    """Response handler for MCP (Model Context Protocol) service calls."""
     if not isinstance(resp, dict):
         return resp
     if "error" in resp:
@@ -35,7 +35,7 @@ async def get_tenants():
 
 
 @router.get("/properties")
-async def get_properties(limit: int = Query(100, ge=1)):
+async def get_properties():
     _require_api_key()
     svc = DoorloopClient()
     resp = await svc.retrieve_properties()
@@ -58,25 +58,10 @@ async def get_leases():
     return _unwrap_result(resp)
 
 
-@router.get("/properties/report")
-async def properties_report():
+@router.get("/balance-sheet/report")
+async def balance_sheet_report():
+    """Generate DoorLoop balance sheet report with PDF."""
     _require_api_key()
     svc = DoorloopClient()
-    resp = await svc.generate_properties_report()
+    resp = await svc.generate_report()
     return _unwrap_result(resp)
-
-
-# @router.get("/properties/report/pdf")
-# async def properties_report_pdf():
-#     """Generate a PDF report and return as a downloadable file."""
-#     _require_api_key()
-#     svc = DoorloopClient()
-#     filename = f"doorloop_properties_report_{uuid4().hex}.pdf"
-#     resp = await svc.generate_properties_report_pdf(out_path=filename)
-#     out = _unwrap_result(resp)
-
-    pdf_path = out.get("pdf_path") if isinstance(out, dict) else None
-    if not pdf_path or not os.path.exists(pdf_path):
-        raise HTTPException(status_code=500, detail="PDF not found or not generated")
-
-    return FileResponse(path=pdf_path, media_type="application/pdf", filename=os.path.basename(pdf_path))
