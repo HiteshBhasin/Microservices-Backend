@@ -6,7 +6,7 @@ from uuid import uuid4
 from services.doorloop_services import DoorloopClient
 
 router = APIRouter()
-
+# Generalized api key function.
 def _require_api_key() -> str:
     key = os.getenv("DOORLOOP_API_KEY")
     if not key:
@@ -15,7 +15,7 @@ def _require_api_key() -> str:
             detail="DOORLOOP_API_KEY not configured; set it in .env or environment"
         )
     return key
-
+#This function is a response handler for MCP (Model Context Protocol) service calls
 def _unwrap_result(resp: Dict[str, Any]) -> Any:
     if not isinstance(resp, dict):
         return resp
