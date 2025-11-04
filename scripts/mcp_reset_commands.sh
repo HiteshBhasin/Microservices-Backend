@@ -1,7 +1,7 @@
 #!/bin/bash
 # MCP Server Reset Script
 
-echo "🔧 MCP Server Reset Commands"
+echo " MCP Server Reset Commands"
 echo "=========================="
 
 echo "1. Kill any running MCP server processes:"
