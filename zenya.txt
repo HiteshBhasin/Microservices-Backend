@@ -1,0 +1,33 @@
+# export async function GET() {
+#     try {
+#         // Hardcoded test payload
+#         const payload = {
+#             customerKey: process.env.ZENYA_CUSTOMER_KEY,
+#             route: "getRoomsByLocations",
+#             data: {
+#                 location: { lat: 49.8790, long: -97.1410 }, // Winnipeg
+#                 distance: "20",
+#                 startDate: "2025-11-05",
+#                 endDate: "2025-11-10",
+#             },
+#         };
+
+#         // Make the request to Zenya
+#         const response = await fetch("https://appserver.zenya.io/api/v1/mapping/", {
+#             method: "POST",
+#             headers: { "Content-Type": "application/json" },
+#             body: JSON.stringify(payload),
+#         });
+
+#         const json = await response.json();
+
+#         // Return pretty text for easy browser viewing
+#         return new Response(JSON.stringify(json, null, 2), {
+#             status: 200,
+#             headers: { "Content-Type": "text/plain; charset=utf-8" },
+#         });
+#     } catch (error) {
+#         console.error("Error fetching Zenya data:", error);
+#         return new Response("Error fetching Zenya data", { status: 500 });
+#     }
+# }
