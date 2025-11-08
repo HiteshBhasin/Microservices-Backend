@@ -35,14 +35,14 @@ def callback(request: Request):
 
     # Step 3: Exchange code for tokens
     auth_client.get_bearer_token(code, realm_id=realm_id)
-
+    print (auth_client)
+   
     # Step 4: Create QuickBooks client and fetch data
     qbo = QuickBooks(
         auth_client=auth_client,
         refresh_token=auth_client.refresh_token,
-        company_id=realm_id
+        company_id=os.getenv("QUICKBOOKS_REALMID")
     )
-
     company_info_list = qbo.get('CompanyInfo', qbo.company_id)
     if not company_info_list:
         return {"error": "Failed to retrieve company information"}
