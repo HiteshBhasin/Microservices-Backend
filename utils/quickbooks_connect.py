@@ -3,17 +3,23 @@ from intuitlib.client import AuthClient
 from intuitlib.enums import Scopes
 from quickbooks import QuickBooks
 from dotenv import load_dotenv
+from pyngrok import ngrok
 import os
 
 load_dotenv()
 app = FastAPI()
-
+public_url = ngrok.connect("8000")
+print(public_url)
 auth_client = AuthClient(
     client_id=os.getenv("QUICKBOOKS_CLIENT_ID"),
     client_secret=os.getenv("QUICKBOOKS_CLIENT_SECRET"),
-    redirect_uri="http://localhost:8000/callback",
+    redirect_uri=os.getenv("QUICKBOOKS_CONNECT_URL"),
     environment="sandbox"
 )
+
+@app.get("/")
+def root():
+    return {"ngrok_url": public_url.public_url}
 
 @app.get("/login")
 def login():
@@ -41,13 +47,16 @@ def callback(request: Request):
     qbo = QuickBooks(
         auth_client=auth_client,
         refresh_token=auth_client.refresh_token,
-        company_id=os.getenv("QUICKBOOKS_REALMID")
+        company_id=realm_id
     )
-    company_info_list = qbo.get('CompanyInfo', qbo.company_id)
-    if not company_info_list:
-        return {"error": "Failed to retrieve company information"}
-    
-    company_info = company_info_list[0]
-    print("Company Name:", company_info.CompanyName)
+    company_info = qbo.get('CompanyInfo', realm_id)
+    if company_info:
+        company_name = company_info[0].CompanyName
+    else:
+        company_name = None
 
-    return {"realm_id": realm_id, "company_name": company_info.CompanyName}
+    return {
+        "realm_id": realm_id,
+        "company_name": company_name,
+        "access_token": auth_client.access_token
+    }
