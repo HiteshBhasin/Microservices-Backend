@@ -13,3 +13,5 @@ pypdf
 # Testing
 pytest
 pytest-asyncio
+intuit-oauth
+python-quickbooks
