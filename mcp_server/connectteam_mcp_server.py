@@ -2,6 +2,7 @@ import os
 import sys
 import requests
 
+
 # Add project root to Python path so we can import utils, services, etc.
 from pathlib import Path
 project_root = Path(__file__).resolve().parent.parent
