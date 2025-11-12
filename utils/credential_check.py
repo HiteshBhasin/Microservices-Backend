@@ -20,7 +20,7 @@ async def lifespan(app:FastAPI):
     yield
     
     await mongo_db.close()
-    print("application shut donw successfully")
+    print("application shut down successfully")
     
 
 
@@ -39,6 +39,7 @@ async def register_credentials(cred:user_credentials, request:Request):
 if __name__ == "__main__":
     try:
         import uvicorn
-        uvicorn.run("app.main:app", host="0.0.0.0", port=int(os.getenv("PORT", 3000)), reload=True)
+        uvicorn.run("credential_check:form_app", host="0.0.0.0", port=int(os.getenv("PORT", 3000)), reload=True)
     except Exception as exc:
+        import logging
         logging.error("Failed to start uvicorn: %s", exc)
