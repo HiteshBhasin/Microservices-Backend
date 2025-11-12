@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-from schema.schema import user_credentials 
+from schema.schema import UserCredentials
 from pymongo import AsyncMongoClient
 import asyncio, os
 from dotenv import load_dotenv
@@ -27,14 +27,12 @@ async def lifespan(app:FastAPI):
 form_app = FastAPI(lifespan=lifespan)
 
 @form_app.post("/register")
-async def register_credentials(cred:user_credentials, request:Request):
+async def register_credentials(cred:UserCredentials, request:Request):
     collection = request.app.state.collections
     await collection.insert_one(cred)
     return {"message": "Success!"}
 
 
-# @form_app.post("/login")
-# async def check_credentials(cred:user_credentials):
 
 if __name__ == "__main__":
     try:

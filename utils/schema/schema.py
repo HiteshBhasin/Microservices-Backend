@@ -1,41 +1,48 @@
-from pydantic import BaseModel, EmailStr, field_validator
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
 from pymongo import AsyncMongoClient
-import asyncio, os, re
+import os, re, asyncio
 from dotenv import load_dotenv
+from pydantic import BaseModel, EmailStr, field_validator
 
 load_dotenv()
-class user_credentials(BaseModel):
+URI = os.getenv("MONGODB")
+
+class UserCredentials(BaseModel):
     email: EmailStr
-    username:str
+    username: str
     password: str
 
     @field_validator("password")
     @classmethod
-    def validator(cls,v):
-        if len(v)<5:
-            raise Exception (" Password length is less than 5 letters and/or digits. Please try again ")
-        elif not re.search(r"[A-Z]", v):
-            raise ValueError ("Password must contain at least one uppercase letter")
-        elif not re.search(r"[a-z]",v):
-            raise ValueError("Password must contain at least one lowercase lette")
-        elif not re.search(r"[0-9]",v):
-            raise ValueError("Password must contain at least one digit lette")
-        elif not re.search(r"[@$!%*?&]",v):
-            raise ValueError ("Password must contain at least one special character lette")
+    def check_password_strength(cls, v):
+        if len(v) < 5:
+            raise ValueError("Password must be at least 5 characters long")
+        if not re.search(r"[A-Z]", v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not re.search(r"[a-z]", v):
+            raise ValueError("Password must contain at least one lowercase letter")
+        if not re.search(r"[0-9]", v):
+            raise ValueError("Password must contain at least one digit")
+        if not re.search(r"[@$!%*?&]", v):
+            raise ValueError("Password must contain at least one special character")
         return v
 
 
-URI = os.getenv("MONGODB")
-async def create_database():
-    mongo_db = AsyncMongoClient(URI)
-    db = mongo_db["nesthost_db"]
-    collection = db["users"]
-    # Database and collection are created automatically when you insert the first document
-    await collection.insert_one({"initialized": True})
-    print("Database and collection created successfully")
-    collections = await mongo_db.list_database_names()
-    for collection in collections:
-        print(collection)
-    
-   
-asyncio.run(create_database()) 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    client = AsyncMongoClient(URI)
+    db = client["nesthost_db"]
+    users = db["users"]
+
+    #Run only once at app startup
+    if "users" not in await db.list_collection_names():
+        await users.insert_one({"initialized": True})
+        print("Database and collection created successfully")
+
+    app.state.db = db
+    yield
+    await client.close()
+
+
+app = FastAPI(lifespan=lifespan)
