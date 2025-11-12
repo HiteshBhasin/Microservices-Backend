@@ -9,10 +9,12 @@ httpx
 uvicorn[standard]
 slowapi
 pypdf
-
+pymongo
 # Testing
 pytest
 pytest-asyncio
 intuit-oauth
 python-quickbooks
-pyngrok 
+pyngrok
+PyJWT 
+google-adk
