@@ -5,6 +5,7 @@ from schema.schema import user_credentials
 from pymongo import AsyncMongoClient
 import asyncio, os
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 
@@ -28,13 +29,16 @@ form_app = FastAPI(lifespan=lifespan)
 @form_app.post("/register")
 async def register_credentials(cred:user_credentials, request:Request):
     collection = request.app.state.collections
-    return collection
-        
+    await collection.insert_one(cred)
+    return {"message": "Success!"}
 
-    
-    
-    
-    
 
 # @form_app.post("/login")
 # async def check_credentials(cred:user_credentials):
+
+if __name__ == "__main__":
+    try:
+        import uvicorn
+        uvicorn.run("app.main:app", host="0.0.0.0", port=int(os.getenv("PORT", 3000)), reload=True)
+    except Exception as exc:
+        logging.error("Failed to start uvicorn: %s", exc)
