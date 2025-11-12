@@ -26,11 +26,22 @@ async def lifespan(app:FastAPI):
 
 form_app = FastAPI(lifespan=lifespan)
 
+# Add CORS middleware
+form_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @form_app.post("/register")
-async def register_credentials(cred:UserCredentials, request:Request):
+async def register_credentials(cred: UserCredentials, request: Request):
     collection = request.app.state.collections
-    await collection.insert_one(cred)
-    return {"message": "Success!"}
+    # Convert Pydantic model to dict for MongoDB
+    user_dict = cred.model_dump()
+    result = await collection.insert_one(user_dict)
+    return {"message": "User registered successfully!", "user_id": str(result.inserted_id)}
 
 
 
