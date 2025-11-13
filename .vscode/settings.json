@@ -3,9 +3,11 @@
     "python-envs.pythonProjects": [
         {
             "path": "${workspaceFolder}",
-            "envPath": "${workspaceFolder}/.venv"
+            "envPath": "${workspaceFolder}/venv",
+            "envManager": "ms-python.python:system",
+            "packageManager": "ms-python.python:pip"
         }
     ],
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe"
+    "python.defaultInterpreterPath": "${workspaceFolder}/venv/Scripts/python.exe"
 }
          
