@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-from schema import UserCredentials
+from schema.schema import UserCredentials
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 import os, logging, hashlib
