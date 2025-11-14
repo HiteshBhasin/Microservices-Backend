@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-from schema.schema import UserCredentials
+from schema.schema import UserCredentials, UserLogin
 from pymongo import AsyncMongoClient
 from dotenv import load_dotenv
 import os, logging, hashlib
@@ -34,12 +34,11 @@ async def index():
     return {"message": "hi"}
 
 @form_app.post("/register")
-async def register_credentials(cred: UserCredentials, request: Request):
+async def register_credentials(cred: UserLogin, request: Request):
     hash_obj = hashlib.sha256(cred.password.encode("utf-8"))
     encoded_obj = hash_obj.hexdigest()
     collection = request.app.state.collections
     new_user = {
-        "emai":cred.email,
         "username":cred.username,
         "password": encoded_obj
     }
@@ -53,7 +52,9 @@ async def login_page(cred:UserCredentials, request:Request):
     if not user:
         return f"Username or password are not correct{cred.username}or {cred.password}"
     else:
-        
+        if user["password"]==cred.password:
+            # we need to authenticate and give the user access
+            pass
         
     
     
