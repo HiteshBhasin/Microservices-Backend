@@ -12,6 +12,7 @@ class UserCredentials(BaseModel):
     email: EmailStr
     username: str
     password: str
+    role:str
 
     @field_validator("password")
     @classmethod
