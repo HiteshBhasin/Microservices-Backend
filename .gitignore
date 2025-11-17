@@ -1,3 +1,4 @@
+# .gitignore
 .env
 venv
 C:\Users\bhasi\OneDrive\Desktop\chatbot\Microservices-Backend\ai_agent\my_agent\.env
