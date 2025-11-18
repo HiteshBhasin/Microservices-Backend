@@ -18,22 +18,31 @@ def Create_access_token(data:Dict):
     encoded_data = data.copy()
     encoded_data["exp"] = datetime.now(timezone.utc)+timedelta(hours=3)
     return jwt.encode(payload=encoded_data, key=secret, algorithm=algo)
+  
+def Refresh_access_token(data:Dict):
+    if not secret or not algo:
+        raise ValueError("SECRET_KEY or ALGORITHM not configured")
+    encoded_data = data.copy()
+    encoded_data["exp"] = datetime.now(timezone.utc)+timedelta(days=7)
+    return jwt.encode(payload=encoded_data, key=secret, algorithm=algo)
 
-data = {
-  "_id": "123",
-  "email": "ceo@company.com",
-  "username": "ceo1",
-  "password": "hashed-password",
-  "role": "CEO"
-}
-print(Create_access_token(data))
+# data = {
+#   "_id": "123",
+#   "email": "ceo@company.com",
+#   "username": "ceo1",
+#   "password": "hashed-password",
+#   "role": "CEO"
+# }
+# print(Create_access_token(data))
 
 def get_current_user(token:str = Depends(oauth2_schema)):
   try:
-    payload = jwt.decode(token)
+    payload = jwt.decode(jwt=token, key=secret, algorithms=[algo])
     return payload
   except PyJWTError:
-    raise HTTPException(status_code=404, detail="No details were found")
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"})
   
 def required_roles(*allowed_roles):
   def role_checker(user:Dict = Depends(get_current_user)):
@@ -45,4 +54,4 @@ def required_roles(*allowed_roles):
   return role_checker
     
 
-  
+  #  now i need to use login etc routes and add create and refresh token in them
