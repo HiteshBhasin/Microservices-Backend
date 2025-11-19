@@ -82,6 +82,6 @@ async def root():
 if __name__ == "__main__":
     try:
         import uvicorn
-        uvicorn.run("app.main:app", host="0.0.0.0", port=int(os.getenv("PORT", 8000)), reload=True)
+        uvicorn.run("app.main:app", host="127.0.0.1", port=int(os.getenv("PORT", 8000)), reload=True)
     except Exception as exc:
         logging.error("Failed to start uvicorn: %s", exc)
