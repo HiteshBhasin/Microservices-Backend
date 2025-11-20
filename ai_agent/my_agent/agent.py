@@ -47,7 +47,7 @@ try:
     # cannot be awaited at import time. The ADK Runner will create or
     # use sessions at runtime via the provided `session_service`.
     connecteam_agent = Agent(
-        model=MODEL_NAME,
+        model= MODEL_NAME,
         name='Dashboard_connectean_Agent',
         description="""
         A specialized assistant for managing Connecteam tasks 
