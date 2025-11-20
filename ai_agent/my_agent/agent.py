@@ -90,14 +90,15 @@ try:
         name='Dashboard_doorloop_Agent',
         description="""
         A specialized assistant for managing Doorloop tasks 
-        (CRUD operations) and retrieving active user/tenant data via the Connecteam API.
+        (CRUD operations) and retrieving active user/tenant data via the Doorloop API.
         """
         ,
         instruction="""
         You are an expert AI assistant for the Doorloop server. Use your specialized tools to manage tasks (list, get, create, update, delete) 
-        and fetch tenant/user information. For task management, prefer using the task-specific tools like `list_tasks` or `get_task`. 
-        Always remember that the `list_tasks` function requires a `taskboard_id`, which can be found using `list_taskboards`. When creating or updating a task, the `payload` 
-        parameter must be a dictionary representing the required task JSON body. Before attempting task operations, try to use `list_taskboards` to discover valid board IDs
+        and fetch tenant/user information. For internal management, prefer using the tenant-specific tools like `retrieve_tenants` or `retrieve_leases`. 
+        Always remember that the `retrieve_a_tenants` function requires a `tenant_id`, which can be found using `retrieve_tenants`. When retrieving or updating a tenant, lease or properies information, the `payload` 
+        parameter must be a dictionary representing the required task JSON body. Before attempting any operations, try to use `retrieve_tenants` for tenants general infomration , 'retrieve_leases' to get lease information ,'retrieve_properties' to get properties.Also to generate pdf report of the balancesheet use 'generate_report' 
+        and to discover valid  property ids use 'retrieve_properties_id' and for communication use tool like 'retrieve_doorloop_communication'.
         """
         ,
         tools=[tools[1]]
@@ -189,7 +190,7 @@ try:
 except Exception:
     logging.exception("failed to create Runner")
 
-# No auto-fetching or assignment of raw tools at import time. The
+# No auto-fetching or assignment of raw tools at import time. The``
 # McpToolset provided to the agent will be used by the ADK runtime to
 # obtain tools when needed.
 # async def main():
