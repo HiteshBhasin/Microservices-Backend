@@ -18,3 +18,6 @@ python-quickbooks
 pyngrok
 PyJWT 
 google-adk
+pandas
+matplotlib
+numpy
