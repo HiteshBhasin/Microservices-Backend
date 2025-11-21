@@ -21,3 +21,4 @@ google-adk
 pandas
 matplotlib
 numpy
+redis

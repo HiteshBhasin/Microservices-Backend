@@ -1,0 +1,2642 @@
+{
+  "data": [
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "abbyt.2018@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(204) 663-7653"
+        }
+      ],
+      "firstName": "Abbey",
+      "name": "Abbey Traverse",
+      "fullName": "Abbey Traverse",
+      "lastName": "Traverse",
+      "intercomContactId": "65d3d63630bc6fe1309394b0",
+      "languagePreference": "en-US",
+      "id": "65b16b77300d35d0d1a06be8",
+      "createdAt": "2024-01-24T19:56:39.444Z",
+      "updatedAt": "2025-07-19T09:15:46.568Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65aa8d7b78ff083510b81c70",
+      "e164PhoneMobileNumber": "+12046637653",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_Par3NACT3wQaTt",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b77300d35d0d1a06bd9"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "abbyt.2018@gmail.com",
+        "mobilePhone": "(204) 663-7653",
+        "lastSeenAt": "2025-07-19T09:15:46.566Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-03-01T19:12:09.121Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "seunpmp@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(204) 294-3054"
+        }
+      ],
+      "firstName": "Adeola",
+      "name": "Adeola Adeleye",
+      "fullName": "Adeola Adeleye",
+      "lastName": "Adeleye",
+      "intercomContactId": "65d3d7c3758f26deed40bbc7",
+      "languagePreference": "en-US",
+      "id": "65b16b7c300d35d0d1a0ae14",
+      "createdAt": "2024-01-24T19:56:44.312Z",
+      "updatedAt": "2025-06-30T17:11:51.738Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65a7eac69e441e30b6203c80",
+      "e164PhoneMobileNumber": "+12042943054",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_Par9Vqmrf3EFtR",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b7c300d35d0d1a0ae05"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-06-30T17:11:51.736Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "adrianmiller1884@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2049783323"
+        }
+      ],
+      "firstName": "Adrian",
+      "name": "Adrian D. Miller",
+      "fullName": "Adrian D. Miller",
+      "lastName": "Miller",
+      "middleName": "Donovan Gordan",
+      "intercomContactId": "67bf5be03a8b9d7cd5aac3ef",
+      "languagePreference": "en-US",
+      "id": "67bf5ba25dfb0c6db488d775",
+      "createdAt": "2025-02-26T18:21:23.408Z",
+      "updatedAt": "2025-11-01T09:44:41.623Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12049783323",
+      "conversationWelcomeSmsSentAt": "2025-02-26T18:34:16.227Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "67bf57e92af0bb617887919e",
+            "unit": "67bf57e92af0bb61788791ac"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "adrianmiller1884@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "2049783323",
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-11-01T09:44:41.621Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "mandyleighanne95@outlook.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "204-809-9974"
+        },
+        {
+          "type": "Mobile",
+          "number": "(204) 399-5529"
+        }
+      ],
+      "firstName": "Amanda",
+      "name": "Amanda Dutiaume",
+      "fullName": "Amanda Dutiaume",
+      "lastName": "Dutiaume",
+      "intercomContactId": "65d3ccd0683778cee9dd90a7",
+      "languagePreference": "en-US",
+      "id": "65b16b7a300d35d0d1a0aa41",
+      "createdAt": "2024-01-24T19:56:42.947Z",
+      "updatedAt": "2024-07-22T17:44:56.765Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12048099974",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_PaqPgePOfmy2Tz",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b7a300d35d0d1a0aa32"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "mandyleighanne95@outlook.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "204-809-9974",
+        "lastSeenAt": "2024-07-22T17:44:56.763Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-02-25T02:35:00.411Z"
+      }
+    },
+    {
+      "dateOfBirth": "1996-04-10",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "dksumka@shaw.ca"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "204 256 7033"
+        }
+      ],
+      "firstName": "Andrew",
+      "name": "Andrew Cross",
+      "fullName": "Andrew Cross",
+      "lastName": "Cross",
+      "intercomContactId": "68fdea77b6d1c08ea1216d04",
+      "languagePreference": "en-US",
+      "id": "68fc03fde1da2ed8deda6566",
+      "createdAt": "2025-10-24T22:55:57.880Z",
+      "updatedAt": "2025-10-26T09:31:36.226Z",
+      "createdBy": "68ee652f7ca52f1dc90e2eb9",
+      "updatedBy": "68ee652f7ca52f1dc90e2eb9",
+      "e164PhoneMobileNumber": "+12042567033",
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "type": "PROSPECT_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "NEW",
+        "interests": []
+      },
+      "portalInfo": {
+        "allowAccess": false,
+        "loginEmail": "dksumka2@shaw.ca",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "204 256 7033"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "4313387466"
+        }
+      ],
+      "firstName": "Andrii",
+      "name": "Andrii Shestopalko",
+      "fullName": "Andrii Shestopalko",
+      "lastName": "Shestopalko",
+      "intercomContactId": "685098353f842621df913be2",
+      "languagePreference": "en-US",
+      "id": "684fa3ba4ce33a172d4f71fc",
+      "createdAt": "2025-06-16T04:55:22.260Z",
+      "updatedAt": "2025-10-27T02:02:23.642Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+14313387466",
+      "conversationWelcomeSmsSentAt": "2025-06-16T04:55:22.280Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_SVmxVx7SKDsqR8",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "6838c0eb8d722d10ae365484",
+            "unit": "6838c0eb8d722d10ae365492"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "shestopalkoa8@gmail.com",
+        "mobilePhone": "4313387466",
+        "lastSeenAt": "2025-10-27T02:02:23.641Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-06-16T05:12:15.353Z"
+      }
+    },
+    {
+      "dateOfBirth": "1996-12-08",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "annefriesen96@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+12049181858"
+        }
+      ],
+      "firstName": "Anne",
+      "name": "Anne E. Friesen",
+      "fullName": "Anne E. Friesen",
+      "gender": "FEMALE",
+      "lastName": "Friesen",
+      "middleName": "Erika",
+      "intercomContactId": "68ed0b0c94c873be0b771abc",
+      "languagePreference": "en-US",
+      "id": "68ed0b27068d22c4239f6d15",
+      "createdAt": "2025-10-13T14:22:31.434Z",
+      "updatedAt": "2025-11-07T22:16:05.262Z",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+12049181858",
+      "conversationWelcomeSmsSentAt": "2025-11-04T21:59:41.274Z",
+      "dependants": [],
+      "pets": [
+        {
+          "petType": "Cat",
+          "weight": 4,
+          "age": 1,
+          "color": "Grey",
+          "breed": "Tabby",
+          "name": "Charlie",
+          "gender": "Male",
+          "isSpayedOrNeutered": true
+        }
+      ],
+      "emergencyContacts": [
+        {
+          "name": "Duayne Friesen",
+          "relationship": "Father",
+          "phone": "2049181858",
+          "email": "db.friesen@mts.net"
+        }
+      ],
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "Civic",
+          "year": 2003,
+          "color": "Silver",
+          "licensePlate": "HTV 821"
+        }
+      ],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-11-07T20:05:02.581Z",
+      "stripeCustomerId": "cus_TNhJCjNOSRpBoI",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          },
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a38d868bcdc0f5fda8554"
+          }
+        ],
+        "expectedMoveInDate": "2025-11-01"
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "annefriesen96@gmail.com",
+        "lastSeenAt": "2025-11-07T22:16:05.259Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-11-04T21:59:39.688Z"
+      }
+    },
+    {
+      "dateOfBirth": "2000-06-04",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "topzzyglitz@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "204-869-6258"
+        }
+      ],
+      "firstName": "Anuoluwapo",
+      "name": "Anuoluwapo Omotosho",
+      "fullName": "Anuoluwapo Omotosho",
+      "lastName": "Omotosho",
+      "intercomContactId": "68f902743ff6d5a3156fd749",
+      "languagePreference": "en-US",
+      "id": "68f9026c0d0a7e210cd675a5",
+      "createdAt": "2025-10-22T16:12:29.652Z",
+      "updatedAt": "2025-10-22T16:12:37.508Z",
+      "createdBy": "68ee652f7ca52f1dc90e2eb9",
+      "updatedBy": "68ee652f7ca52f1dc90e2eb9",
+      "e164PhoneMobileNumber": "+12048696258",
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "type": "PROSPECT_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "NEW",
+        "interests": []
+      },
+      "portalInfo": {
+        "allowAccess": false,
+        "loginEmail": "topzzyglitz@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "204-869-6258"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "ariel@nesthost.ca"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile"
+        }
+      ],
+      "firstName": "Ariel",
+      "name": "Ariel De Vera",
+      "fullName": "Ariel De Vera",
+      "lastName": "De Vera",
+      "intercomContactId": "65b3f75e6d772b75bb935a3b",
+      "primaryAddress": {
+        "street1": "107 Kearney Lake Rd Halifax NS B3M 2S9",
+        "city": "Winnipeg",
+        "state": "",
+        "zip": "RHC dpc",
+        "country": "Canada"
+      },
+      "languagePreference": "en-US",
+      "id": "65b27c3498c0a5aa9dd87c27",
+      "createdAt": "2024-01-25T15:20:20.605Z",
+      "updatedAt": "2024-05-22T07:09:11.896Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "stripeCustomerId": "cus_PRnaStB0roRoPG",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "65b137aa6eafa01316dfd61e",
+            "unit": "65b27b0dd8fbfe8a611c741b"
+          },
+          {
+            "property": "65b137aa6eafa01316dfd61e",
+            "unit": "65b27b0dd8fbfe8a611c741b"
+          }
+        ]
+      },
+      "portalInfo": {
+        "emailValidationStatus": "valid"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "kidereno_78@yahoo.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(204) 898-1961"
+        }
+      ],
+      "firstName": "Arnulfo",
+      "name": "Arnulfo Ereno",
+      "fullName": "Arnulfo Ereno",
+      "lastName": "Ereno",
+      "intercomContactId": "65d3d37406a8757e62c0506c",
+      "languagePreference": "en-US",
+      "id": "65b16b7c300d35d0d1a0afff",
+      "createdAt": "2024-01-24T19:56:44.998Z",
+      "updatedAt": "2024-05-22T07:09:01.844Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65aa8d7b78ff083510b81c70",
+      "e164PhoneMobileNumber": "+12048981961",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_PaqrOyNfmkk3zw",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b7c300d35d0d1a0aff0"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "kidereno_78@yahoo.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "(204) 898-1961",
+        "lastSeenAt": "2024-04-07T00:04:13.177Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-02-19T22:17:14.188Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "aruoriwoaudu@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(647) 449-7416"
+        }
+      ],
+      "firstName": "Aruoriwo",
+      "name": "Aruoriwo Audu",
+      "fullName": "Aruoriwo Audu",
+      "lastName": "Audu",
+      "intercomContactId": "65d3cec4d01cc6db708466b9",
+      "languagePreference": "en-US",
+      "id": "65b16b7c300d35d0d1a0aed1",
+      "createdAt": "2024-01-24T19:56:44.562Z",
+      "updatedAt": "2025-06-04T03:28:57.043Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65a7eac69e441e30b6203c80",
+      "e164PhoneMobileNumber": "+16474497416",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_PaqXHAJ1pNY9Ev",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b7c300d35d0d1a0aec2"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "aruoriwoaudu@gmail.com",
+        "emailValidationStatus": "valid",
+        "lastSeenAt": "2025-06-04T03:28:57.042Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-02-02T17:16:21.348Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "tenant3@doorloop.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "3"
+        }
+      ],
+      "firstName": "Arvin",
+      "name": "Arvin Javier",
+      "fullName": "Arvin Javier",
+      "lastName": "Javier",
+      "intercomContactId": "660ad56daf33473132dc89d2",
+      "languagePreference": "en-US",
+      "id": "65b16b78300d35d0d1a06df9",
+      "createdAt": "2024-01-24T19:56:40.223Z",
+      "updatedAt": "2025-06-30T17:12:16.812Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65a7eac69e441e30b6203c80",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b78300d35d0d1a06da1"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-06-30T17:12:16.810Z",
+        "isLoginEmailBounced": true
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "luckyhairsalon.ca@gmail.com"
+        }
+      ],
+      "phones": [],
+      "firstName": "Asher",
+      "name": "Asher Munir",
+      "fullName": "Asher Munir",
+      "lastName": "Munir",
+      "intercomContactId": "690a1997fae5d97d3e5a97aa",
+      "languagePreference": "en-US",
+      "id": "690a19942d0e3597c218fe7c",
+      "createdAt": "2025-11-04T15:19:48.537Z",
+      "updatedAt": "2025-11-04T15:20:51.428Z",
+      "createdBy": "68ffd760ab3118332e8f4a10",
+      "updatedBy": "68ffd760ab3118332e8f4a10",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {}
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(204) 290-5860"
+        }
+      ],
+      "firstName": "Ashton",
+      "name": "Ashton Flint",
+      "fullName": "Ashton Flint",
+      "lastName": "Flint",
+      "intercomContactId": "660ad787b41849264b350cf2",
+      "languagePreference": "en-US",
+      "id": "65b16b7f300d35d0d1a0b9d7",
+      "createdAt": "2024-01-24T19:56:47.948Z",
+      "updatedAt": "2024-07-31T16:43:08.970Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12042905860",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_QCdmIHvLD37EKd",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b7e300d35d0d1a0b4a6",
+            "unit": "65b16b7f300d35d0d1a0b9c8"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "ashtonflint2931@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "(204) 290-5860",
+        "status": "INVITED",
+        "invitationLastSentAt": "2024-07-31T16:43:08.969Z"
+      }
+    },
+    {
+      "dateOfBirth": "1994-01-06",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "patelbayzu@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+14312754984"
+        }
+      ],
+      "firstName": "Bayzu",
+      "name": "Bayzu S. Patel",
+      "fullName": "Bayzu S. Patel",
+      "gender": "FEMALE",
+      "lastName": "Patel",
+      "middleName": "Siddharth",
+      "intercomContactId": "68ed16209820c7deea3f32ac",
+      "languagePreference": "en-US",
+      "id": "68ed161fc935b03e6c6de7fa",
+      "createdAt": "2025-10-13T15:09:19.862Z",
+      "updatedAt": "2025-10-13T15:21:12.974Z",
+      "e164PhoneMobileNumber": "+14312754984",
+      "dependants": [
+        {
+          "firstName": "Siddharthkumar rameshbhai patel",
+          "dateOfBirth": "1993-06-12",
+          "relationship": "Spouce"
+        }
+      ],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Dhaval patel",
+          "relationship": "Brother",
+          "phone": "4312754984",
+          "email": "spsidpatel1411@gmail.com"
+        }
+      ],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-10-13T15:08:54.569Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          }
+        ],
+        "expectedMoveInDate": "2025-11-01"
+      },
+      "portalInfo": {
+        "loginEmail": "patelbayzu@gmail.com"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "tenant2@doorloop.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2"
+        }
+      ],
+      "firstName": "Becky",
+      "name": "Becky Haywood",
+      "fullName": "Becky Haywood",
+      "lastName": "Haywood",
+      "intercomContactId": "660c33e91225ac8a160cda5f",
+      "languagePreference": "en-US",
+      "id": "65b16b77300d35d0d1a06cf3",
+      "createdAt": "2024-01-24T19:56:39.936Z",
+      "updatedAt": "2025-06-30T17:12:42.610Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65a7eac69e441e30b6203c80",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b77300d35d0d1a06cd6"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-06-30T17:12:42.608Z",
+        "isLoginEmailBounced": true
+      }
+    },
+    {
+      "dateOfBirth": "1984-12-12",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "orolobo.whyte@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+1-204-918-4432"
+        }
+      ],
+      "firstName": "Ben",
+      "name": "Ben Whyte",
+      "fullName": "Ben Whyte",
+      "gender": "MALE",
+      "lastName": "Whyte",
+      "intercomContactId": "69010e6363ab269290e2ed73",
+      "languagePreference": "en-US",
+      "id": "69010ee7974e82c9443e451e",
+      "createdAt": "2025-10-28T18:43:51.191Z",
+      "updatedAt": "2025-10-31T18:27:36.494Z",
+      "e164PhoneMobileNumber": "+12049184432",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "cathi tetreault",
+          "relationship": "Mom",
+          "phone": "204-918-7474",
+          "email": "Cathi.tetreault@shaw.ca"
+        }
+      ],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-10-28T18:43:01.097Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          }
+        ],
+        "expectedMoveInDate": "2025-10-28"
+      },
+      "portalInfo": {
+        "loginEmail": "orolobo.whyte@gmail.com"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "benimozambe@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2045577610"
+        }
+      ],
+      "firstName": "Beni",
+      "name": "Beni Mozambe",
+      "fullName": "Beni Mozambe",
+      "lastName": "Mozambe",
+      "intercomContactId": "690a4207288d3f3a60887587",
+      "languagePreference": "en-US",
+      "id": "690a41f03afb31ab2a14d1e1",
+      "createdAt": "2025-11-04T18:12:00.395Z",
+      "updatedAt": "2025-11-04T18:12:25.225Z",
+      "createdBy": "6894bc03d513a446734c095d",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+12045577610",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {}
+    },
+    {
+      "dateOfBirth": "2007-04-08",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "benimonzambe@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+12045577610"
+        }
+      ],
+      "firstName": "Beni pascal",
+      "name": "Beni pascal K. Monzambe",
+      "fullName": "Beni pascal K. Monzambe",
+      "gender": "MALE",
+      "lastName": "Monzambe",
+      "middleName": "Kanyiki",
+      "intercomContactId": "690a42feda14ce23574e7cc5",
+      "languagePreference": "en-US",
+      "id": "690a438f7dcc0945dc356254",
+      "createdAt": "2025-11-04T18:18:55.784Z",
+      "updatedAt": "2025-11-07T21:29:41.878Z",
+      "e164PhoneMobileNumber": "+12045577610",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Emmanuel Kamalenga",
+          "relationship": "Teacher",
+          "phone": "+14312781335",
+          "email": "ekamalenga@ustboniface.ca"
+        }
+      ],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-11-04T18:18:02.897Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "68f68fa48bb5e76b349cffe7",
+            "unit": "68f68fa48bb5e76b349d007c"
+          }
+        ],
+        "expectedMoveInDate": "2025-12-01"
+      },
+      "portalInfo": {
+        "loginEmail": "benimonzambe@gmail.com"
+      }
+    },
+    {
+      "dateOfBirth": "1996-04-16",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "benjaminkaya2016@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2049516067"
+        },
+        {
+          "type": "Mobile",
+          "number": "+12046983113"
+        }
+      ],
+      "firstName": "Benjamin",
+      "name": "Benjamin B. Ngoy",
+      "fullName": "Benjamin B. Ngoy",
+      "gender": "MALE",
+      "lastName": "Ngoy",
+      "middleName": "BIN KAYA",
+      "intercomContactId": "690b944d47d4323a1903db22",
+      "languagePreference": "en-US",
+      "id": "690b9435c403dd772d9abbea",
+      "createdAt": "2025-11-05T18:15:17.576Z",
+      "updatedAt": "2025-11-20T18:01:39.274Z",
+      "createdBy": "6894bc03d513a446734c095d",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+12049516067",
+      "conversationWelcomeSmsSentAt": "2025-11-20T18:01:38.861Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Yannick Kaya",
+          "relationship": "Brother",
+          "phone": "2046983113",
+          "email": "yannickkaya47@gmail.com"
+        }
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-11-06T20:59:05.818Z",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "68efcf659626f94d12e2b33a",
+            "unit": "68efcf659626f94d12e2b348"
+          },
+          {
+            "property": "68f68fa48bb5e76b349cffe7",
+            "unit": "68f68fa48bb5e76b349d007c"
+          }
+        ],
+        "expectedMoveInDate": "2025-12-01"
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "benjaminkaya2016@gmail.com",
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-11-20T18:01:36.217Z"
+      }
+    },
+    {
+      "dateOfBirth": "1986-10-21",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "ochinelo95@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+1 204 990 4326"
+        }
+      ],
+      "firstName": "CHINELO",
+      "name": "CHINELO M. OKONKWO",
+      "fullName": "CHINELO M. OKONKWO",
+      "gender": "FEMALE",
+      "lastName": "OKONKWO",
+      "middleName": "MIRIAM",
+      "intercomContactId": "68ed0ee9692d6802dc20e748",
+      "languagePreference": "en-US",
+      "id": "68ed0f19995c492326425dca",
+      "createdAt": "2025-10-13T14:39:21.192Z",
+      "updatedAt": "2025-11-03T21:55:15.496Z",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+12049904326",
+      "conversationWelcomeSmsSentAt": "2025-11-03T16:39:36.330Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "BENNETH OKONKWO",
+          "relationship": "UNCLE",
+          "phone": "+1 248 240 4413",
+          "email": "bigbennn@hotmail.com"
+        }
+      ],
+      "vehicles": [
+        {
+          "make": "KIA",
+          "model": "FORTE EX",
+          "year": 2023,
+          "color": "BLACK",
+          "licensePlate": "LUA703"
+        }
+      ],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-11-03T21:54:23.381Z",
+      "stripeCustomerId": "cus_TMEAyP0j40ohxU",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          },
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a3741d997acf252625d28"
+          },
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a3741d997acf252625d28"
+          }
+        ],
+        "expectedMoveInDate": "2025-10-20"
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "ochinelo95@gmail.com",
+        "lastSeenAt": "2025-11-03T21:54:26.330Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-11-03T20:01:19.985Z"
+      }
+    },
+    {
+      "dateOfBirth": "2000-04-20",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "dumwayguru07@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+1 4312757384"
+        }
+      ],
+      "firstName": "CHUKWUDUMEBI",
+      "name": "CHUKWUDUMEBI IFEDIBA",
+      "fullName": "CHUKWUDUMEBI IFEDIBA",
+      "gender": "MALE",
+      "lastName": "IFEDIBA",
+      "intercomContactId": "6917c6bb9b3f8de8f741815f",
+      "languagePreference": "en-US",
+      "id": "6917c6d0674405d09785bef3",
+      "createdAt": "2025-11-15T00:18:24.425Z",
+      "updatedAt": "2025-11-15T16:01:51.767Z",
+      "e164PhoneMobileNumber": "+14312757384",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Peter Ifediba",
+          "relationship": "Brother",
+          "phone": "(825) 966-3692",
+          "email": "Ifedibachigozie@gmail.com"
+        }
+      ],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-11-15T00:18:17.789Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          }
+        ],
+        "expectedMoveInDate": "2025-11-14"
+      },
+      "portalInfo": {
+        "loginEmail": "dumwayguru07@gmail.com"
+      }
+    },
+    {
+      "dateOfBirth": "1985-06-21",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "charlottegray1155@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+14313713625"
+        }
+      ],
+      "firstName": "Charlotte",
+      "name": "Charlotte Y",
+      "fullName": "Charlotte Y",
+      "gender": "FEMALE",
+      "lastName": "Y",
+      "intercomContactId": "68f689e5d9debb77e34ead09",
+      "languagePreference": "en-US",
+      "id": "68f68a07994bd41fe1e26a7d",
+      "createdAt": "2025-10-20T19:14:15.384Z",
+      "updatedAt": "2025-10-20T19:48:54.686Z",
+      "e164PhoneMobileNumber": "+14313713625",
+      "dependants": [
+        {
+          "firstName": "Malachi Gray",
+          "dateOfBirth": "2006-11-08",
+          "relationship": "Son"
+        },
+        {
+          "firstName": "Athena Gray",
+          "dateOfBirth": "2012-10-02",
+          "relationship": "Daughter"
+        },
+        {
+          "firstName": "Sofia Figueroa",
+          "dateOfBirth": "2017-08-24",
+          "relationship": "Daughter"
+        }
+      ],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Jose",
+          "relationship": "Kids father",
+          "phone": "2043307700",
+          "email": "Josefigueroa_wpg@hotmail.com"
+        }
+      ],
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "Palisade",
+          "year": 2021,
+          "color": "Dark grey",
+          "licensePlate": "H21517"
+        }
+      ],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-10-20T19:13:59.360Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "68efcf659626f94d12e2b33a",
+            "unit": "68efcf659626f94d12e2b348"
+          }
+        ],
+        "expectedMoveInDate": "2025-12-01"
+      },
+      "portalInfo": {
+        "loginEmail": "charlottegray1155@gmail.com"
+      }
+    },
+    {
+      "dateOfBirth": "1978-03-23",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "charlymonzambe@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+12045587988"
+        }
+      ],
+      "firstName": "Charly",
+      "name": "Charly L. Monzambe",
+      "fullName": "Charly L. Monzambe",
+      "gender": "MALE",
+      "lastName": "Monzambe",
+      "middleName": "Lisanga",
+      "intercomContactId": "691e0a238e9a0f63af64c0f3",
+      "languagePreference": "en-US",
+      "id": "691e0ac18dc08bc9cb0b85aa",
+      "createdAt": "2025-11-19T18:21:53.732Z",
+      "updatedAt": "2025-11-20T00:55:26.851Z",
+      "e164PhoneMobileNumber": "+12045587988",
+      "dependants": [
+        {
+          "firstName": "Ndaya Kanyiki Agathe",
+          "dateOfBirth": "1982-10-03",
+          "relationship": "Spouse"
+        },
+        {
+          "firstName": "Monzambe Kanyiki Beni Pascal",
+          "dateOfBirth": "2007-04-08",
+          "relationship": "Child"
+        },
+        {
+          "firstName": "Monzambe Monyango Daniella",
+          "dateOfBirth": "2008-05-18",
+          "relationship": "Child"
+        },
+        {
+          "firstName": "Monzambe Ndaya Graceful",
+          "dateOfBirth": "2013-02-11",
+          "relationship": "Child"
+        }
+      ],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Valery Kambo",
+          "relationship": "Friend",
+          "phone": "+1 (204) 390-3552",
+          "email": "valery.kambo@yahoo.com"
+        }
+      ],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-11-19T18:21:26.784Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "68f68fa48bb5e76b349cffe7",
+            "unit": "68f68fa48bb5e76b349d007c"
+          }
+        ],
+        "expectedMoveInDate": "2025-12-01"
+      },
+      "portalInfo": {
+        "loginEmail": "charlymonzambe@gmail.com"
+      }
+    },
+    {
+      "dateOfBirth": "1977-11-25",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "dcl@live.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "204-441-2911"
+        }
+      ],
+      "firstName": "Chenglei",
+      "name": "Chenglei Diao",
+      "fullName": "Chenglei Diao",
+      "lastName": "Diao",
+      "intercomContactId": "68ffab9f9ba51658bfb84851",
+      "languagePreference": "en-US",
+      "id": "68ffaecc6a3a62ef79ca0891",
+      "createdAt": "2025-10-27T17:41:33.362Z",
+      "updatedAt": "2025-11-03T19:16:18.960Z",
+      "createdBy": "68c1981dce7f4f06c6caeb0b",
+      "updatedBy": "68c1981dce7f4f06c6caeb0b",
+      "e164PhoneMobileNumber": "+12044412911",
+      "conversationWelcomeSmsSentAt": "2025-10-27T17:43:18.567Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-10-27T17:43:59.842Z",
+      "stripeCustomerId": "cus_TLLgGDxSVaHwLV",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a3913705c75eb317b6009"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "dcl@live.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "204-441-2911",
+        "lastSeenAt": "2025-11-03T19:16:18.959Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-10-27T17:43:51.166Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "cherylbrown56@gmail.com"
+        },
+        {
+          "type": "Primary",
+          "address": "noemail@doorloop.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "218-242-4492"
+        },
+        {
+          "type": "Mobile",
+          "number": "1234567890"
+        }
+      ],
+      "firstName": "Cheryl Angela",
+      "name": "Cheryl Angela Skead",
+      "fullName": "Cheryl Angela Skead",
+      "lastName": "Skead",
+      "intercomContactId": "6807bf3501bc9910861f83f5",
+      "languagePreference": "en-US",
+      "id": "6807bf3188db50e2b25179a5",
+      "createdAt": "2025-04-22T16:09:21.959Z",
+      "updatedAt": "2025-11-11T13:40:04.274Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12182424492",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "67bf57e92af0bb617887919e",
+            "unit": "6807a92d34ada2b6285863be"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "cherylbrown56@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "218-242-4492",
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-11-11T13:40:04.273Z",
+        "isLoginEmailBounced": true,
+        "isLoginEmailComplaint": false
+      }
+    },
+    {
+      "dateOfBirth": "1981-08-21",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "umclopez@hotmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile"
+        }
+      ],
+      "firstName": "Chris",
+      "name": "Chris Lopez",
+      "fullName": "Chris Lopez",
+      "gender": "MALE",
+      "lastName": "Lopez",
+      "intercomContactId": "68ed0d6b7b9afa1e78656324",
+      "languagePreference": "en-US",
+      "id": "68ed0d8ad8881cac401732b0",
+      "createdAt": "2025-10-13T14:32:42.899Z",
+      "updatedAt": "2025-11-01T02:00:34.479Z",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Beltran Lopez",
+          "relationship": "Dad",
+          "phone": "+1-204-647-0163",
+          "email": "Beltran@mymts.net"
+        }
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-10-31T18:39:26.215Z",
+      "stripeCustomerId": "cus_TL3LUDYh2ULnyu",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          },
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a3c522f436b97dc6aa763"
+          }
+        ],
+        "expectedMoveInDate": "2025-10-31"
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "umclopez@hotmail.com",
+        "lastSeenAt": "2025-11-01T02:00:34.477Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-10-31T05:40:27.578Z"
+      }
+    },
+    {
+      "dateOfBirth": "1952-01-20",
+      "emails": [
+        {
+          "type": "Primary"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2048805038"
+        }
+      ],
+      "firstName": "Chunlan",
+      "jobTitle": "Retired",
+      "name": "Chunlan Chen",
+      "fullName": "Chunlan Chen",
+      "lastName": "Chen",
+      "languagePreference": "en-US",
+      "id": "69037ed3d1b139fc35dc2a6e",
+      "createdAt": "2025-10-30T15:05:56.051Z",
+      "updatedAt": "2025-11-05T17:20:23.618Z",
+      "createdBy": "68c1981dce7f4f06c6caeb0b",
+      "updatedBy": "68c1981dce7f4f06c6caeb0b",
+      "e164PhoneMobileNumber": "+12048805038",
+      "conversationWelcomeSmsSentAt": "2025-10-30T15:05:56.281Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a419778fc05eba86bb819"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "mobilePhone": "2048805038",
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-10-30T15:06:31.342Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "clintwearden@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "250-467-0422"
+        }
+      ],
+      "firstName": "Clinton",
+      "name": "Clinton Wearden",
+      "fullName": "Clinton Wearden",
+      "lastName": "Wearden",
+      "intercomContactId": "67bf4b3c52b5f2c9873c8cc3",
+      "languagePreference": "en-US",
+      "id": "67bf4b3a03d5197ea02d4451",
+      "createdAt": "2025-02-26T17:11:23.531Z",
+      "updatedAt": "2025-06-26T14:25:09.823Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12504670422",
+      "conversationWelcomeSmsSentAt": "2025-02-26T17:11:55.009Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-05-14T17:13:09.960Z",
+      "stripeCustomerId": "cus_SLvASRhpCNm7l2",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b7c300d35d0d1a0af78"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "clintwearden@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "250-467-0422",
+        "lastSeenAt": "2025-06-26T14:25:09.821Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-05-14T16:54:46.726Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(431) 200-0716"
+        }
+      ],
+      "firstName": "Denis",
+      "name": "Denis Desjarlais",
+      "fullName": "Denis Desjarlais",
+      "lastName": "Desjarlais",
+      "intercomContactId": "664d9a1643578695d6360b0e",
+      "languagePreference": "en-US",
+      "id": "65b16b7f300d35d0d1a0b958",
+      "createdAt": "2024-01-24T19:56:47.745Z",
+      "updatedAt": "2024-10-04T16:36:11.482Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65a7eac69e441e30b6203c80",
+      "e164PhoneMobileNumber": "+14312000716",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b7e300d35d0d1a0b4a6",
+            "unit": "65b16b7f300d35d0d1a0b913"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "status": "INVITED",
+        "invitationLastSentAt": "2024-10-04T16:36:11.481Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "dpullon2@outlook.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2042972162"
+        }
+      ],
+      "firstName": "Dexter",
+      "name": "Dexter Pullon",
+      "fullName": "Dexter Pullon",
+      "lastName": "Pullon",
+      "intercomContactId": "6908f321b8a4ddbf38fef327",
+      "languagePreference": "en-US",
+      "id": "6908f31ed0b074f07efdcb7b",
+      "createdAt": "2025-11-03T18:23:26.773Z",
+      "updatedAt": "2025-11-03T18:24:33.809Z",
+      "createdBy": "68ffd760ab3118332e8f4a10",
+      "updatedBy": "68ffd760ab3118332e8f4a10",
+      "e164PhoneMobileNumber": "+12042972162",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {}
+    },
+    {
+      "dateOfBirth": "1966-12-01",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "morningstar_18@hotmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2048696136"
+        },
+        {
+          "type": "Mobile",
+          "number": "218-452-9076‬"
+        }
+      ],
+      "firstName": "Dez Rene",
+      "jobTitle": "Exec. Assistant in Education department",
+      "name": "Dez Rene Chyld",
+      "fullName": "Dez Rene Chyld",
+      "lastName": "Chyld",
+      "intercomContactId": "6807bb5da049144f01e0c3d3",
+      "languagePreference": "en-US",
+      "id": "6807bb4d4a697f7e1681aa3a",
+      "createdAt": "2025-04-22T15:52:50.536Z",
+      "updatedAt": "2025-11-18T21:49:40.985Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+12048696136",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-04-23T19:07:55.658Z",
+      "stripeCustomerId": "cus_SEHP2FolwldW3X",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "67bf57e92af0bb617887919e",
+            "unit": "6807a92d34ada2b6285863be"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "morningstar_18@hotmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "2048696136",
+        "lastSeenAt": "2025-11-18T21:49:40.982Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-04-23T17:52:26.526Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "dustin.manoakeesick4@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2044500726"
+        }
+      ],
+      "firstName": "Dustin",
+      "name": "Dustin Manoakeesick",
+      "fullName": "Dustin Manoakeesick",
+      "lastName": "Manoakeesick",
+      "intercomContactId": "68f90441682c638687fb549f",
+      "languagePreference": "en-US",
+      "id": "68f9043ed80c22a21dc3761a",
+      "createdAt": "2025-10-22T16:20:15.701Z",
+      "updatedAt": "2025-11-10T21:03:52.261Z",
+      "createdBy": "6894bc03d513a446734c095d",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+12044500726",
+      "conversationWelcomeSmsSentAt": "2025-10-22T16:20:15.723Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-10-22T16:23:34.250Z",
+      "stripeCustomerId": "cus_THe7Bw537bVji7",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "68f676999c28c58b3259a8f8",
+            "unit": "68f6769a9c28c58b3259add2"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "dustin.manoakeesick4@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "2044500726",
+        "lastSeenAt": "2025-11-10T21:03:52.258Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-10-22T16:22:51.458Z"
+      }
+    },
+    {
+      "dateOfBirth": "1944-09-21",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "eloisaguevarra@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+12049976576"
+        }
+      ],
+      "firstName": "EUGENIA",
+      "name": "EUGENIA GUEVARRA",
+      "fullName": "EUGENIA GUEVARRA",
+      "gender": "FEMALE",
+      "lastName": "GUEVARRA",
+      "intercomContactId": "68fbeae03eda3514862e2e25",
+      "languagePreference": "en-US",
+      "id": "68fbeb12a79f9b07f03d5e57",
+      "createdAt": "2025-10-24T21:09:38.101Z",
+      "updatedAt": "2025-10-24T21:35:20.323Z",
+      "e164PhoneMobileNumber": "+12049976576",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "ELOISA  GUEVARRA",
+          "relationship": "DAUGHTER",
+          "phone": "2045833872",
+          "email": "eloisaguevarra@gmail.com"
+        }
+      ],
+      "vehicles": [
+        {
+          "make": "HONDA",
+          "model": "CRV",
+          "year": 2016,
+          "color": "WHITE",
+          "licensePlate": "EKA667"
+        }
+      ],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-10-24T21:09:12.902Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          }
+        ],
+        "expectedMoveInDate": "2025-12-01"
+      },
+      "portalInfo": {
+        "loginEmail": "eloisaguevarra@gmail.com"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "emmarenaeweber@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2046418727"
+        }
+      ],
+      "firstName": "Emma",
+      "name": "Emma Weber",
+      "fullName": "Emma Weber",
+      "lastName": "Weber",
+      "intercomContactId": "6892eaa769a551498fff67e3",
+      "languagePreference": "en-US",
+      "id": "6892e9dfaea249c129b244ae",
+      "createdAt": "2025-08-06T05:36:32.785Z",
+      "updatedAt": "2025-11-19T02:19:04.669Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12046418727",
+      "conversationWelcomeSmsSentAt": "2025-08-06T05:36:32.822Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-08-06T15:04:56.539Z",
+      "stripeCustomerId": "cus_SomT7fw2wKbkhU",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "6838b358e5ccdaeae6a7ad3d",
+            "unit": "6838b358e5ccdaeae6a7ad4b"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "emmarenaeweber@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "2046418727",
+        "lastSeenAt": "2025-11-19T02:19:04.667Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-08-06T05:38:10.930Z"
+      }
+    },
+    {
+      "dateOfBirth": "2001-10-10",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "erinfoudy23@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "5197315484"
+        },
+        {
+          "type": "Mobile",
+          "number": "+15197315484"
+        }
+      ],
+      "firstName": "Erin",
+      "name": "Erin Foudy",
+      "fullName": "Erin Foudy",
+      "gender": "FEMALE",
+      "lastName": "Foudy",
+      "intercomContactId": "690a5062f105a1d7e2ad9812",
+      "languagePreference": "en-US",
+      "id": "690a504ca469f14ebaa3aca8",
+      "createdAt": "2025-11-04T19:13:16.243Z",
+      "updatedAt": "2025-11-19T22:16:48.299Z",
+      "createdBy": "68ffd760ab3118332e8f4a10",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "e164PhoneMobileNumber": "+15197315484",
+      "conversationWelcomeSmsSentAt": "2025-11-14T21:03:00.517Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Kiera Doerksen",
+          "relationship": "Friend",
+          "phone": "2047510089",
+          "email": "kieradoerksen16@gmail.com"
+        }
+      ],
+      "vehicles": [
+        {
+          "make": "Ford",
+          "model": "Escape",
+          "year": 2013,
+          "color": "Black",
+          "licensePlate": "LLW605"
+        }
+      ],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-11-14T23:15:14.612Z",
+      "stripeCustomerId": "cus_TQMx6T2oxkD5nl",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a3552fe290bbb6a27b0d9"
+          },
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a3330705c75eb31775ce6"
+          }
+        ],
+        "expectedMoveInDate": "2025-11-09"
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "erinfoudy23@gmail.com",
+        "lastSeenAt": "2025-11-19T22:16:48.295Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-11-14T21:02:58.961Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "raimi.estelle@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "4313880191"
+        }
+      ],
+      "firstName": "Estelle",
+      "name": "Estelle Tano Epse Raimi",
+      "fullName": "Estelle Tano Epse Raimi",
+      "lastName": "Tano Epse Raimi",
+      "intercomContactId": "67cb47de9813840a4ec180df",
+      "languagePreference": "en-US",
+      "id": "67cb47c71d25e98ce694cc5b",
+      "createdAt": "2025-03-07T19:23:51.796Z",
+      "updatedAt": "2025-10-23T16:39:28.236Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+14313880191",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-03-08T19:45:21.783Z",
+      "stripeCustomerId": "cus_RuHyRTiEViCO7p",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "67cb470ae3b8ce684d217052",
+            "unit": "67cb470ae3b8ce684d217071"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "raimi.estelle@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "4313880191",
+        "lastSeenAt": "2025-10-23T16:39:28.234Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-03-07T19:29:17.473Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "monicaboima97@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(204) 899-8407"
+        }
+      ],
+      "firstName": "Esther",
+      "name": "Esther Koroma",
+      "fullName": "Esther Koroma",
+      "lastName": "Koroma",
+      "intercomContactId": "65e34b8548aa541ec696e548",
+      "languagePreference": "en-US",
+      "id": "65b16b79300d35d0d1a08cb1",
+      "createdAt": "2024-01-24T19:56:41.542Z",
+      "updatedAt": "2025-04-23T16:07:28.278Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65a7eac69e441e30b6203c80",
+      "e164PhoneMobileNumber": "+12048998407",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_PfFT6S1YavteK1",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b79300d35d0d1a08c98"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "monicaboima97@gmail.com",
+        "emailValidationStatus": "valid",
+        "lastSeenAt": "2025-04-23T16:07:28.276Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-03-01T19:12:16.936Z"
+      }
+    },
+    {
+      "dateOfBirth": "1996-11-12",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "franklinabimbola@yahoo.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "+14313377695"
+        },
+        {
+          "type": "Mobile",
+          "number": "+14313377695"
+        }
+      ],
+      "firstName": "Franklin",
+      "name": "Franklin A. ABIMBOLA",
+      "fullName": "Franklin A. ABIMBOLA",
+      "gender": "MALE",
+      "lastName": "ABIMBOLA",
+      "middleName": "Akorede",
+      "intercomContactId": "68ed10d5199a879c1cbf8917",
+      "languagePreference": "en-US",
+      "id": "68ed1118b568c97c67e1afa8",
+      "createdAt": "2025-10-13T14:47:52.157Z",
+      "updatedAt": "2025-11-08T18:57:15.198Z",
+      "e164PhoneMobileNumber": "+14313377695",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "babatunde abiola",
+          "relationship": "BROTHER",
+          "phone": "5144589247",
+          "email": "babatundeabiola06@gmail.com"
+        }
+      ],
+      "vehicles": [
+        {
+          "make": "ford",
+          "model": "fusion",
+          "year": 2018,
+          "color": "grey",
+          "licensePlate": "LKR480"
+        }
+      ],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-10-13T14:47:10.782Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SUBMITTED",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          }
+        ],
+        "expectedMoveInDate": "2025-11-08"
+      },
+      "portalInfo": {
+        "loginEmail": "franklinabimbola@yahoo.com"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "kelvin.zhang@sanygroup.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "9059042855"
+        }
+      ],
+      "firstName": "GaiGai",
+      "name": "GaiGai Zhang",
+      "fullName": "GaiGai Zhang",
+      "lastName": "Zhang",
+      "intercomContactId": "67cb5bb19a4fd8b4c803741c",
+      "languagePreference": "en-US",
+      "id": "67cb5baff5f1c831bea9fb28",
+      "createdAt": "2025-03-07T20:48:48.369Z",
+      "updatedAt": "2025-08-07T16:57:36.442Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+19059042855",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "67cb470ae3b8ce684d217052",
+            "unit": "67cb470ae3b8ce684d217060"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "kelvin.zhang@sanygroup.com",
+        "emailValidationStatus": "catchall",
+        "mobilePhone": "9059042855",
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-08-07T16:57:36.432Z"
+      }
+    },
+    {
+      "dateOfBirth": "1935-05-25",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "dksumka@shaw.ca"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile"
+        }
+      ],
+      "firstName": "Geoffrey",
+      "name": "Geoffrey Cross",
+      "fullName": "Geoffrey Cross",
+      "gender": "MALE",
+      "lastName": "Cross",
+      "intercomContactId": "68ed2be2eb37ffb744348be3",
+      "languagePreference": "en-US",
+      "id": "68ed2e0dd8881cac40339f60",
+      "createdAt": "2025-10-13T16:51:25.093Z",
+      "updatedAt": "2025-11-05T20:01:43.696Z",
+      "updatedBy": "6894bc03d513a446734c095d",
+      "dependants": [
+        {
+          "firstName": "Hilda Cross",
+          "dateOfBirth": "1934-07-18",
+          "relationship": "Wife"
+        }
+      ],
+      "pets": [],
+      "emergencyContacts": [
+        {
+          "name": "Diane Sumka",
+          "relationship": "Daughter",
+          "phone": "204 995-3853",
+          "email": "dksumka@shaw.ca"
+        }
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-10-27T22:38:10.266Z",
+      "stripeCustomerId": "cus_TKJRaoGiVLpzDZ",
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "681a2dc22b73854d07b6610a"
+          },
+          {
+            "property": "681a2dc22b73854d07b6610a",
+            "unit": "681a35367ad4bc0fa512a50f"
+          }
+        ],
+        "expectedMoveInDate": "2025-10-16"
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "dksumka@shaw.ca",
+        "lastSeenAt": "2025-11-05T20:01:43.694Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-10-27T22:15:00.220Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "gpdone19@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2042540106"
+        }
+      ],
+      "firstName": "George",
+      "name": "George Pullon",
+      "fullName": "George Pullon",
+      "lastName": "Pullon",
+      "intercomContactId": "691b53cdbceff104ec1f21d1",
+      "languagePreference": "en-US",
+      "id": "691b53a1edc4429d1c1df0ab",
+      "createdAt": "2025-11-17T16:56:01.323Z",
+      "updatedAt": "2025-11-17T16:56:47.832Z",
+      "createdBy": "68ffd760ab3118332e8f4a10",
+      "updatedBy": "68ffd760ab3118332e8f4a10",
+      "e164PhoneMobileNumber": "+12042540106",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {}
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "gboubard@shaw.ca"
+        }
+      ],
+      "phones": [],
+      "firstName": "Gerri",
+      "name": "Gerri Boubard",
+      "fullName": "Gerri Boubard",
+      "lastName": "Boubard",
+      "intercomContactId": "69175f22ca500a344a206d94",
+      "languagePreference": "en-US",
+      "id": "69175f1a0eb4dab043d55081",
+      "createdAt": "2025-11-14T16:55:54.366Z",
+      "updatedAt": "2025-11-14T18:05:26.698Z",
+      "createdBy": "6913acdc0f1f3a50ddea8ba0",
+      "updatedBy": "6913acdc0f1f3a50ddea8ba0",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "acceptedOnTOS": "2025-11-14T18:04:56.483Z",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {
+        "loginEmail": "gboubard@shaw.ca"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "gracieirelandfast@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "4317770859"
+        }
+      ],
+      "firstName": "Gracie",
+      "name": "Gracie Fast",
+      "fullName": "Gracie Fast",
+      "lastName": "Fast",
+      "intercomContactId": "6892ee6c1f878f5f396ebbb5",
+      "languagePreference": "en-US",
+      "id": "6892edca141c25c032336d11",
+      "createdAt": "2025-08-06T05:53:15.219Z",
+      "updatedAt": "2025-11-01T09:44:36.367Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+14317770859",
+      "conversationWelcomeSmsSentAt": "2025-08-06T05:53:15.241Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "6838b358e5ccdaeae6a7ad3d",
+            "unit": "6838b358e5ccdaeae6a7ad4b"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "gracieirelandfast@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "4317770859",
+        "status": "INVITED",
+        "invitationLastSentAt": "2025-11-01T09:44:36.365Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "balogunhabeeb2015@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2044300522"
+        }
+      ],
+      "firstName": "Habeeb",
+      "name": "Habeeb Balogun",
+      "fullName": "Habeeb Balogun",
+      "lastName": "Balogun",
+      "intercomContactId": "6912189863d5dd60862f3d10",
+      "languagePreference": "en-US",
+      "id": "691217f510dc42a34781be09",
+      "createdAt": "2025-11-10T16:51:02.704Z",
+      "updatedAt": "2025-11-10T16:53:46.848Z",
+      "createdBy": "68ffd760ab3118332e8f4a10",
+      "updatedBy": "68ffd760ab3118332e8f4a10",
+      "e164PhoneMobileNumber": "+12044300522",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {}
+    },
+    {
+      "dateOfBirth": "1934-07-18",
+      "emails": [
+        {
+          "type": "Primary"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "204 256-7033"
+        }
+      ],
+      "firstName": "Hilda",
+      "name": "Hilda Cross",
+      "fullName": "Hilda Cross",
+      "lastName": "Cross",
+      "intercomContactId": "68fdea80cac903a5b2e06914",
+      "languagePreference": "en-US",
+      "id": "68fc043c0cbee2e55debce32",
+      "createdAt": "2025-10-24T22:57:00.627Z",
+      "updatedAt": "2025-10-26T09:31:46.144Z",
+      "createdBy": "68ee652f7ca52f1dc90e2eb9",
+      "updatedBy": "68ee652f7ca52f1dc90e2eb9",
+      "e164PhoneMobileNumber": "+12042567033",
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "type": "PROSPECT_TENANT",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "NEW",
+        "interests": []
+      },
+      "portalInfo": {
+        "allowAccess": false,
+        "loginEmail": "dksumka3@shaw.ca",
+        "mobilePhone": "204 256-7033"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "jkirkness1@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "(204) 583-0369"
+        }
+      ],
+      "firstName": "Hollie",
+      "name": "Hollie Kirkness",
+      "fullName": "Hollie Kirkness",
+      "lastName": "Kirkness",
+      "intercomContactId": "65d3d2ed2c306fcdceaf75f7",
+      "languagePreference": "en-US",
+      "id": "65b16b77300d35d0d1a06c60",
+      "createdAt": "2024-01-24T19:56:39.689Z",
+      "updatedAt": "2025-06-25T18:52:07.507Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65aa8d7b78ff083510b81c70",
+      "e164PhoneMobileNumber": "+12045830369",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_PaqpIpHtsMiUoR",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b77300d35d0d1a06c51"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "jkirkness1@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "(204) 583-0369",
+        "lastSeenAt": "2025-06-25T18:52:07.505Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-02-19T22:14:59.267Z"
+      }
+    },
+    {
+      "batch": "2024-01-24 btd4",
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "h.larson2005@gmail.com"
+        },
+        {
+          "type": "Primary",
+          "address": "tenant1@doorloop.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "1"
+        }
+      ],
+      "firstName": "Hunter",
+      "name": "Hunter Larson",
+      "fullName": "Hunter Larson",
+      "lastName": "Larson",
+      "intercomContactId": "65d3d1f5fc97c131f2cbff9f",
+      "languagePreference": "en-US",
+      "id": "65b16b77300d35d0d1a06af6",
+      "createdAt": "2024-01-24T19:56:39.114Z",
+      "updatedAt": "2025-06-30T19:04:48.117Z",
+      "createdBy": "65a7eac69e441e30b6203c80",
+      "updatedBy": "65aa8d7b78ff083510b81c70",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "stripeCustomerId": "cus_PaqlwchHR3ztIX",
+      "prospectInfo": {
+        "interests": [
+          {
+            "property": "65b16b76300d35d0d1a06ac7",
+            "unit": "65b16b77300d35d0d1a06add"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "h.larson2005@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "1",
+        "lastSeenAt": "2025-06-30T19:04:48.115Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2024-02-19T22:10:51.564Z",
+        "isLoginEmailBounced": true
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "janvierntwari887@gmail.com"
+        },
+        {
+          "type": "Primary",
+          "address": "janvierntwari@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "2042975340"
+        }
+      ],
+      "firstName": "Janvier",
+      "name": "Janvier Ntwari",
+      "fullName": "Janvier Ntwari",
+      "lastName": "Ntwari",
+      "intercomContactId": "68508aaf77eed57b42357447",
+      "languagePreference": "en-US",
+      "id": "68508aad0538b70c52d38be2",
+      "createdAt": "2025-06-16T21:20:46.670Z",
+      "updatedAt": "2025-09-29T22:50:39.477Z",
+      "createdBy": "65aa8d987078eb3856320656",
+      "updatedBy": "65aa8d987078eb3856320656",
+      "e164PhoneMobileNumber": "+12042975340",
+      "conversationWelcomeSmsSentAt": "2025-06-16T21:20:46.693Z",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [
+        {},
+        {}
+      ],
+      "vehicles": [],
+      "type": "LEASE_TENANT",
+      "acceptedOnTOS": "2025-07-12T22:18:02.623Z",
+      "stripeCustomerId": "cus_SfWo1iVzhyniKW",
+      "screeningService": null,
+      "prospectInfo": {
+        "status": "CLOSED_MOVED_IN",
+        "interests": [
+          {
+            "property": "6838c17d4806ccdf073b2a00",
+            "unit": "6838c17d4806ccdf073b2a0e"
+          }
+        ]
+      },
+      "portalInfo": {
+        "allowAccess": true,
+        "loginEmail": "janvierntwari887@gmail.com",
+        "emailValidationStatus": "valid",
+        "mobilePhone": "2042975340",
+        "lastSeenAt": "2025-09-29T22:50:39.474Z",
+        "status": "ACTIVE",
+        "invitationLastSentAt": "2025-07-12T22:17:24.493Z"
+      }
+    },
+    {
+      "emails": [
+        {
+          "type": "Primary",
+          "address": "jarmamsamdhu076@gmail.com"
+        }
+      ],
+      "phones": [
+        {
+          "type": "Mobile",
+          "number": "6723551764"
+        }
+      ],
+      "firstName": "Jarmanjot",
+      "name": "Jarmanjot Singh",
+      "fullName": "Jarmanjot Singh",
+      "lastName": "Singh",
+      "intercomContactId": "691f93f90817e578f9ec35a0",
+      "languagePreference": "en-US",
+      "id": "691f93d943d80a8199a11ff9",
+      "createdAt": "2025-11-20T22:19:05.489Z",
+      "updatedAt": "2025-11-20T22:19:39.422Z",
+      "createdBy": "68ffd760ab3118332e8f4a10",
+      "updatedBy": "68ffd760ab3118332e8f4a10",
+      "e164PhoneMobileNumber": "+16723551764",
+      "dependants": [],
+      "pets": [],
+      "emergencyContacts": [],
+      "vehicles": [],
+      "type": "PROSPECT_TENANT",
+      "prospectInfo": {
+        "status": "APPLICATION_SENT",
+        "interests": []
+      },
+      "portalInfo": {}
+    }
+  ],
+  "total": 161
+}
