@@ -1,7 +1,20 @@
 from fastapi import APIRouter, HTTPException
-from typing import Any, Dict
-import os
+from typing import Any, Dict, List
+import os , sys
 from services.doorloop_services import DoorloopClient
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).absolute().parent.parent
+
+if str(PROJECT_ROOT) not in sys.path:
+ 	sys.path.insert(0, str(PROJECT_ROOT))
+
+
+
+try:
+    from middle_layer import bridge
+except Exception as exc:
+	raise ImportError(f"Failed to import mcp_server. Ensure project root is correct: {PROJECT_ROOT}\nOriginal error: {exc}")
+    
 
 router = APIRouter()
 
@@ -15,7 +28,7 @@ def _require_api_key() -> str:
         )
     return key
 
-def _unwrap_result(resp: Dict[str, Any]) -> Any:
+def _unwrap_result(resp: Any) -> Any:
     """Response handler for MCP (Model Context Protocol) service calls."""
     if not isinstance(resp, dict):
         return resp
@@ -31,7 +44,8 @@ async def get_tenants():
     _require_api_key()
     svc = DoorloopClient()
     resp = await svc.retrieve_tenants()
-    return _unwrap_result(resp)
+    filter_res = bridge.get_doorloop_tenants(resp)
+    return _unwrap_result(filter_res)
 
 
 @router.get("/properties")
