@@ -1,6 +1,6 @@
 
 from mcp.server.fastmcp import FastMCP
-import os , pickle
+import os, pickle
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -13,8 +13,7 @@ from mimetypes import guess_type as guess_mime_type
 
 SCOPES = ['https://mail.google.com/',] # also need to add google addsense and calander web page here
 my_email = 'bhasinsukh@gmail.com'
-
-mcp = FastMCP("Gmail MCP Server") 
+mcp = FastMCP("Gmail MCP Server")
 
 def credentials():
     creds = None
@@ -25,7 +24,6 @@ def credentials():
             creds= pickle.load(token)
         if not creds or not creds.valid:
             if creds and creds.expires and creds.refresh_token:
-                creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json",SCOPES)
             creds = flow.run_local_server(port=0)
