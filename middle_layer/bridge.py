@@ -165,12 +165,6 @@ def property_info(raw_data):
                      addobj[k] = v
                      print(addobj)
        
-    
-    
-            
-        
-        
-
 
 if __name__ == "__main__":
   
@@ -183,8 +177,8 @@ if __name__ == "__main__":
     raw_data = retrieve_data(doorloop_server)
     # Pass the raw_data into the parser and capture returned structure
     # get_doorloop_tenants(raw_data=raw_data)
-    # data = get_propertys(raw_data=raw_data)
-    property_info(raw_data=raw_data)
+    data = get_propertys(raw_data=raw_data)
+    # property_info(raw_data=raw_data)
    
     
    
