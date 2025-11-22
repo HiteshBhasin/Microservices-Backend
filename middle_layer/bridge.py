@@ -144,13 +144,29 @@ def get_propertys(raw_data):
 
 
 def property_info(raw_data):
-    property_id = get_propertys(raw_data=raw_data)
-    property_info = doorloop_mcp_server.retrieve_properties_id(property_id[0])
-    address = property_info.get("address")
-    addobj = {}
-    new_list = []
-   
+    if not isinstance(raw_data, dict)  or len(raw_data)==0:
+        raise ValueError("There is not Data, Please chck the MCP server and fix the doorloop mcp server")
+    
+    try:
+        property_id = get_propertys(raw_data=raw_data)
+    except Exception:
+        logging.exception("the data didnt get fetch in from the server")
         
+    property_info = doorloop_mcp_server.retrieve_properties_id(property_id[0])
+    
+    if isinstance(property_info, dict) and len(property_info)>0:
+        prop_add = property_info.get("address")
+        if isinstance(prop_add,dict):
+            key_to_remove = ["lat", "lng","isValidAddress"]
+            addobj = {}
+            
+            for k, v in prop_add.items():
+                if k not in key_to_remove:
+                     addobj[k] = v
+                     print(addobj)
+       
+    
+    
             
         
         
