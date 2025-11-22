@@ -149,21 +149,25 @@ def property_info(raw_data):
     
     try:
         property_id = get_propertys(raw_data=raw_data)
+        
     except Exception:
         logging.exception("the data didnt get fetch in from the server")
         
-    property_info = doorloop_mcp_server.retrieve_properties_id(property_id[0])
+    addressobj = []
     
-    if isinstance(property_info, dict) and len(property_info)>0:
-        prop_add = property_info.get("address")
-        if isinstance(prop_add,dict):
-            key_to_remove = ["lat", "lng","isValidAddress"]
-            addobj = {}
-            
-            for k, v in prop_add.items():
-                if k not in key_to_remove:
-                     addobj[k] = v
-                     print(addobj)
+    for pid in property_id:
+    
+        property_info = doorloop_mcp_server.retrieve_properties_id(pid)
+        property_info = property_info.get("address")
+        print(property_info)
+        removed_info = ["state","zip","country","lat","lng", "isValidAddress"]
+        if isinstance(property_info, dict) and len(property_info)==0:
+            addresses = {k:v for k, v in property_info.items() if k not in removed_info}
+            print(addresses)
+            addressobj.append(addresses)
+    return addressobj
+        
+                         
        
 
 if __name__ == "__main__":
@@ -175,11 +179,23 @@ if __name__ == "__main__":
     doorloop_server = doorloop_mcp_server.retrieve_tenants()
     # print("Raw response from doorloop_mcp_server.retrieve_tenants():", doorloop_server)
     raw_data = retrieve_data(doorloop_server)
+    print(raw_data)
     # Pass the raw_data into the parser and capture returned structure
     # get_doorloop_tenants(raw_data=raw_data)
-    data = get_propertys(raw_data=raw_data)
-    # property_info(raw_data=raw_data)
+    # get_propertys(raw_data=raw_data)
+    data = property_info(raw_data=raw_data)
+    print(data)
    
     
-   
+
+
+
+
+#  property_info = doorloop_mcp_server.retrieve_properties_id(property_id[i])
+#         # if isinstance(property_info, dict) and len(property_info)>0:
+#         prop_add = property_info.get("address")
+#         return prop_add
+#             #
+                        
+#             #             print(addobj) 
     
