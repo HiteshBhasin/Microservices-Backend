@@ -61,11 +61,13 @@ try:
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 except Exception:
     logging.info("Could not register rate limit exception handler; continuing without it.")
-
+origins = [
+    "http://localhost:3000",
+]
 # CORS - development defaults, tighten in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
