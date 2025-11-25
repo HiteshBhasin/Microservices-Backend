@@ -141,8 +141,6 @@ def get_propertys(raw_data):
     # Convert back to list or dict
     return list(property_ids)
 
-
-
 def property_info(raw_data):
     if not isinstance(raw_data, dict)  or len(raw_data)==0:
         raise ValueError("There is not Data, Please chck the MCP server and fix the doorloop mcp server")
