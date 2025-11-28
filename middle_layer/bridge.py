@@ -2,7 +2,11 @@ import logging
 import sys
 from pathlib import Path
 from typing import Dict
-from redis import Redis
+try:
+    from redis import Redis
+except ModuleNotFoundError:
+    Redis = None
+    logging.warning("redis package not installed in the active Python environment — bridge.py will continue without Redis. Install 'redis' into your environment to enable Redis features.")
 # Ensure the repository root is on sys.path so top-level packages import reliably
 PROJECT_ROOT = Path(__file__).absolute().parent.parent
 
@@ -15,12 +19,12 @@ try:
 except Exception as exc:
 	raise ImportError(f"Failed to import mcp_server. Ensure project root is correct: {PROJECT_ROOT}\nOriginal error: {exc}")
 
-try:
-    if Redis:
-        r_connection  = Redis(host='localhost', port=6379 , decode_responses=True)
-    
-except Exception as e:
-    logging.exception(f"an error has occur , {e}")
+r_connection = None
+if Redis is not None:
+    try:
+        r_connection = Redis(host='localhost', port=6379, decode_responses=True)
+    except Exception as e:
+        logging.exception(f"Failed to connect to Redis instance: {e}")
 
     
 def retrieve_data(*args):
