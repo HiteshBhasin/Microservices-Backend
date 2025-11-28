@@ -157,7 +157,6 @@ def property_info(raw_data):
     
         property_info = doorloop_mcp_server.retrieve_properties_id(pid)
         property_info = property_info.get("address")
-        print(property_info)
         removed_info = ["state","zip","country","lat","lng", "isValidAddress"]
         if isinstance(property_info, dict) and len(property_info)==0:
             addresses = {k:v for k, v in property_info.items() if k not in removed_info}
@@ -177,7 +176,6 @@ if __name__ == "__main__":
     doorloop_server = doorloop_mcp_server.retrieve_tenants()
     # print("Raw response from doorloop_mcp_server.retrieve_tenants():", doorloop_server)
     raw_data = retrieve_data(doorloop_server)
-    print(raw_data)
     # Pass the raw_data into the parser and capture returned structure
     # get_doorloop_tenants(raw_data=raw_data)
     # get_propertys(raw_data=raw_data)
