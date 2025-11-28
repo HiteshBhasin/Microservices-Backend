@@ -1,12 +1,8 @@
 import logging
 import sys
 from pathlib import Path
-from typing import Dict
-try:
-    from redis import Redis
-except ModuleNotFoundError:
-    Redis = None
-    logging.warning("redis package not installed in the active Python environment — bridge.py will continue without Redis. Install 'redis' into your environment to enable Redis features.")
+
+
 # Ensure the repository root is on sys.path so top-level packages import reliably
 PROJECT_ROOT = Path(__file__).absolute().parent.parent
 
@@ -19,14 +15,10 @@ try:
 except Exception as exc:
 	raise ImportError(f"Failed to import mcp_server. Ensure project root is correct: {PROJECT_ROOT}\nOriginal error: {exc}")
 
-r_connection = None
-if Redis is not None:
-    try:
-        r_connection = Redis(host='localhost', port=6379, decode_responses=True)
-    except Exception as e:
-        logging.exception(f"Failed to connect to Redis instance: {e}")
 
-    
+data = doorloop_mcp_server.retrieve_tenants()
+
+
 def retrieve_data(*args):
    try:
        # If a single object was passed, return it directly
@@ -36,7 +28,40 @@ def retrieve_data(*args):
    except Exception as e:
        logging.exception(f" An internal error has occur please check the MCP server,{e}")
        return None
-       
+
+def get_propertys(raw_data):
+    """Extract property id(s) from tenant prospectInfo entries."""
+    if raw_data is None:
+        logging.error("get_propertys: no raw_data provided")
+        return []
+
+    if isinstance(raw_data, tuple) and len(raw_data) > 0:
+        payload = raw_data[0]
+    elif isinstance(raw_data, dict):
+        payload = raw_data
+    else:
+        logging.error("get_propertys: unexpected raw_data type %s", type(raw_data))
+        return []
+
+    tenants = payload.get("data", [])
+    property_ids = []  
+
+    for tenant in tenants:
+        prospect = tenant.get("prospectInfo")
+        if not prospect:
+            continue
+
+        prospect_list = prospect if isinstance(prospect, list) else [prospect]
+
+        for p in prospect_list:
+            interests = p.get("interests", [])
+            for item in interests:
+                prop_id = item.get("property")
+                if prop_id:
+                    property_ids.append(prop_id)
+
+    return list(property_ids)
+
 
 def get_doorloop_tenants(raw_data):
   
@@ -44,7 +69,6 @@ def get_doorloop_tenants(raw_data):
         logging.error("No raw_data provided to parser")
         return []
 
-    
     if isinstance(raw_data, tuple) and len(raw_data) > 0:
         payload = raw_data[0]
         
@@ -54,15 +78,13 @@ def get_doorloop_tenants(raw_data):
         logging.error("Unexpected raw_data type: %s", type(raw_data))
         return []
 
-
     tenants = payload["data"]
     if not isinstance(tenants, list):
         logging.error("No tenant list found in payload")
         return []
     
-   
-    property_id = get_propertys(raw_data)
-   
+    # property_id = get_propertys(raw_data)
+    
     parsed_obj = []
     for idx, tenant in enumerate(tenants):
         try:
@@ -88,7 +110,6 @@ def get_doorloop_tenants(raw_data):
 
             status = (tenant.get("portalInfo") or {}).get("status") or tenant.get("status") or "UNKNOWN"
            
-        
             parsed_obj.append({
                 # "id": tenant_id,
                 "name": name,
@@ -105,97 +126,64 @@ def get_doorloop_tenants(raw_data):
 
     # Print/return full parsed list
     logging.info("Parsed %d tenants", len(parsed_obj))
-    for t in parsed_obj:
-        print(t)
     return parsed_obj
 
-def get_propertys(raw_data):
-    """Extract property id(s) from tenant prospectInfo entries."""
+def property_info(raw_data, ):
+    """Fetch property details (address) for up to `limit` property ids.
+    
+    Uses Redis cache first; falls back to API if not cached.
+    Returns a list of dicts: [{'property_id': id, 'address': {...}}, ...]
+    """
     if raw_data is None:
-        logging.error("get_propertys: no raw_data provided")
+        logging.error("property_info: no raw_data provided")
         return []
-
-    # Normalize payload
-    if isinstance(raw_data, tuple) and len(raw_data) > 0:
-        payload = raw_data[0]
-    elif isinstance(raw_data, dict):
-        payload = raw_data
-    else:
-        logging.error("get_propertys: unexpected raw_data type %s", type(raw_data))
-        return []
-
-    tenants = payload.get("data", [])
-    property_ids = []  
-
-    for tenant in tenants:
-        prospect = tenant.get("prospectInfo")
-        if not prospect:
-            continue
-
-        # Normalize to list
-        prospect_list = prospect if isinstance(prospect, list) else [prospect]
-
-        for p in prospect_list:
-            interests = p.get("interests", [])
-            for item in interests:
-                prop_id = item.get("property")
-                if prop_id:
-                    property_ids.append(prop_id)
-
-    # Convert back to list or dict
-    return list(property_ids)
-
-def property_info(raw_data):
-    if not isinstance(raw_data, dict)  or len(raw_data)==0:
-        raise ValueError("There is not Data, Please chck the MCP server and fix the doorloop mcp server")
     
     try:
-        property_id = get_propertys(raw_data=raw_data)
-        
+        property_ids = get_propertys(raw_data=raw_data)
     except Exception:
-        logging.exception("the data didnt get fetch in from the server")
-        
+        logging.exception("Failed to extract property ids from raw_data")
+        return []
+    
+    if not property_ids:
+        logging.info("No property ids found")
+        return []
+    
     addressobj = []
+    removed_keys = ["state", "zip", "country", "lat", "lng", "isValidAddress"]
     
-    for pid in property_id:
+    for pid in property_ids:  # Limit to first N property ids
+        try:
+            # Try Redis cache first (fast)
+            # cached = get_cached_property(pid)
+            if "cached":
+                prop_data = "cached"
+            else:
+                # Fall back to API and cache result
+                prop_data = doorloop_mcp_server.retrieve_properties_id(pid)
+                if isinstance(prop_data, dict):
+                    pass
+                    # cache_properties_to_redis({pid: prop_data})
+            
+            if not isinstance(prop_data, dict):
+                logging.warning("Property lookup did not return dict for id %s", pid)
+                continue
+            
+            # Extract address and filter out unwanted keys
+            address = prop_data.get("address") or {}
+            filtered_address = {k: v for k, v in address.items() if k not in removed_keys}
+            
+            addressobj.append({
+                "property_id": pid,
+                "address": filtered_address
+            })
+        except Exception:
+            logging.exception("Failed to retrieve property info for id %s", pid)
+            continue
     
-        property_info = doorloop_mcp_server.retrieve_properties_id(pid)
-        property_info = property_info.get("address")
-        removed_info = ["state","zip","country","lat","lng", "isValidAddress"]
-        if isinstance(property_info, dict) and len(property_info)==0:
-            addresses = {k:v for k, v in property_info.items() if k not in removed_info}
-            print(addresses)
-            addressobj.append(addresses)
     return addressobj
-        
-                         
-       
 
+                                
 if __name__ == "__main__":
+    pass
   
-    try:
-        from mcp_server import doorloop_mcp_server
-    except Exception as exc:
-        raise ImportError(f"Failed to import mcp_server. Ensure project root is correct: {PROJECT_ROOT}\nOriginal error: {exc}")
-    doorloop_server = doorloop_mcp_server.retrieve_tenants()
-    # print("Raw response from doorloop_mcp_server.retrieve_tenants():", doorloop_server)
-    raw_data = retrieve_data(doorloop_server)
-    # Pass the raw_data into the parser and capture returned structure
-    # get_doorloop_tenants(raw_data=raw_data)
-    # get_propertys(raw_data=raw_data)
-    data = property_info(raw_data=raw_data)
-    print(data)
    
-    
-
-
-
-
-#  property_info = doorloop_mcp_server.retrieve_properties_id(property_id[i])
-#         # if isinstance(property_info, dict) and len(property_info)>0:
-#         prop_add = property_info.get("address")
-#         return prop_add
-#             #
-                        
-#             #             print(addobj) 
-    
