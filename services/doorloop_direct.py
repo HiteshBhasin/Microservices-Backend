@@ -32,6 +32,12 @@ async def retrieve_leases() -> Dict[str, Any]:
     return await asyncio.to_thread(dl.retrieve_leases)
 
 
+async def retrieve_properties_id(property_id: str) -> Dict[str, Any]:
+    """Retrieve a single property by ID."""
+    dl = _import_server_module()
+    return await asyncio.to_thread(dl.retrieve_properties_id, property_id)
+
+
 async def retrieve_doorloop_communication() -> Dict[str, Any]:
     """Retrieve DoorLoop communications data."""
     dl = _import_server_module()
@@ -47,6 +53,7 @@ async def generate_report() -> Dict[str, Any]:
 __all__ = [
     "retrieve_tenants",
     "retrieve_properties", 
+    "retrieve_properties_id",
     "retrieve_a_tenants",
     "retrieve_leases",
     "retrieve_doorloop_communication",

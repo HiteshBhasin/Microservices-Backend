@@ -9,13 +9,13 @@ try:
 except ModuleNotFoundError:
     Redis = None
     logging.warning("redis package not installed in the active Python environment — bridge.py will continue without Redis. Install 'redis' into your environment to enable Redis features.")
-    
 
-def cache_tenants_to_redis(data, ttl: int = 3600):
+
+def cache_tenants_to_redis(data, ttl: int = 1800):
     """Batch cache tenant data to Redis with TTL (fast write).
     
     Uses Redis pipeline for fast bulk writes.
-    ttl: time-to-live in seconds (default 1 hour).
+    ttl: time-to-live in seconds (default 30 minutes).
     """
     if not data:
         logging.warning("Cannot cache: data is empty or Redis unavailable")
@@ -23,40 +23,31 @@ def cache_tenants_to_redis(data, ttl: int = 3600):
     
     try:
         pipe = redis.pipeline()
-        for i, tenant in enumerate(data):
-            key = f"tenant:{i}"
-            pipe.json().set(key, "$", tenant)
+        for i , data in enumerate(data):
+            key=f'data:{i}'
+            pipe.json().set(key, "$",data)
             pipe.expire(key, ttl)
-        
-        results = pipe.execute()
-        logging.info("Cached %d tenants to Redis", len(data))
-        return results
+        pipe.execute()
     except Exception:
         logging.exception("Failed to cache tenants to Redis")
         return None
+    return True
 
-
-def get_cached_tenants(start: int = 0, end: int =0):
-    """Retrieve cached tenants from Redis (fast read).
-    Returns list of tenants from Redis cache.
-    """
-
-    try:
-        # Get all tenant keys
-        keys = redis.keys("tenants:*")
-        if not keys:
-            logging.info("No cached tenants found in Redis")
-            return []
-        
-        # Batch fetch (MGET for fast reads)
-        tenants = redis.mget(keys) if keys else []
-        logging.info("Retrieved %d tenants from Redis cache", len(tenants))
-        return [t for t in tenants if t]
-    except Exception:
-        logging.exception("Failed to retrieve tenants from Redis")
+def cache_data_retireive(prefix_str:str):
+    keys = []
+    try :
+        for key in redis.scan_iter(f"{prefix_str}:*"):
+            keys.append(key)
+        result = []
+        for key in keys:
+            item = redis.json().get(key)
+            result.append(item)
+        return result
+    except Exception as e:
+        logging.exception("Failed to retrieve cached data")
         return []
-
-
+        
+    
 def cache_properties_to_redis(property_data: dict, ttl: int = 3600):
     """Cache property details to Redis by property_id (fast lookups).
     
@@ -114,7 +105,7 @@ def background_refresh_tenants(data_fetch_fn, interval_minutes: int = 30):
                 logging.info("Background: Refreshing tenant cache...")
                 fresh_data = data_fetch_fn()
                 if fresh_data:
-                    cache_tenants_to_redis(fresh_data, ttl=3600)
+                    cache_tenants_to_redis(fresh_data, ttl=1800)
                     logging.info("Background: Tenant cache refreshed with %d items", len(fresh_data))
                 else:
                     logging.warning("Background: No fresh data returned from fetch function")
@@ -128,13 +119,13 @@ def background_refresh_tenants(data_fetch_fn, interval_minutes: int = 30):
     return thread
 
 
-def background_refresh_properties(property_ids_fetch_fn, data_fetch_fn, interval_minutes: int = 30):
+def background_refresh_properties(property_ids_fetch_fn, data_fetch_fn, interval_minutes: int = 60):
     """Background thread that auto-refreshes property cache every N minutes.
     
     Args:
         property_ids_fetch_fn: Function to call to get list of property IDs.
         data_fetch_fn: Function to call to fetch property data by ID (e.g., retrieve_properties_id).
-        interval_minutes: How often to refresh (default 30 minutes).
+        interval_minutes: How often to refresh (default 60 minutes).
     """
     def refresh_loop():
         while True:
@@ -176,8 +167,8 @@ def start_background_refresh(tenant_fetch_fn, property_ids_fn, property_fetch_fn
         tenant_fetch_fn: Function to fetch fresh tenants.
         property_ids_fn: Function to get property IDs.
         property_fetch_fn: Function to fetch property data by ID.
-        tenant_interval: Minutes between tenant cache refreshes.
-        property_interval: Minutes between property cache refreshes.
+        tenant_interval: Minutes between tenant cache refreshes (default 30).
+        property_interval: Minutes between property cache refreshes (default 60).
     
     Returns:
         Tuple of (tenant_thread, property_thread) so you can manage them if needed.

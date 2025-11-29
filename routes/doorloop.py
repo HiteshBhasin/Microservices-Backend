@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from typing import Any, Dict, List
 import os , sys
 from services.doorloop_services import DoorloopClient
+from services import doorloop_api_client  # Pure HTTP API client (no MCP)
 from pathlib import Path
 PROJECT_ROOT = Path(__file__).absolute().parent.parent
 
@@ -42,8 +43,8 @@ def _unwrap_result(resp: Any) -> Any:
 @router.get("/tenants")
 async def get_tenants():
     _require_api_key()
-    svc = DoorloopClient()
-    resp = await svc.retrieve_tenants()
+    # Use pure HTTP API client instead of MCP to avoid pipe errors
+    resp = doorloop_api_client.retrieve_tenants()
     filter_res = bridge.get_doorloop_tenants(resp)
     return _unwrap_result(filter_res)
 
@@ -51,24 +52,21 @@ async def get_tenants():
 @router.get("/properties")
 async def get_properties():
     _require_api_key()
-    svc = DoorloopClient()
-    resp = await svc.retrieve_properties()
+    resp = doorloop_api_client.retrieve_properties()
     return _unwrap_result(resp)
 
 
 @router.get("/tenant/{tenant_id}")
 async def get_tenant(tenant_id: str):
     _require_api_key()
-    svc = DoorloopClient()
-    resp = await svc.retrieve_a_tenant(tenant_id)
+    resp = doorloop_api_client.retrieve_a_tenants(tenant_id)
     return _unwrap_result(resp)
 
 
 @router.get("/leases")
 async def get_leases():
     _require_api_key()
-    svc = DoorloopClient()
-    resp = await svc.retrieve_leases()
+    resp = doorloop_api_client.retrieve_leases()
     return _unwrap_result(resp)
 
 
@@ -76,8 +74,7 @@ async def get_leases():
 async def get_communications():
     """Retrieve DoorLoop communications data."""
     _require_api_key()
-    svc = DoorloopClient()
-    resp = await svc.retrieve_doorloop_communication()
+    resp = doorloop_api_client.retrieve_doorloop_communication()
     return _unwrap_result(resp)
 
 
@@ -85,6 +82,7 @@ async def get_communications():
 async def balance_sheet_report():
     """Generate DoorLoop balance sheet report with PDF."""
     _require_api_key()
+    # This one might need MCP for report generation, keeping it for now
     svc = DoorloopClient()
     resp = await svc.generate_report()
     return _unwrap_result(resp)

@@ -1,8 +1,13 @@
 import sys
+import warnings
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+# Suppress specific runtime warnings from MCP/anyio async context issues
+warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*cancel scope.*")
+warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*BrokenResourceError.*")
 
 # Load environment from .env early so route modules see DOORLOOP_API_KEY, etc.
 try:
@@ -30,6 +35,11 @@ import logging
 async def lifespan(app: FastAPI):
     # Startup code
     logging.getLogger().setLevel(logging.INFO)
+    
+    # Suppress noisy MCP async warnings (non-blocking errors)
+    logging.getLogger("mcp").setLevel(logging.ERROR)
+    logging.getLogger("anyio").setLevel(logging.ERROR)
+    
     missing = []
     # Use ROOT path since MCP server scripts are in project root, not app directory
     for path in ("mcp_server/connectteam_mcp_server.py", "mcp_server/doorloop_mcp_server.py"):
@@ -40,6 +50,11 @@ async def lifespan(app: FastAPI):
         logging.warning("Missing MCP server scripts: %s", missing)
     else:
         logging.info("All MCP server scripts present.")
+    
+    # Background refresh workers are disabled due to MCP async context conflicts
+    # The cache will be populated on-demand when API endpoints are called
+    # For automatic updates, run bridge.py separately as a standalone service
+    logging.info("Cache will be populated on-demand via API calls")
     
     yield  # This is where the application runs
     

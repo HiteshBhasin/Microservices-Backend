@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query, Body, HTTPException, status
 from typing import Any, Dict
 from enum import Enum
-from services.connecteam_service import ConnecteamClient
+from services import connecteam_api_client
 import os
 
 router = APIRouter()
@@ -17,7 +17,7 @@ class TaskStatus(str, Enum):
 def _unwrap_result(resp: Dict[str, Any]) -> Any:
     """Normalize the client response: raise on 'error', return 'result' if present.
 
-    The MCP client returns a dict like {'result': ...} or {'error': ...}.
+    The HTTP client returns a dict, possibly with {'error': ...}.
     """
     if not isinstance(resp, dict):
         return resp
@@ -32,8 +32,7 @@ def _unwrap_result(resp: Dict[str, Any]) -> Any:
 
 @router.get("/tenants")
 async def get_tenants():
-    service = ConnecteamClient()
-    resp = await service.retrieve_tenants()
+    resp = connecteam_api_client.retrieve_tenants()
     return _unwrap_result(resp)
 
 
@@ -44,34 +43,29 @@ async def get_tasks(
     status: TaskStatus = Query(TaskStatus.all, description="Task status filter"),
 ):
     """Get tasks from Connecteam with pagination and status filtering."""
-    service = ConnecteamClient()
-    resp = await service.list_tasks(limit=limit, offset=offset, status=status.value)
+    resp = connecteam_api_client.list_tasks(limit=limit, offset=offset, status=status.value)
     return _unwrap_result(resp)
 
 
 @router.get("/task/{task_id}")
 async def get_a_task(task_id: str):
-    service = ConnecteamClient()
-    resp = await service.get_task(task_id)
+    resp = connecteam_api_client.get_task(task_id)
     return _unwrap_result(resp)
 
 
 @router.post("/task", status_code=status.HTTP_201_CREATED)
 async def create_task(payload: Dict[str, Any] = Body(...)):
-    service = ConnecteamClient()
-    resp = await service.create_task(payload)
+    resp = connecteam_api_client.create_task(payload)
     return _unwrap_result(resp)
 
 
 @router.put("/task/{task_id}")
 async def update_task(task_id: str, payload: Dict[str, Any] = Body(...)):
-    service = ConnecteamClient()
-    resp = await service.update_task(task_id, payload)
+    resp = connecteam_api_client.update_task(task_id, payload)
     return _unwrap_result(resp)
 
 
 @router.delete("/task/{task_id}")
 async def delete_task(task_id: str):
-    service = ConnecteamClient()
-    resp = await service.delete_task(task_id)
+    resp = connecteam_api_client.delete_task(task_id)
     return _unwrap_result(resp)
