@@ -77,6 +77,26 @@ async def get_communications():
     resp = doorloop_api_client.retrieve_doorloop_communication()
     return _unwrap_result(resp)
 
+@router.get("/tasks")
+async def retrieve_doorloop_tasks() :
+    """Retrieve DoorLoop communications data."""
+    _require_api_key()
+    resp = doorloop_api_client.retrieve_doorloop_tasks()
+    return _unwrap_result(resp)
+
+@router.get("/lease-payments")
+async def retrieve_doorloop_lease_payment()  :
+    """Retrieve DoorLoop communications data."""
+    _require_api_key()
+    resp = doorloop_api_client.retrieve_doorloop_lease_payment()
+    return _unwrap_result(resp)
+
+@router.get("/expenses")
+async def retrieve_doorloop_expenses()  :
+    """Retrieve DoorLoop communications data."""
+    _require_api_key()
+    resp = doorloop_api_client.retrieve_doorloop_expenses() 
+    return _unwrap_result(resp)
 
 @router.get("/balance-sheet/report")
 async def balance_sheet_report():

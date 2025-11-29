@@ -138,3 +138,17 @@ def list_taskboards() -> Dict[str, Any]:
         return response.json()
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
+
+
+def list_get_jobs() -> Dict[str, Any]:
+    """List all available jobs from Connecteam."""
+    base_url = _get_base_url()
+    endpoint = f"{base_url.rstrip('/')}/jobs/v1/jobs?includeDeleted=true&order=asc&limit=10&offset=0"
+    headers = _get_headers()
+    
+    try:
+        response = requests.get(endpoint, headers=headers, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}

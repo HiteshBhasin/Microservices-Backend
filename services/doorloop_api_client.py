@@ -130,6 +130,53 @@ def retrieve_doorloop_communication() -> Dict[str, Any]:
         return {"error": "Request failed", "exception": str(exc)}
 
 
+def retrieve_doorloop_tasks() -> Dict[str, Any]:
+    """Retrieve communications from DoorLoop API."""
+    endpoint = f"{_get_base_url()}/api/tasks"
+    try:
+        response = requests.get(endpoint, headers=_get_headers(), timeout=10)
+        if response.ok:
+            return response.json()
+        else:
+            return {
+                "error": "Failed to fetch communications",
+                "status": response.status_code,
+                "response": response.json() if response.headers.get("Content-Type", "").startswith("application/json") else response.text[:1000],
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+def retrieve_doorloop_lease_payment() -> Dict[str, Any]:
+    """Retrieve communications from DoorLoop API."""
+    endpoint = f"{_get_base_url()}/api/lease-payments"
+    try:
+        response = requests.get(endpoint, headers=_get_headers(), timeout=10)
+        if response.ok:
+            return response.json()
+        else:
+            return {
+                "error": "Failed to fetch communications",
+                "status": response.status_code,
+                "response": response.json() if response.headers.get("Content-Type", "").startswith("application/json") else response.text[:1000],
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+    
+def retrieve_doorloop_expenses() -> Dict[str, Any]:
+    """Retrieve communications from DoorLoop API."""
+    endpoint = f"{_get_base_url()}/api/expenses"
+    try:
+        response = requests.get(endpoint, headers=_get_headers(), timeout=10)
+        if response.ok:
+            return response.json()
+        else:
+            return {
+                "error": "Failed to fetch communications",
+                "status": response.status_code,
+                "response": response.json() if response.headers.get("Content-Type", "").startswith("application/json") else response.text[:1000],
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
 __all__ = [
     "retrieve_tenants",
     "retrieve_properties",

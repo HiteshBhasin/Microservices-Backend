@@ -189,6 +189,26 @@ def list_taskboards():
         return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
 
 
+@mcp.tool()
+def list_get_jobs():
+    """List all available jobs from Connecteam."""
+    api_key = os.getenv("CONNECTTEAM_API_KEY")
+    if not api_key:
+        return {"error": "CONNECTTEAM_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("CONNECTTEAM_API_BASE", "https://api.connecteam.com")
+    endpoint = f"{base_url.rstrip('/')}/jobs/v1/jobs?includeDeleted=true&order=asc&limit=10&offset=0"
+    headers = {"x-api-key": api_key, "accept": "application/json"}
+    try:
+        resp = requests.get(endpoint, headers=headers, timeout=10)
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+    try:
+        return resp.json()
+    except Exception:
+        return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
+
 
 
 if __name__ == "__main__":

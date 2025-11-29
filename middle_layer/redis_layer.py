@@ -11,7 +11,7 @@ except ModuleNotFoundError:
     logging.warning("redis package not installed in the active Python environment — bridge.py will continue without Redis. Install 'redis' into your environment to enable Redis features.")
 
 
-def cache_tenants_to_redis(data, ttl: int = 1800):
+def cache_tenants_to_redis(data, ttl: int = 3600):
     """Batch cache tenant data to Redis with TTL (fast write).
     
     Uses Redis pipeline for fast bulk writes.
@@ -91,7 +91,7 @@ def get_cached_property(property_id: str):
 
 # Background refresh functions
 
-def background_refresh_tenants(data_fetch_fn, interval_minutes: int = 30):
+def background_refresh_tenants(data_fetch_fn, interval_minutes: int = 60):
     """Background thread that auto-refreshes tenant cache every N minutes.
     
     Args:
@@ -105,7 +105,7 @@ def background_refresh_tenants(data_fetch_fn, interval_minutes: int = 30):
                 logging.info("Background: Refreshing tenant cache...")
                 fresh_data = data_fetch_fn()
                 if fresh_data:
-                    cache_tenants_to_redis(fresh_data, ttl=1800)
+                    cache_tenants_to_redis(fresh_data, ttl=3600)
                     logging.info("Background: Tenant cache refreshed with %d items", len(fresh_data))
                 else:
                     logging.warning("Background: No fresh data returned from fetch function")

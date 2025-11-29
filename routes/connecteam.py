@@ -69,3 +69,8 @@ async def update_task(task_id: str, payload: Dict[str, Any] = Body(...)):
 async def delete_task(task_id: str):
     resp = connecteam_api_client.delete_task(task_id)
     return _unwrap_result(resp)
+
+@router.get("/jobs")
+async def list_get_jobs():
+    resp = connecteam_api_client.list_get_jobs()
+    return _unwrap_result(resp)
