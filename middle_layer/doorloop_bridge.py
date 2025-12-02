@@ -2,7 +2,7 @@ import logging
 import sys
 from pathlib import Path
 from redis import Redis
-
+from typing import Any
 
 # Ensure the repository root is on sys.path so top-level packages import reliably
 PROJECT_ROOT = Path(__file__).absolute().parent.parent
@@ -277,6 +277,29 @@ def property_info(raw_data ):
     
     return addressobj
 
+def get_lease_info(raw_data:Any):
+    if len(raw_data)==0:
+        logging.error("no data came through")
+    
+    lease_data = raw_data.get('data')
+    data_list = []
+
+    if isinstance(lease_data, dict):
+        return lease_data
+    try:
+        for idx, data in enumerate(lease_data):
+            data_obj = {
+                "start_data" : data.get("start"),
+                "end_data" : data.get("end"),
+                "name" : data.get("name"),
+                "totalRecurringRent" : data.get("end"),
+            }
+            data_list.append(data_obj)
+        return data_list
+        
+    except Exception as e:
+        logging.error(" The lease data didnt fetch properly")
+    
 
 # ---------------------------------fetching data for the bcakground -------------------------------------------------------------------------------------#
 
@@ -321,10 +344,10 @@ if __name__ == "__main__":
     )
     
     lease_data = doorloop_api.retrieve_leases()
-    print(lease_data)
+    print(get_lease_info(lease_data))
     # Fetch data for testing using pure HTTP API client (no MCP)
-    data = doorloop_api.retrieve_tenants()
-    print(data)
+    # data = doorloop_api.retrieve_tenants()
+    # print(data)
     # list_value = get_doorloop_tenants(raw_data=data)
     
     # if list_value is not None and isinstance(list_value, list):
@@ -333,26 +356,26 @@ if __name__ == "__main__":
     # else:
     #     logging.warning("No tenant data returned or data is not a list: %s", type(list_value))
     
-    # # Start background refresh workers
-    if isinstance(redis, Redis):
-        logging.info("Starting background refresh workers...")
-        start_background_refresh(
-            tenant_fetch_fn=fetch_fresh_tenants,
-            property_ids_fn=fetch_property_ids,
-            property_fetch_fn=fetch_property_by_id,
-            tenant_interval=30,  # Refresh tenants every 30 minutes
-            property_interval=60  # Refresh properties every 60 minutes
-        )
-        logging.info("Background workers started successfully")
+    # # # Start background refresh workers
+    # if isinstance(redis, Redis):
+    #     logging.info("Starting background refresh workers...")
+    #     start_background_refresh(
+    #         tenant_fetch_fn=fetch_fresh_tenants,
+    #         property_ids_fn=fetch_property_ids,
+    #         property_fetch_fn=fetch_property_by_id,
+    #         tenant_interval=30,  # Refresh tenants every 30 minutes
+    #         property_interval=60  # Refresh properties every 60 minutes
+    #     )
+    #     logging.info("Background workers started successfully")
         
-    #     # Keep the script running to allow background workers to operate
-        import time
-        try:
-            while True:
-                time.sleep(60)
-        except KeyboardInterrupt:
-            logging.info("Shutting down background workers...")
-    else:
-        logging.warning("Redis not available - background refresh disabled")
+    # #     # Keep the script running to allow background workers to operate
+    #     import time
+    #     try:
+    #         while True:
+    #             time.sleep(60)
+    #     except KeyboardInterrupt:
+    #         logging.info("Shutting down background workers...")
+    # else:
+    #     logging.warning("Redis not available - background refresh disabled")
   
    
