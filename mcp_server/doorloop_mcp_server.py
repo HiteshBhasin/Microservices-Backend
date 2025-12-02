@@ -15,7 +15,9 @@ from utils.Report_gen import DoorLoopReportGenerator
 # can be imported even if reportlab/fpdf are not installed in the environment.
 
 load_dotenv()
-mcp = FastMCP("doorloop_server")
+mcp = FastMCP("doorloop_server",instructions=" Provide RESPI tools for Nest Host DB from various external entities",
+    host="0.0.0.0",
+    port=8000)
 
 @mcp.tool()
 def retrieve_tenants():
@@ -446,7 +448,7 @@ if __name__ == "__main__":
     try:
         # Run the FastMCP server using stdio transport. This keeps the process
         # alive and exposes the defined @mcp.tool() functions to MCP clients.
-        mcp.run(transport="stdio")
+       mcp.run(transport="streamable-http", mount_path="/mcp_server")
       
     except Exception as e:
         print(f"Error: {e}")

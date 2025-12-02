@@ -1,7 +1,7 @@
 import os
 import sys
 import requests
-
+from fastapi import FastAPI
 
 # Add project root to Python path so we can import utils, services, etc.
 from pathlib import Path
@@ -15,7 +15,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # FastMCP instance for Connecteam
-mcp = FastMCP("connectteam_server")
+mcp = FastMCP("connectteam_server",instructions= " Provide RESPI tools for Nest Host DB from various external entities",
+    host="0.0.0.0",
+    port=8000,)
 
 
 @mcp.tool()
@@ -212,6 +214,9 @@ def list_get_jobs():
 
 
 if __name__ == "__main__":
-    # Run the FastMCP server using stdio transport. This keeps the process
-    # alive and exposes the defined @mcp.tool() functions to MCP clients.
-    mcp.run(transport="stdio")
+    try:
+        # Run the FastMCP server using stdio transport. This keeps the process
+        # alive and exposes the defined @mcp.tool() functions to MCP clients.
+        mcp.run(transport="streamable-http", mount_path="/mcp_server")
+    except Exception as e:
+        print(f"Error: {e}")
