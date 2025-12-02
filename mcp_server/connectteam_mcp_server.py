@@ -19,6 +19,29 @@ mcp = FastMCP("connectteam_server",instructions= " Provide RESPI tools for Nest 
     host="0.0.0.0",
     port=8000,)
 
+# Add a custom HTTP route for the root endpoint
+from starlette.responses import JSONResponse
+from starlette.requests import Request
+
+@mcp.custom_route(path="/", methods=["GET"])
+async def read_root(request: Request):
+    """Root endpoint showing server status and available tools"""
+    return JSONResponse({
+        "status": "running",
+        "server": "Connecteam MCP Server",
+        "version": "1.0",
+        "mcp_endpoint": "/mcp/v1",
+        "available_tools": [
+            "retrieve_tenants",
+            "list_tasks", 
+            "get_task",
+            "create_task",
+            "update_task",
+            "delete_task",
+            "list_taskboards"
+        ],
+        "message": "Server is running. Use MCP client to interact with tools."
+    })
 
 @mcp.tool()
 def retrieve_tenants():
