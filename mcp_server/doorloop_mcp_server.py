@@ -18,6 +18,32 @@ load_dotenv()
 mcp = FastMCP("doorloop_server",instructions=" Provide RESPI tools for Nest Host DB from various external entities",
     host="0.0.0.0",
     port=8000)
+from starlette.responses import JSONResponse
+from starlette.requests import Request
+
+@mcp.custom_route(path="/", methods=["GET"])
+async def read_root(request: Request):
+    """Root endpoint showing server status and available tools"""
+    return JSONResponse({
+        "status": "running",
+        "server": "Connecteam MCP Server",
+        "version": "1.0",
+        "mcp_endpoint": "/mcp/v1",
+        "available_tools": [
+            "retrieve_tenants",
+            "retrieve_a_tenants",
+            "retrieve_leases", 
+            "retrieve_properties", 
+            "retrieve_doorloop_communication",
+            "retrieve_properties_id",
+            "retrieve_doorloop_tasks",
+            "retrieve_doorloop_lease_payment",
+            "retrieve_doorloop_expenses",
+            "generate_report",
+            "generate_pdf"
+        ],
+        "message": "Server is running. Use MCP client to interact with tools."
+    })
 
 @mcp.tool()
 def retrieve_tenants():
