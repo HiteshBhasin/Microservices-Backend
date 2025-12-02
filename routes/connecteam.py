@@ -42,15 +42,16 @@ async def get_tenants():
  try:
     resp = connecteam_api_client.retrieve_tenants()
     return _unwrap_result(resp)
- except:
+ except(ConnectionError, TimeoutError, ValueError) as e:
+    logging.warning(f"Primary Connecteam API failed: {e}")
+    logging.info("Trying fallback service...")
     try:
         retrieve_tenants = services.ConnecteamClient()
-        if retrieve_tenants:
-            tenants_info = await retrieve_tenants.retrieve_tenants()
-        if isinstance (tenants_info, dict):
-                return _unwrap_result(tenants_info)
-    except ValueError:
-        logging.error("an error occur the retrieve_tenants server is down. check connecteam_service")
+        tenants_info = retrieve_tenants.retrieve_tenants()
+        if isinstance(tenants_info, dict):
+            return _unwrap_result(tenants_info)
+    except HTTPException as e:
+        logging.exception("an error occur the retrieve_tenants server is down. check connecteam_service")
         
         
 
@@ -65,15 +66,17 @@ async def get_tasks(
         """Get tasks from Connecteam with pagination and status filtering."""
         resp = connecteam_api_client.list_tasks(limit=limit, offset=offset, status=status.value)
         return _unwrap_result(resp)
-    except:
+    except (ConnectionError, TimeoutError, ValueError) as e:
+        logging.warning(f"Primary Connecteam API failed: {e}")
+        logging.info("Trying fallback service...")
+        
         try:
             list_task = services.ConnecteamClient()
-            if list_task:
-                tasks_info = await list_task.list_tasks(limit=limit,offset= offset, status= status)
+            tasks_info = await list_task.list_tasks(limit=limit,offset= offset, status= status)
             if isinstance(tasks_info, dict):
                 return _unwrap_result(tasks_info)
-        except ValueError:
-            logging.error("an error occur the tasks_info server is down. check connecteam_service")
+        except HTTPException as e:
+            logging.exception("an error occur the tasks_info server is down {e}. check connecteam_service")
             
                 
 
@@ -83,15 +86,16 @@ async def get_a_task(task_id: str):
     try:
         resp = connecteam_api_client.get_task(task_id)
         return _unwrap_result(resp)
-    except:
+    except(ConnectionError, TimeoutError, ValueError) as e:
+        logging.warning(f"Primary Connecteam API failed: {e}")
+        logging.info("Trying fallback service...")
         try:
             get_task = services.ConnecteamClient()
-            if get_task:
-                task_info = await get_task.get_task(task_id=task_id)
+            task_info = await get_task.get_task(task_id=task_id)
             if isinstance(task_info, dict):
                 return _unwrap_result(task_info)
-        except ValueError:
-            logging.error("an error occur the task_info server is down. check connecteam_service")
+        except HTTPException as e:
+            logging.error("an error occur the task_info server is down {e}. check connecteam_service")
                 
             
 
@@ -101,15 +105,16 @@ async def create_task(payload: Dict[str, Any] = Body(...)):
     try:
         resp = connecteam_api_client.create_task(payload)
         return _unwrap_result(resp)
-    except:
+    except(ConnectionError, TimeoutError, ValueError) as e:
+        logging.warning(f"Primary Connecteam API failed: {e}")
+        logging.info("Trying fallback service...")
         try:
             create_task = services.ConnecteamClient()
-            if create_task:
-                task_created = await create_task.create_task(payload=payload)
+            task_created = await create_task.create_task(payload=payload)
             if isinstance(task_created, dict):
                 return _unwrap_result(task_created)
-        except ValueError:
-            logging.error("an error occur the task_created server is down. check connecteam_service")
+        except HTTPException as e:
+            logging.error("an error occur the task_info server is down {e}. check connecteam_service")
 
 
 @router.put("/task/{task_id}")
@@ -117,15 +122,17 @@ async def update_task(task_id: str, payload: Dict[str, Any] = Body(...)):
     try:
         resp = connecteam_api_client.update_task(task_id, payload)
         return _unwrap_result(resp)
-    except:
+    except(ConnectionError, TimeoutError, ValueError) as e:
+        logging.warning(f"Primary Connecteam API failed: {e}")
+        logging.info("Trying fallback service...")
         try:
             update_task = services.ConnecteamClient()
-            if update_task:
-                task_created = await update_task.update_task(task_id=task_id,payload=payload)
+            task_created = await update_task.update_task(task_id=task_id,payload=payload)
             if isinstance(task_created, dict):
                 return _unwrap_result(task_created) # not sure if we need this 
-        except ValueError:
-            logging.error("an error occur the task_created server is down. check connecteam_service")
+        except HTTPException as e:
+            logging.error("an error occur the task_info server is down {e}. check connecteam_service")
+
     
 
 @router.delete("/task/{task_id}")
