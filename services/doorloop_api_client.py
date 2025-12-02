@@ -2,14 +2,19 @@
 Pure DoorLoop API client - NO MCP, just direct HTTP requests.
 Use this for in-process calls to avoid MCP stdio pipe issues.
 """
-import os
+import os, logging
 import requests
 from typing import Dict, Any
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
+try:
+    from services import doorloop_services as services
+except Exception as e:
+    logging.exception(" The Mcp service file never imported")
+    
+    
 def _get_headers() -> Dict[str, str]:
     """Get common headers for DoorLoop API requests."""
     api_key = os.getenv("DOORLOOP_API_KEY")
@@ -43,6 +48,8 @@ def retrieve_tenants() -> Dict[str, Any]:
             }
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
+    
+
 
 
 def retrieve_properties() -> Dict[str, Any]:
