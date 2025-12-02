@@ -26,7 +26,7 @@ async def read_root(request: Request):
     """Root endpoint showing server status and available tools"""
     return JSONResponse({
         "status": "running",
-        "server": "Connecteam MCP Server",
+        "server": "Doorloop MCP Server",
         "version": "1.0",
         "mcp_endpoint": "/mcp/v1",
         "available_tools": [
@@ -474,7 +474,7 @@ if __name__ == "__main__":
     try:
         # Run the FastMCP server using stdio transport. This keeps the process
         # alive and exposes the defined @mcp.tool() functions to MCP clients.
-       mcp.run(transport="streamable-http", mount_path="/mcp_server")
+       mcp.run(transport="streamable-http")
       
     except Exception as e:
         print(f"Error: {e}")
