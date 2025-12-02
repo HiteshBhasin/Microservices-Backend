@@ -2,7 +2,7 @@ from fastapi import APIRouter, Query, Body, HTTPException, status
 from typing import Any, Dict
 from enum import Enum
 from services import connecteam_api_client
-import os
+import os, logging
 
 router = APIRouter()
 
@@ -13,6 +13,12 @@ class TaskStatus(str, Enum):
     completed = "completed"
     all = "all"
 
+try:
+    from services import connecteam_service as services
+except Exception as e:
+    logging.exception("No Mcp services came through")
+
+    
 
 def _unwrap_result(resp: Dict[str, Any]) -> Any:
     """Normalize the client response: raise on 'error', return 'result' if present.
@@ -30,10 +36,23 @@ def _unwrap_result(resp: Dict[str, Any]) -> Any:
     return resp
 
 
+
 @router.get("/tenants")
 async def get_tenants():
+ try:
     resp = connecteam_api_client.retrieve_tenants()
     return _unwrap_result(resp)
+ except:
+    try:
+        retrieve_tenants = services.ConnecteamClient()
+        if retrieve_tenants:
+            tenants_info = await retrieve_tenants.retrieve_tenants()
+        if isinstance (tenants_info, dict):
+                return _unwrap_result(tenants_info)
+    except ValueError:
+        logging.error("an error occur the retrieve_tenants server is down. check connecteam_service")
+        
+        
 
 
 @router.get("/tasks")
@@ -42,28 +61,72 @@ async def get_tasks(
     offset: int = Query(0, ge=0, description="Number of tasks to skip for pagination"),
     status: TaskStatus = Query(TaskStatus.all, description="Task status filter"),
 ):
-    """Get tasks from Connecteam with pagination and status filtering."""
-    resp = connecteam_api_client.list_tasks(limit=limit, offset=offset, status=status.value)
-    return _unwrap_result(resp)
+    try:
+        """Get tasks from Connecteam with pagination and status filtering."""
+        resp = connecteam_api_client.list_tasks(limit=limit, offset=offset, status=status.value)
+        return _unwrap_result(resp)
+    except:
+        try:
+            list_task = services.ConnecteamClient()
+            if list_task:
+                tasks_info = await list_task.list_tasks(limit=limit,offset= offset, status= status)
+            if isinstance(tasks_info, dict):
+                return _unwrap_result(tasks_info)
+        except ValueError:
+            logging.error("an error occur the tasks_info server is down. check connecteam_service")
+            
+                
 
 
 @router.get("/task/{task_id}")
 async def get_a_task(task_id: str):
-    resp = connecteam_api_client.get_task(task_id)
-    return _unwrap_result(resp)
+    try:
+        resp = connecteam_api_client.get_task(task_id)
+        return _unwrap_result(resp)
+    except:
+        try:
+            get_task = services.ConnecteamClient()
+            if get_task:
+                task_info = await get_task.get_task(task_id=task_id)
+            if isinstance(task_info, dict):
+                return _unwrap_result(task_info)
+        except ValueError:
+            logging.error("an error occur the task_info server is down. check connecteam_service")
+                
+            
 
 
 @router.post("/task", status_code=status.HTTP_201_CREATED)
 async def create_task(payload: Dict[str, Any] = Body(...)):
-    resp = connecteam_api_client.create_task(payload)
-    return _unwrap_result(resp)
+    try:
+        resp = connecteam_api_client.create_task(payload)
+        return _unwrap_result(resp)
+    except:
+        try:
+            create_task = services.ConnecteamClient()
+            if create_task:
+                task_created = await create_task.create_task(payload=payload)
+            if isinstance(task_created, dict):
+                return _unwrap_result(task_created)
+        except ValueError:
+            logging.error("an error occur the task_created server is down. check connecteam_service")
 
 
 @router.put("/task/{task_id}")
 async def update_task(task_id: str, payload: Dict[str, Any] = Body(...)):
-    resp = connecteam_api_client.update_task(task_id, payload)
-    return _unwrap_result(resp)
-
+    try:
+        resp = connecteam_api_client.update_task(task_id, payload)
+        return _unwrap_result(resp)
+    except:
+        try:
+            update_task = services.ConnecteamClient()
+            if update_task:
+                task_created = await update_task.update_task(task_id=task_id,payload=payload)
+            if isinstance(task_created, dict):
+                return _unwrap_result(task_created) # not sure if we need this 
+        except ValueError:
+            logging.error("an error occur the task_created server is down. check connecteam_service")
+    
 
 @router.delete("/task/{task_id}")
 async def delete_task(task_id: str):
