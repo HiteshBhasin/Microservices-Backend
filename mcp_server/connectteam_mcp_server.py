@@ -22,7 +22,7 @@ mcp = FastMCP("connectteam_server",instructions= " Provide RESPI tools for Nest 
 
 @mcp.tool()
 def retrieve_tenants():
-    """Retrieve tenant data from the DoorLoop API"""
+    """Retrieve tenant data from the Conneteam API"""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
     if not api_key:
         return {"error": "connecteam not found in environment variables"}
