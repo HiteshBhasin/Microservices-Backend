@@ -52,6 +52,7 @@ async def get_tenants():
             return _unwrap_result(tenants_info)
     except HTTPException as e:
         logging.exception("an error occur the retrieve_tenants server is down. check connecteam_service")
+        raise  HTTPException(status_code=500,detail="Both primary and fallback Connecteam services failed.")
         
         
 
@@ -77,6 +78,7 @@ async def get_tasks(
                 return _unwrap_result(tasks_info)
         except HTTPException as e:
             logging.exception("an error occur the tasks_info server is down {e}. check connecteam_service")
+            raise  HTTPException(status_code=500,detail="Both primary and fallback Connecteam services failed.")
             
                 
 
@@ -96,6 +98,7 @@ async def get_a_task(task_id: str):
                 return _unwrap_result(task_info)
         except HTTPException as e:
             logging.error("an error occur the task_info server is down {e}. check connecteam_service")
+            raise  HTTPException(status_code=500,detail="Both primary and fallback Connecteam services failed.")
                 
             
 
@@ -115,6 +118,7 @@ async def create_task(payload: Dict[str, Any] = Body(...)):
                 return _unwrap_result(task_created)
         except HTTPException as e:
             logging.error("an error occur the task_info server is down {e}. check connecteam_service")
+            raise  HTTPException(status_code=500,detail="Both primary and fallback Connecteam services failed.")
 
 
 @router.put("/task/{task_id}")
@@ -132,6 +136,7 @@ async def update_task(task_id: str, payload: Dict[str, Any] = Body(...)):
                 return _unwrap_result(task_created) # not sure if we need this 
         except HTTPException as e:
             logging.error("an error occur the task_info server is down {e}. check connecteam_service")
+            raise  HTTPException(status_code=500,detail="Both primary and fallback Connecteam services failed.")
 
     
 
