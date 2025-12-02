@@ -115,9 +115,11 @@ async def get_leases():
         logging.info("Trying fallback service...")
         try:
             lease = services.DoorloopClient()
+            
             get_lease  = lease.retrieve_leases()
-            if isinstance(get_lease, dict):
-                return _unwrap_result(get_lease)
+            filtered_data = doorloop_bridge.get_lease_info(get_lease)
+            if isinstance(filtered_data, dict):
+                return _unwrap_result(filtered_data)
         except HTTPException as e:
             logging.error(f"Fallback Connecteam service also failed: {e}")
             raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
