@@ -85,6 +85,18 @@ class DoorloopClient:
         """Retrieve DoorLoop communications data."""
         return await self._call_with_fallback("retrieve_doorloop_communication", {}, direct_func=(getattr(direct, "retrieve_doorloop_communication") if direct else None))
 
+    async def retrieve_doorloop_tasks(self) -> Dict[str, Any]:
+        """Retrieve DoorLoop tasks data."""
+        return await self._call_with_fallback("retrieve_doorloop_tasks", {}, direct_func=(getattr(direct, "retrieve_doorloop_tasks") if direct else None))
+
+    async def retrieve_doorloop_lease_payment(self) -> Dict[str, Any]:
+        """Retrieve DoorLoop lease payments data."""
+        return await self._call_with_fallback("retrieve_doorloop_lease_payment", {}, direct_func=(getattr(direct, "retrieve_doorloop_lease_payment") if direct else None))
+
+    async def retrieve_doorloop_expenses(self) -> Dict[str, Any]:
+        """Retrieve DoorLoop expenses data."""
+        return await self._call_with_fallback("retrieve_doorloop_expenses", {}, direct_func=(getattr(direct, "retrieve_doorloop_expenses") if direct else None))
+
     async def generate_report(self) -> Dict[str, Any]:
         """Generate DoorLoop balance sheet report with PDF."""
         return await self._call_with_fallback("generate_report", {}, direct_func=(getattr(direct, "generate_report") if direct else None))

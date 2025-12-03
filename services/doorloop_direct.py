@@ -44,6 +44,24 @@ async def retrieve_doorloop_communication() -> Dict[str, Any]:
     return await asyncio.to_thread(dl.retrieve_doorloop_communication)
 
 
+async def retrieve_doorloop_tasks() -> Dict[str, Any]:
+    """Retrieve DoorLoop tasks data."""
+    dl = _import_server_module()
+    return await asyncio.to_thread(dl.retrieve_doorloop_tasks)
+
+
+async def retrieve_doorloop_lease_payment() -> Dict[str, Any]:
+    """Retrieve DoorLoop lease payments data."""
+    dl = _import_server_module()
+    return await asyncio.to_thread(dl.retrieve_doorloop_lease_payment)
+
+
+async def retrieve_doorloop_expenses() -> Dict[str, Any]:
+    """Retrieve DoorLoop expenses data."""
+    dl = _import_server_module()
+    return await asyncio.to_thread(dl.retrieve_doorloop_expenses)
+
+
 async def generate_report() -> Dict[str, Any]:
     """Generate DoorLoop balance sheet report."""
     dl = _import_server_module()
@@ -57,5 +75,8 @@ __all__ = [
     "retrieve_a_tenants",
     "retrieve_leases",
     "retrieve_doorloop_communication",
+    "retrieve_doorloop_tasks",
+    "retrieve_doorloop_lease_payment",
+    "retrieve_doorloop_expenses",
     "generate_report",
 ]

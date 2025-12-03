@@ -47,11 +47,43 @@ def _unwrap_result(resp: Any) -> Any:
 @router.get("/tenants")
 async def get_tenants():
     _require_api_key()
+    
     # Use pure HTTP API client instead of MCP to avoid pipe errors
     try:
-        resp = doorloop_api_client.retrieve_tenants()
-        filter_res = doorloop_bridge.get_doorloop_tenants(resp)
-        return _unwrap_result(filter_res)
+        # Fetch all data
+        tenants_data = doorloop_api_client.retrieve_tenants()
+        property_data = doorloop_api_client.retrieve_properties()
+        lease_data = doorloop_api_client.retrieve_leases()
+       
+    
+        
+        # Get aggregated overview information first
+        total_properties, active_tenants_list, total_rent_due, active_leases_list, month_list, rent_list = doorloop_bridge.fetch_accumulative_info(
+            prop_raw_data=property_data,
+            tenant_raw_data=tenants_data,
+            lease_raw_data=lease_data,
+         
+        )
+        
+        # Get filtered tenant info for the list
+        tenant_list, _, _ = doorloop_bridge.get_doorloop_tenants(tenants_data)
+        
+        # Build combined response with overview data
+        response = {
+            "tenants": tenant_list if isinstance(tenant_list, list) else [],
+            "total_properties": total_properties,
+            "active_tenants_count": len(active_tenants_list) if isinstance(active_tenants_list, list) else 0,
+            "total_rent_due": f"${total_rent_due:,.2f}",
+            "active_leases_count": len(active_leases_list) if isinstance(active_leases_list, list) else 0,
+            "vacant_units": 0,  # Calculate based on your business logic
+            "outstanding_balance": total_rent_due,
+            "month_list": month_list,
+            "rent_list":rent_list,
+            "profit": sum(rent_list)
+        }
+        
+        return response
+        
     except(ConnectionError, TimeoutError, ValueError) as e:
         logging.warning(f"Primary Doorloop API failed: {e}")
         logging.info("Trying fallback service...")
@@ -109,7 +141,8 @@ async def get_leases():
     _require_api_key()
     try:
         resp = doorloop_api_client.retrieve_leases()
-        return _unwrap_result(resp)
+        data_list, lease_status = doorloop_bridge.get_lease_info(resp)
+        return _unwrap_result(data_list)
     except (ConnectionError, ValueError, TimeoutError) as e:
         logging.warning(f"Primary Doorloop API failed: {e}")
         logging.info("Trying fallback service...")
@@ -136,17 +169,17 @@ async def get_communications():
         logging.warning(f"Primary Doorloop API failed: {e}")
         logging.info("Trying fallback service...")
         try:
-            comms = services.DoorloopClient() #-> need to create communication method in the doorloop_direct
-            # get_comms = comms.
-            # if isinstance(get_lease, dict):
-            #     return _unwrap_result(get_lease)
+            comms = services.DoorloopClient()
+            get_comms = await comms.retrieve_doorloop_communication()
+            if isinstance(get_comms, dict):
+                return _unwrap_result(get_comms)
         except HTTPException as e:
-            logging.error(f"Fallback Connecteam service also failed: {e}")
-            raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
 
 @router.get("/tasks")
-async def retrieve_doorloop_tasks() :
-    """Retrieve DoorLoop communications data."""
+async def retrieve_doorloop_tasks():
+    """Retrieve DoorLoop tasks data."""
     _require_api_key()
     try:
         resp = doorloop_api_client.retrieve_doorloop_tasks()
@@ -154,28 +187,52 @@ async def retrieve_doorloop_tasks() :
     except (ConnectionError, ValueError, TimeoutError) as e:
         logging.warning(f"Primary Doorloop API failed: {e}")
         logging.info("Trying fallback service...")
-        # try:
-        #     tasks = services.DoorloopClient() - >need to create get tasks in doorloop direct and doorloop service
-        #     get_lease  = tasks
-        #     if isinstance(get_lease, dict):
-        #         return _unwrap_result(get_lease)
-        # except HTTPException as e:
-        #     logging.error(f"Fallback Connecteam service also failed: {e}")
-        #     raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
+        try:
+            tasks = services.DoorloopClient()
+            get_tasks = await tasks.retrieve_doorloop_tasks()
+            if isinstance(get_tasks, dict):
+                return _unwrap_result(get_tasks)
+        except HTTPException as e:
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
 
 @router.get("/lease-payments")
-async def retrieve_doorloop_lease_payment()  :
-    """Retrieve DoorLoop communications data."""
+async def retrieve_doorloop_lease_payment():
+    """Retrieve DoorLoop lease payments data."""
     _require_api_key()
-    resp = doorloop_api_client.retrieve_doorloop_lease_payment()
-    return _unwrap_result(resp)
+    try:
+        resp = doorloop_api_client.retrieve_doorloop_lease_payment()
+        return _unwrap_result(resp)
+    except (ConnectionError, ValueError, TimeoutError) as e:
+        logging.warning(f"Primary Doorloop API failed: {e}")
+        logging.info("Trying fallback service...")
+        try:
+            payments = services.DoorloopClient()
+            get_payments = await payments.retrieve_doorloop_lease_payment()
+            if isinstance(get_payments, dict):
+                return _unwrap_result(get_payments)
+        except HTTPException as e:
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
 
 @router.get("/expenses")
-async def retrieve_doorloop_expenses()  :
-    """Retrieve DoorLoop communications data."""
+async def retrieve_doorloop_expenses():
+    """Retrieve DoorLoop expenses data."""
     _require_api_key()
-    resp = doorloop_api_client.retrieve_doorloop_expenses() 
-    return _unwrap_result(resp)
+    try:
+        resp = doorloop_api_client.retrieve_doorloop_expenses()
+        return _unwrap_result(resp)
+    except (ConnectionError, ValueError, TimeoutError) as e:
+        logging.warning(f"Primary Doorloop API failed: {e}")
+        logging.info("Trying fallback service...")
+        try:
+            expenses = services.DoorloopClient()
+            get_expenses = await expenses.retrieve_doorloop_expenses()
+            if isinstance(get_expenses, dict):
+                return _unwrap_result(get_expenses)
+        except HTTPException as e:
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
 
 @router.get("/balance-sheet/report")
 async def balance_sheet_report():
@@ -185,3 +242,11 @@ async def balance_sheet_report():
     svc = DoorloopClient()
     resp = await svc.generate_report()
     return _unwrap_result(resp)
+
+@router.get('/profit_loss')
+async def profit_loss_report():
+    _require_api_key()
+    report = doorloop_api_client.retrieve_profit_loss()
+    return _unwrap_result(report)
+    
+
