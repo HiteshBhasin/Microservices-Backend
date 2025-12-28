@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query, Body, HTTPException, status
 from typing import Any, Dict
 from enum import Enum
 from services import connecteam_api_client
+from middle_layer import conneteam_bridge
 import os, logging
 
 router = APIRouter()
@@ -156,46 +157,14 @@ async def get_taskboard():
     resp = connecteam_api_client.list_taskboards()
     return _unwrap_result(resp)
 
-@router.get("/user/{user_id}")
-async def get_users(user_id:int):
-    resp = connecteam_api_client.get_user(user_id=user_id)
-    if not isinstance(resp,dict):
-        return {"error": "Invalid Responce"}
-    result = []
-    user_data = resp.get("data",{})
-    users = user_data.get("users",[])
-    
-    for user in users:
-        fname = user.get("firstName")
-        lname = user.get("lastName")
-        items = ["Maintenance","Housekeeping","Inspections"]
-        values = []
-        for field in user.get("customFields",[]):
-            raw_value = field.get("value")
-            normalize = _helper_normalize(raw_value=raw_value)
-       
-            for item in normalize:
-                if isinstance(item,dict):
-                    user_item = item.get("value")
-                    if user_item in items:
-                        values.append(user_item)
-                    
-        result.append({"firstname":fname,"lastname":lname, "values":values})
-    return result
 
 
-def _helper_normalize(raw_value):
-    if raw_value is None:
-        return []
-
-    if isinstance(raw_value, list):
-        return raw_value
-    return [raw_value]
 
    
     
 @router.get("/activity")
 async def get_time_activity(startDate:str,endDate:str):
     resp = connecteam_api_client.get_time_activity(startDate=startDate,endDate=endDate)
-    return _unwrap_result(resp=resp)
+    unwrap_resp = _unwrap_result(resp=resp)
+    return unwrap_resp
     

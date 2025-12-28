@@ -23,20 +23,56 @@ def retrieve_data(*args):
            return args[0]
        return args
    except Exception as e:
+       
        logging.exception(f" An internal error has occur please check the server,{e}")
        return None
 
-def get_job(raw_data):
-    if len(raw_data)==0:
-        logging.error(f"There is nothing in the data file please check the Server")
-    try:
-        data = raw_data.get("data")
-        task_data = data.get("tasks")
-        if isinstance(task_data, list):
-            print(task_data[2]["title"])
+def _helper_normalize(raw_value):
+    if raw_value is None:
+        return []
 
-    except Exception as e:
-        logging.exception(f" An internal error has occur please check the server,{e}")
-        return None
+    if isinstance(raw_value, list):
+        return raw_value
+    return [raw_value]
+
+def get_users(user_id:int, get_user):
+    resp = get_user(user_id=user_id)
+    if not isinstance(resp,dict):
+        return {"error": "Invalid Responce"}
+    result = []
+    user_data = resp.get("data",{})
+    users = user_data.get("users",[])
     
+    for user in users:
+        fname = user.get("firstName")
+        lname = user.get("lastName")
+        items = ["Maintenance","Housekeeping","Inspections"]
+        values = []
+        for field in user.get("customFields",[]):
+            raw_value = field.get("value")
+            normalize = _helper_normalize(raw_value=raw_value)
+       
+            for item in normalize:
+                if isinstance(item,dict):
+                    user_item = item.get("value")
+                    if user_item in items:
+                        values.append(user_item)
+                    
+        result.append({"firstname":fname,"lastname":lname, "values":values})
+    return result
+
+def get_times(raw_dat):
+    if len(raw_dat)==0:
+        logging.error("the data object is empty server error possible!")
+    
+    if isinstance(raw_dat,dict):
+        data = raw_dat.get("data",{})
+        time_data = data.get("timeActivitiesByUsers",[])
+        return time_data[0]
+        
+            
+
+
+
+
     
