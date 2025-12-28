@@ -152,3 +152,51 @@ def list_get_jobs() -> Dict[str, Any]:
         return response.json()
     except requests.exceptions.RequestException as exc:
         return {"error": "Request failed", "exception": str(exc)}
+    
+def list_get_assignments(user_id:int, asset_types: list[str]) -> Dict[str, Any]:
+    """List all available jobs from Connecteam."""
+    base_url = _get_base_url()
+    endpoint = f"{base_url.rstrip('/')}/users/v1/users/{user_id}/assignments?assetTypes={asset_types}"
+    headers = _get_headers()
+    params = {
+        "assetTypes":asset_types
+    }
+    try:
+        response = requests.get(endpoint, headers=headers,params=params, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+
+def get_user(user_id:int) -> Dict[str, Any]:
+    """List all available user from Connecteam."""
+    base_url = _get_base_url()
+    endpoint = f"{base_url.rstrip('/')}/users/v1/users?limit=10&offset=0&order=asc&userIds={user_id}&userStatus=active"
+    headers = _get_headers()
+   
+    try:
+        response = requests.get(endpoint, headers=headers, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+    
+
+def get_time_activity(startDate:str,endDate:str) -> Dict[str, Any]:
+    """List all available user from Connecteam."""
+    base_url = _get_base_url()
+    endpoint = f"{base_url.rstrip('/')}/time-clock/v1/time-clocks/9886223/time-activities"
+    headers = _get_headers()
+    params = {
+        "startDate":startDate,
+        "endDate": endDate  
+    }
+
+    try:
+        response = requests.get(endpoint, headers=headers, params=params, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+    
