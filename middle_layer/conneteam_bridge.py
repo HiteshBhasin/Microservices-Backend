@@ -2,7 +2,7 @@ import datetime
 import logging
 import sys
 from pathlib import Path
-# from redis import Redis
+from redis import Redis
 from typing import Any
 
 # Ensure the repository root is on sys.path so top-level packages import reliably
@@ -64,29 +64,37 @@ def get_users(user_id:int, get_user):
 
 
 def get_times(raw_dat):
-    if len(raw_dat)==0:
+    if not raw_dat or not isinstance(raw_dat, dict):
         logging.error("the data object is empty server error possible!")
-    if isinstance(raw_dat,dict):
-        data = raw_dat.get("data",{})
-        time_data = data.get("timeActivitiesByUsers",[])
-        user_info = time_info(time_data)
+        return None
+    
+    data = raw_dat.get("data", {})
+    task_data = data.get("tasks", [])
+    if isinstance(task_data,list):
+        user_info = task_info(task_data)
+    
     return user_info
 
-def time_info(raw_data):
-    userdata = get_times(raw_data)
-    if isinstance(userdata,list):
-        for i in range(len(raw_data)):
-            user_id = userdata[i].get("userId")
-            shifts = userdata[i].get("shifts",[])
-            for shift in shifts:
-                start = shift["start"]["timestamp"]
-                meaningful_strtime = datetime.datetime.fromtimestamp(start).strftime("%H:%M")
-                end = shift["end"]["timestamp"]
-                meaningful_endtime = datetime.datetime.fromtimestamp(end).strftime("%H:%M")
-                tota_time = (end - start)
-                meaningful_totaltime = datetime.datetime.fromtimestamp(tota_time).strftime("%H:%M")
-                user_data = {"user_id":user_id,"start":meaningful_strtime, "end":meaningful_endtime, "total":meaningful_totaltime}
-    return user_data
+
+def task_info(raw_data):
+    # raw_data 
+    userdata = raw_data
+    user_data = {}
+    retur_data = []
+    if isinstance(userdata, list):
+        for user in userdata:
+            
+            user_id = user.get("userIds")
+            status = user.get("status")
+            title = user.get("title") 
+            due_date = user.get("dueDate")
+            
+            if due_date is not None:
+                meaningful_date = datetime.datetime.fromtimestamp(due_date).date().isoformat()
+          
+            user_data = {"user_id": user_id,"status":status,  "title":title, "date":meaningful_date}
+            retur_data.append(user_data)
+    return retur_data
 
 
 
@@ -98,15 +106,6 @@ def time_info(raw_data):
 
 
 
-# def get_times(raw_dat):
-#     if len(raw_dat)==0:
-#         logging.error("the data object is empty server error possible!")
-    
-#     if isinstance(raw_dat,dict):
-#         data = raw_dat.get("data",{})
-#         time_data = data.get("timeActivitiesByUsers",[])
-#         return time_data[0]
-        
             
 
 
