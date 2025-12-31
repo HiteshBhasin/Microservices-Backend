@@ -91,7 +91,7 @@ def get_lease_data_cached():
     # Fetch fresh lease data using pure HTTP API client (no MCP, no async)
     tenant_lease_map = {}
     try:
-        lease_data = doorloop_api.retrieve_leases()#<-------------------------------LEASE DATA
+        lease_data = doorloop_api.retrieve_leases()#LEASE DATA
        
         if isinstance(lease_data, dict) and "data" in lease_data:
             leases = lease_data["data"]
