@@ -193,13 +193,13 @@ except Exception:
 # No auto-fetching or assignment of raw tools at import time. The``
 # McpToolset provided to the agent will be used by the ADK runtime to
 # obtain tools when needed.
-# async def main():
-#     events = runner.run(
-#         user_id=USER_ID,
-#         session_id=SESSION_ID,
-#         new_message=types.Content(parts=[types.Part(text="Hello, I need help with Connecteam tasks.")])
-#     )
-#     async for event in events:
-#         print(event)
+async def main():
+    events = runner.run(
+        user_id=USER_ID,
+        session_id=SESSION_ID,
+        new_message=types.Content(parts=[types.Part(text="Hello, I need help with Connecteam tasks.")])
+    )
+    async for event in events:
+        print(event)
 
-# asyncio.run(main())
+asyncio.run(main())
