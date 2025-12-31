@@ -61,11 +61,13 @@ try:
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 except Exception:
     logging.info("Could not register rate limit exception handler; continuing without it.")
-
+origins = [
+    "http://localhost:3000",
+]
 # CORS - development defaults, tighten in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -82,6 +84,6 @@ async def root():
 if __name__ == "__main__":
     try:
         import uvicorn
-        uvicorn.run("app.main:app", host="0.0.0.0", port=int(os.getenv("PORT", 8000)), reload=True)
+        uvicorn.run("app.main:app", host="127.0.0.1", port=int(os.getenv("PORT", 8000)), reload=True)
     except Exception as exc:
         logging.error("Failed to start uvicorn: %s", exc)

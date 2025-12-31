@@ -34,6 +34,7 @@ def retrieve_tenants():
     try: # If the response is JSON return that, otherwise include a short text body for debugging
         response = requests.get(endpoint, headers=headers, timeout=10)
         content_type = response.headers.get("Content-Type", "")
+       
         if response.ok:
             if "application/json" in content_type:
                 return response.json()  # Try to parse JSON even if header is missing
