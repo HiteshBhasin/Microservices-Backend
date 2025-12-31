@@ -1,7 +1,7 @@
 import os
 import sys
 import requests
-
+from fastapi import FastAPI
 
 # Add project root to Python path so we can import utils, services, etc.
 from pathlib import Path
@@ -15,12 +15,37 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # FastMCP instance for Connecteam
-mcp = FastMCP("connectteam_server")
+mcp = FastMCP("connectteam_server",instructions= " Provide RESPI tools for Nest Host DB from various external entities",
+    host="0.0.0.0",
+    port=8000,)
 
+# Add a custom HTTP route for the root endpoint
+from starlette.responses import JSONResponse
+from starlette.requests import Request
+
+@mcp.custom_route(path="/", methods=["GET"])
+async def read_root(request: Request):
+    """Root endpoint showing server status and available tools"""
+    return JSONResponse({
+        "status": "running",
+        "server": "Connecteam MCP Server",
+        "version": "1.0",
+        "mcp_endpoint": "/mcp/v1",
+        "available_tools": [
+            "retrieve_tenants",
+            "list_tasks", 
+            "get_task",
+            "create_task",
+            "update_task",
+            "delete_task",
+            "list_taskboards"
+        ],
+        "message": "Server is running. Use MCP client to interact with tools."
+    })
 
 @mcp.tool()
 def retrieve_tenants():
-    """Retrieve tenant data from the DoorLoop API"""
+    """Retrieve tenant data from the Conneteam API"""
     api_key = os.getenv("CONNECTTEAM_API_KEY")
     if not api_key:
         return {"error": "connecteam not found in environment variables"}
@@ -189,9 +214,32 @@ def list_taskboards():
         return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
 
 
+@mcp.tool()
+def list_get_jobs():
+    """List all available jobs from Connecteam."""
+    api_key = os.getenv("CONNECTTEAM_API_KEY")
+    if not api_key:
+        return {"error": "CONNECTTEAM_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("CONNECTTEAM_API_BASE", "https://api.connecteam.com")
+    endpoint = f"{base_url.rstrip('/')}/jobs/v1/jobs?includeDeleted=true&order=asc&limit=10&offset=0"
+    headers = {"x-api-key": api_key, "accept": "application/json"}
+    try:
+        resp = requests.get(endpoint, headers=headers, timeout=10)
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+    try:
+        return resp.json()
+    except Exception:
+        return {"status": resp.status_code, "body_snippet": resp.text[:1000]}
+
 
 
 if __name__ == "__main__":
-    # Run the FastMCP server using stdio transport. This keeps the process
-    # alive and exposes the defined @mcp.tool() functions to MCP clients.
-    mcp.run(transport="stdio")
+    try:
+        # Run the FastMCP server using stdio transport. This keeps the process
+        # alive and exposes the defined @mcp.tool() functions to MCP clients.
+        mcp.run(transport="streamable-http")
+    except Exception as e:
+        print(f"Error: {e}")

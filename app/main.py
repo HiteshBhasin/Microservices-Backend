@@ -1,8 +1,13 @@
 import sys
+import warnings
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+# Suppress specific runtime warnings from MCP/anyio async context issues
+# warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*cancel scope.*")
+# warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*BrokenResourceError.*")
 
 # Load environment from .env early so route modules see DOORLOOP_API_KEY, etc.
 try:
@@ -30,6 +35,11 @@ import logging
 async def lifespan(app: FastAPI):
     # Startup code
     logging.getLogger().setLevel(logging.INFO)
+    
+    # Suppress noisy MCP async warnings (non-blocking errors)
+    logging.getLogger("mcp").setLevel(logging.ERROR)
+    logging.getLogger("anyio").setLevel(logging.ERROR)
+    
     missing = []
     # Use ROOT path since MCP server scripts are in project root, not app directory
     for path in ("mcp_server/connectteam_mcp_server.py", "mcp_server/doorloop_mcp_server.py"):
@@ -41,10 +51,31 @@ async def lifespan(app: FastAPI):
     else:
         logging.info("All MCP server scripts present.")
     
+    # Start background refresh workers MAY BE WE CAN PUT TIMMER HERE TO RUN THIS AFTER 15 MINS
+    # try:
+    #     from middle_layer.redis_layer import redis, start_background_refresh
+    #     from middle_layer.bridge import fetch_fresh_tenants, fetch_property_ids, fetch_property_by_id
+    #     from redis import Redis
+        
+    #     if isinstance(redis, Redis):
+    #         logging.info("Starting background refresh workers...")
+    #         start_background_refresh(
+    #             tenant_fetch_fn=fetch_fresh_tenants,
+    #             property_ids_fn=fetch_property_ids,
+    #             property_fetch_fn=fetch_property_by_id,
+    #             tenant_interval=30,  # Refresh tenants every 30 minutes
+    #             property_interval=60  # Refresh properties every 60 minutes
+    #         )
+    #         logging.info("Background workers started - cache will auto-refresh every 30-60 minutes")
+    #     else:
+    #         logging.warning("Redis not available - cache will be populated on-demand only")
+    # except Exception as e:
+    #     logging.warning("Failed to start background workers: %s - cache will be populated on-demand", e)
+    
     yield  # This is where the application runs
     
     # Shutdown code (optional)
-    # Add any cleanup code here if needed
+    # Daemon threads will automatically stop when app shuts down
     logging.info("Shutting down...")
 
 app = FastAPI(
@@ -87,3 +118,7 @@ if __name__ == "__main__":
         uvicorn.run("app.main:app", host="127.0.0.1", port=int(os.getenv("PORT", 8000)), reload=True)
     except Exception as exc:
         logging.error("Failed to start uvicorn: %s", exc)
+    
+
+        
+            

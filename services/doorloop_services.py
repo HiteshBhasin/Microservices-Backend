@@ -51,9 +51,14 @@ class DoorloopClient:
         try:
             return await asyncio.wait_for(self._mcp_call(tool_name, args), timeout=10)
         except Exception as exc:
-            # Log full exception (stack trace) to help debugging MCP stdio failures
-            logger.warning("MCP call %s failed; exc=%s; will %s fallback", tool_name, exc, "attempt" if USE_DIRECT else "NOT attempt")
-            logger.debug("MCP call exception details", exc_info=True)
+            # Suppress noisy MCP warnings, only log at debug level
+            exc_name = type(exc).__name__
+            if "RuntimeError" in exc_name or "BrokenResourceError" in exc_name:
+                logger.debug("MCP call %s failed with %s; using fallback", tool_name, exc_name)
+            else:
+                logger.warning("MCP call %s failed; exc=%s; will %s fallback", tool_name, exc, "attempt" if USE_DIRECT else "NOT attempt")
+                logger.debug("MCP call exception details", exc_info=True)
+            
             if USE_DIRECT and direct_func and direct is not None:
                 try:
                     # direct_func is an async function exported by services/doorloop_direct
@@ -79,6 +84,18 @@ class DoorloopClient:
     async def retrieve_doorloop_communication(self) -> Dict[str, Any]:
         """Retrieve DoorLoop communications data."""
         return await self._call_with_fallback("retrieve_doorloop_communication", {}, direct_func=(getattr(direct, "retrieve_doorloop_communication") if direct else None))
+
+    async def retrieve_doorloop_tasks(self) -> Dict[str, Any]:
+        """Retrieve DoorLoop tasks data."""
+        return await self._call_with_fallback("retrieve_doorloop_tasks", {}, direct_func=(getattr(direct, "retrieve_doorloop_tasks") if direct else None))
+
+    async def retrieve_doorloop_lease_payment(self) -> Dict[str, Any]:
+        """Retrieve DoorLoop lease payments data."""
+        return await self._call_with_fallback("retrieve_doorloop_lease_payment", {}, direct_func=(getattr(direct, "retrieve_doorloop_lease_payment") if direct else None))
+
+    async def retrieve_doorloop_expenses(self) -> Dict[str, Any]:
+        """Retrieve DoorLoop expenses data."""
+        return await self._call_with_fallback("retrieve_doorloop_expenses", {}, direct_func=(getattr(direct, "retrieve_doorloop_expenses") if direct else None))
 
     async def generate_report(self) -> Dict[str, Any]:
         """Generate DoorLoop balance sheet report with PDF."""

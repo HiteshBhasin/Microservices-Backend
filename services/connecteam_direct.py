@@ -41,14 +41,14 @@ async def delete_task(task_id: str) -> Dict[str, Any]:
     return await asyncio.to_thread(ct.delete_task, task_id)
 
 
-# async def generate_tasks_report(limit: int = 100) -> Dict[str, Any]:
-#     ct = _import_server_module()
-#     return await asyncio.to_thread(ct.generate_tasks_report, limit)
+async def generate_tasks_report(limit: int = 100) -> Dict[str, Any]:
+    ct = _import_server_module()
+    return await asyncio.to_thread(ct.generate_tasks_report, limit)
 
 
-# async def generate_tasks_report_pdf(limit: int = 100, out_path: str = "connecteam_tasks_report.pdf") -> Dict[str, Any]:
-#     ct = _import_server_module()
-#     return await asyncio.to_thread(ct.generate_tasks_report_pdf, limit, out_path)
+async def generate_tasks_report_pdf(limit: int = 100, out_path: str = "connecteam_tasks_report.pdf") -> Dict[str, Any]:
+    ct = _import_server_module()
+    return await asyncio.to_thread(ct.generate_tasks_report_pdf, limit, out_path)
 
 
 __all__ = [
@@ -58,6 +58,6 @@ __all__ = [
     "create_task",
     "update_task",
     "delete_task",
-    # "generate_tasks_report",
-    # "generate_tasks_report_pdf",
+    "generate_tasks_report",
+    "generate_tasks_report_pdf",
 ]

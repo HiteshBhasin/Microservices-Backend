@@ -15,7 +15,35 @@ from utils.Report_gen import DoorLoopReportGenerator
 # can be imported even if reportlab/fpdf are not installed in the environment.
 
 load_dotenv()
-mcp = FastMCP("doorloop_server")
+mcp = FastMCP("doorloop_server",instructions=" Provide RESPI tools for Nest Host DB from various external entities",
+    host="0.0.0.0",
+    port=8000)
+from starlette.responses import JSONResponse
+from starlette.requests import Request
+
+@mcp.custom_route(path="/", methods=["GET"])
+async def read_root(request: Request):
+    """Root endpoint showing server status and available tools"""
+    return JSONResponse({
+        "status": "running",
+        "server": "Doorloop MCP Server",
+        "version": "1.0",
+        "mcp_endpoint": "/mcp/v1",
+        "available_tools": [
+            "retrieve_tenants",
+            "retrieve_a_tenants",
+            "retrieve_leases", 
+            "retrieve_properties", 
+            "retrieve_doorloop_communication",
+            "retrieve_properties_id",
+            "retrieve_doorloop_tasks",
+            "retrieve_doorloop_lease_payment",
+            "retrieve_doorloop_expenses",
+            "generate_report",
+            "generate_pdf"
+        ],
+        "message": "Server is running. Use MCP client to interact with tools."
+    })
 
 @mcp.tool()
 def retrieve_tenants():
@@ -236,6 +264,117 @@ def retrieve_properties_id(id:str):
         return {"error": "Request failed", "exception": str(exc)}
 
 @mcp.tool()
+def retrieve_doorloop_tasks():
+    """Retrieve tasks from the DoorLoop API"""
+    api_key = os.getenv("DOORLOOP_API_KEY")
+    if not api_key:
+        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
+    endpoint = f"{base_url.rstrip('/')}/api/tasks"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+    try:
+        response = requests.get(endpoint, headers=headers, timeout=10)
+        content_type = response.headers.get("Content-Type", "")
+        if response.ok:
+            if "application/json" in content_type:
+                return response.json()
+            try:
+                return response.json()
+            except Exception:
+                return {"status": response.status_code, "body": response.text[:1000]}
+        else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
+            return {
+                "error": "Failed to fetch tasks",
+                "status": response.status_code,
+                "response": resp_json,
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+@mcp.tool()
+def retrieve_doorloop_lease_payment():
+    """Retrieve lease payments from the DoorLoop API"""
+    api_key = os.getenv("DOORLOOP_API_KEY")
+    if not api_key:
+        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
+    endpoint = f"{base_url.rstrip('/')}/api/lease-payments"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+    try:
+        response = requests.get(endpoint, headers=headers, timeout=10)
+        content_type = response.headers.get("Content-Type", "")
+        if response.ok:
+            if "application/json" in content_type:
+                return response.json()
+            try:
+                return response.json()
+            except Exception:
+                return {"status": response.status_code, "body": response.text[:1000]}
+        else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
+            return {
+                "error": "Failed to fetch lease payments",
+                "status": response.status_code,
+                "response": resp_json,
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+@mcp.tool()
+def retrieve_doorloop_expenses():
+    """Retrieve expenses from the DoorLoop API"""
+    api_key = os.getenv("DOORLOOP_API_KEY")
+    if not api_key:
+        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
+    endpoint = f"{base_url.rstrip('/')}/api/expenses"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+    try:
+        response = requests.get(endpoint, headers=headers, timeout=10)
+        content_type = response.headers.get("Content-Type", "")
+        if response.ok:
+            if "application/json" in content_type:
+                return response.json()
+            try:
+                return response.json()
+            except Exception:
+                return {"status": response.status_code, "body": response.text[:1000]}
+        else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
+            return {
+                "error": "Failed to fetch expenses",
+                "status": response.status_code,
+                "response": resp_json,
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+@mcp.tool()
 def generate_report():
     """Fetch DoorLoop balancesheet (safe, debuggable)."""
     import os, requests
@@ -335,7 +474,7 @@ if __name__ == "__main__":
     try:
         # Run the FastMCP server using stdio transport. This keeps the process
         # alive and exposes the defined @mcp.tool() functions to MCP clients.
-        mcp.run(transport="stdio")
+       mcp.run(transport="streamable-http")
       
     except Exception as e:
         print(f"Error: {e}")
