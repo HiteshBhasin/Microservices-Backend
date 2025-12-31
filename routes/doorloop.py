@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException 
 from typing import Any, Dict, List
 import os , sys, logging
 from services.doorloop_services import DoorloopClient
@@ -54,9 +54,7 @@ async def get_tenants():
         tenants_data = doorloop_api_client.retrieve_tenants()
         property_data = doorloop_api_client.retrieve_properties()
         lease_data = doorloop_api_client.retrieve_leases()
-       
-    
-        
+           
         # Get aggregated overview information first
         total_properties, active_tenants_list, total_rent_due, active_leases_list, month_list, rent_list = doorloop_bridge.fetch_accumulative_info(
             prop_raw_data=property_data,
@@ -243,10 +241,10 @@ async def balance_sheet_report():
     resp = await svc.generate_report()
     return _unwrap_result(resp)
 
-@router.get('/profit_loss')
-async def profit_loss_report():
-    _require_api_key()
-    report = doorloop_api_client.retrieve_profit_loss()
-    return _unwrap_result(report)
+# @router.get('/profit_loss')
+# async def profit_loss_report():
+#     _require_api_key()
+#     report = doorloop_api_client.retrieve_profit_loss()
+#     return _unwrap_result(report)
     
 
