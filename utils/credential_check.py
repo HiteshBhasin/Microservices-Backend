@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-from schema.schema import UserCredentials, UserLogin
+from utils.schema.schema import UserCredentials, UserLogin
 from pymongo import AsyncMongoClient
 from dotenv import load_dotenv
 import os, logging, hashlib
@@ -29,9 +29,6 @@ form_app.add_middleware(
     allow_headers=["*"],
 )
 
-@form_app.get("/")
-async def index():
-    return {"message": "hi"}
 
 @form_app.post("/register")
 async def register_credentials(cred: UserLogin, request: Request):
@@ -40,7 +37,10 @@ async def register_credentials(cred: UserLogin, request: Request):
     collection = request.app.state.collections
     new_user = {
         "username":cred.username,
+        "Firstname":cred.fname,
+        "Lastname":cred.lname,
         "password": encoded_obj
+        
     }
     result = await collection.insert_one(new_user)
     return {"message": "User registered successfully!", "user_id": str(result.inserted_id)}
