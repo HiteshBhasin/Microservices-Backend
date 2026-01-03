@@ -24,3 +24,4 @@ numpy
 redis
 sqlalchemy 
 mailchimp_marketing
+fastapi-mail

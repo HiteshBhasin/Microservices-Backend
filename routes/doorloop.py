@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException 
+from fastapi import APIRouter, HTTPException, Body
 from typing import Any, Dict, List
 import os , sys, logging
 from services.doorloop_services import DoorloopClient
@@ -87,12 +87,12 @@ async def get_tenants():
         logging.info("Trying fallback service...")
         try:
             tenants = services.DoorloopClient()
-            tenants_info = tenants.retrieve_tenants()
+            tenants_info = await tenants.retrieve_tenants()  # Added await for async call
             if isinstance(tenants_info, dict):
                 return _unwrap_result(tenants_info)
         except HTTPException as e:
             logging.exception("an error occur the retrieve_tenants server is down. check connecteam_service")
-            raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
             
             
 @router.get("/properties")
@@ -106,12 +106,12 @@ async def get_properties():
         logging.info("Trying fallback service...")
         try:
             properties = services.DoorloopClient()
-            properties_info  = properties.retrieve_properties()
+            properties_info = await properties.retrieve_properties()  # Added await for async call
             if isinstance(properties_info, dict):
                 return _unwrap_result(properties_info)
         except HTTPException as e:
-            logging.error(f"Fallback Connecteam service also failed: {e}")
-            raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
                        
 
 
@@ -126,7 +126,7 @@ async def get_tenant(tenant_id: str):
         logging.info("Trying fallback service...")
         try:
             each__tenant = services.DoorloopClient()
-            tenant_info  = each__tenant.retrieve_a_tenant(tenant_id= tenant_id)
+            tenant_info = await each__tenant.retrieve_a_tenant(tenant_id=tenant_id)  # Added await for async call
             if isinstance(tenant_info, dict):
                 return _unwrap_result(tenant_info)
         except HTTPException as e:
@@ -146,14 +146,12 @@ async def get_leases():
         logging.info("Trying fallback service...")
         try:
             lease = services.DoorloopClient()
-            
-            get_lease  = lease.retrieve_leases()
-            filtered_data = doorloop_bridge.get_lease_info(get_lease)
-            if isinstance(filtered_data, dict):
-                return _unwrap_result(filtered_data)
+            get_lease = await lease.retrieve_leases()  # Added await for async call
+            data_list, lease_status = doorloop_bridge.get_lease_info(get_lease)
+            return _unwrap_result(data_list)
         except HTTPException as e:
-            logging.error(f"Fallback Connecteam service also failed: {e}")
-            raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
 
 
 @router.get("/communications")
@@ -241,10 +239,73 @@ async def balance_sheet_report():
     resp = await svc.generate_report()
     return _unwrap_result(resp)
 
-# @router.get('/profit_loss')
-# async def profit_loss_report():
-#     _require_api_key()
-#     report = doorloop_api_client.retrieve_profit_loss()
-#     return _unwrap_result(report)
+
+# @router.post("/accounts")
+# async def create_account(
+#     active: bool = Body(True, description="Whether the account is active"),
+#     account_type: str = Body("ASSET_ACCOUNTS_RECEIVABLE", alias="type", description="Type of account to create")
+# ):
+#     """Create a new account in DoorLoop.
     
+#     Args:
+#         active: Whether the account should be active (default: True)
+#         account_type: Account type (default: "ASSET_ACCOUNTS_RECEIVABLE")
+        
+#     Returns:
+#         The created account data
+#     """
+#     _require_api_key()
+#     try:
+#         resp = doorloop_api_client.create_account(active=active, account_type=account_type)
+#         return _unwrap_result(resp)
+#     except (ConnectionError, ValueError, TimeoutError) as e:
+#         logging.error(f"Failed to create account: {e}")
+#         raise HTTPException(status_code=500, detail=f"Failed to create account: {str(e)}")
+
+
+@router.post("/tenants")
+async def create_tenant(
+    firstName: str = Body(..., description="Tenant's first name"),
+    lastName: str = Body(..., description="Tenant's last name"),
+    middleName: str = Body(None, description="Tenant's middle name (optional)"),
+    gender: str = Body(None, description="Gender: MALE, FEMALE, or PREFER_NOT_TO_SAY (optional)"),
+):
+    """Create a new tenant in DoorLoop.
+    
+    Args:
+        firstName: Tenant's first name (required)
+        lastName: Tenant's last name (required)
+        middleName: Tenant's middle name (optional)
+        gender: Gender enum value (optional)
+        
+    Returns:
+        The created tenant data with ID
+    """
+    _require_api_key()
+    try:
+        resp = await doorloop_api_client.create_tenant(
+            first_name=firstName,
+            last_name=lastName,
+            middle_name=middleName,
+            gender=gender
+        )
+        return _unwrap_result(resp)
+    except (ConnectionError, ValueError, TimeoutError) as e:
+        logging.warning(f"Primary Doorloop API failed: {e}")
+        logging.info("Trying fallback MCP service...")
+        try:
+            tenant_service = services.DoorloopClient()
+            tenant_info = await tenant_service.create_tenant(
+                firstName=firstName,
+                lastName=lastName,
+                middleName=middleName,
+                gender=gender
+            )
+            if isinstance(tenant_info, dict):
+                return _unwrap_result(tenant_info)
+        except HTTPException as e:
+            logging.error(f"Fallback Doorloop service also failed: {e}")
+            raise HTTPException(status_code=500, detail="Both primary and fallback Doorloop services failed.")
+
+
 
