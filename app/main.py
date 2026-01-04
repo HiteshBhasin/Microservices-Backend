@@ -25,6 +25,7 @@ from slowapi.util import get_remote_address
 from fastapi.middleware.cors import CORSMiddleware
 from routes.connecteam import router as connecteam_router
 from routes.doorloop import router as doorloop_router
+from routes.zenya import router as zenya_router
 import os
 import logging
 
@@ -107,6 +108,7 @@ app.add_middleware(
 # Mount routers
 app.include_router(connecteam_router, prefix="/api/connecteam", tags=["connecteam"])
 app.include_router(doorloop_router, prefix="/api/doorloop", tags=["doorloop"])
+app.include_router(zenya_router, prefix="/api/zenya", tags=["zenya"])
 
 @app.get("/", tags=["meta"])
 async def root():
