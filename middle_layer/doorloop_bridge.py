@@ -2,8 +2,7 @@ import logging
 import sys
 from pathlib import Path
 from redis import Redis
-from typing import Any
-from datetime import datetime
+
 
 # Ensure the repository root is on sys.path so top-level packages import reliably
 PROJECT_ROOT = Path(__file__).absolute().parent.parent
@@ -23,11 +22,13 @@ try:
 except Exception as exc:
 	raise ImportError(f"Failed to import redis_layer. Ensure project root is correct: {PROJECT_ROOT}\nOriginal error: {exc}")
 
+
 try:
 	# Import pure API client (NO MCP - just direct HTTP requests)
     from services import doorloop_api_client as doorloop_api
 except Exception as exc:
 	raise ImportError(f"Failed to import doorloop_api_client. Ensure project root is correct: {PROJECT_ROOT}\nOriginal error: {exc}")
+
 
 def retrieve_data(*args):
    try:
@@ -44,7 +45,7 @@ def get_propertys(raw_data):
     if raw_data is None:
         logging.error("get_propertys: no raw_data provided")
         return []
-    total = raw_data.get("total")
+
     if isinstance(raw_data, tuple) and len(raw_data) > 0:
         payload = raw_data[0]
     elif isinstance(raw_data, dict):
@@ -70,29 +71,28 @@ def get_propertys(raw_data):
                 if prop_id:
                     property_ids.append(prop_id)
 
-    return list(property_ids), total
+    return list(property_ids)
 
 
 def get_lease_data_cached():
-    """Fetch and cache lease data. Returns cached data if available."""
+    """Fetch and cache lease data. Returns cached data if available (1 hour TTL)."""
     from middle_layer.redis_layer import redis
     import json
     
     # Try to get from cache first
     if redis:
         try:
-            cached = redis.get("lease_data")
+            cached = redis.get("lease_data:processed")
             if cached:
-                logging.info("Using cached lease data")
+                logging.info("Cache HIT: Using cached lease data")
                 return json.loads(cached)
         except Exception:
             logging.exception("Failed to retrieve cached lease data")
     
-    # Fetch fresh lease data using pure HTTP API client (no MCP, no async)
+    # Fetch fresh lease data using pure HTTP API client
     tenant_lease_map = {}
     try:
-        lease_data = doorloop_api.retrieve_leases()#LEASE DATA
-       
+        lease_data = doorloop_api.retrieve_leases()
         if isinstance(lease_data, dict) and "data" in lease_data:
             leases = lease_data["data"]
             # Create a mapping of tenant name to lease info
@@ -100,6 +100,7 @@ def get_lease_data_cached():
                 tenant_name = lease.get("name", "")
                 if tenant_name:
                     tenant_lease_map[tenant_name] = {
+                        "id": lease.get("id"),
                         "totalBalanceDue": lease.get("totalBalanceDue", 0),
                         "overdueBalance": lease.get("overdueBalance", 0),
                         "currentBalance": lease.get("currentBalance", 0),
@@ -110,55 +111,49 @@ def get_lease_data_cached():
         # Cache for 1 hour (3600 seconds)
         if redis:
             try:
-                redis.setex("lease_data", 3600, json.dumps(tenant_lease_map))
+                redis.setex("lease_data:processed", 3600, json.dumps(tenant_lease_map))
                 logging.info("Cached lease data for 1 hour")
             except Exception:
                 logging.exception("Failed to cache lease data")
     except Exception:
-        logging.exception("Failed to fetch lease data for rent due information")
+        logging.exception("Failed to fetch lease data from API")
     
     return tenant_lease_map
 
 
 def get_doorloop_tenants(raw_data):
-    """Parse tenant data and cache the results. Uses cached results if available."""
+    """Parse tenant data and cache the results (30 min TTL). Uses cache-first approach.
+    
+    Returns:
+        tuple: (parsed_tenants_list, lease_info_dict, property_details_list)
+    """
     from middle_layer.redis_layer import redis
+    import json
+    
     if raw_data is None:
-        logging.error("No raw_data provided to parser")
-        return []
-    # Check if we have cached parsed tenants (valid for 30 minutes)
-    # We check cache_data_retireive since that's what we return at the end
-    # NOTE: When returning cached data, we need to recalculate status and rent from the cached tenant objects
-    try:
-        cached_result = cache_data_retireive('data')
-        if cached_result and len(cached_result) > 0:
-            logging.info("Using cached parsed tenant data from Redis")
-            # Recalculate totals from cached data
-            total_status = []
-            total_rent_due = 0
-            for tenant in cached_result:
-                status = tenant.get('status', '').upper()
-                if status == 'ACTIVE':
-                    total_status.append(status)
-                # Extract numeric value from rent_due string like "$3,092.00"
-                rent_str = tenant.get('rent_due', '$0.00')
-                try:
-                    rent_value = float(rent_str.replace('$', '').replace(',', ''))
-                    total_rent_due += rent_value
-                except:
-                    pass
-            return cached_result, total_status, total_rent_due
-    except Exception:
-        logging.debug("No cached data available, will fetch fresh")
+        logging.error("No raw_data provided to get_doorloop_tenants")
+        return [], {}, []
+
+    # Check Redis cache first (30 minute TTL)
+    if redis:
+        try:
+            cached = redis.get("doorloop:tenants:parsed")
+            if cached:
+                logging.info("Cache HIT: Using cached parsed tenant data")
+                parsed_tenants = json.loads(cached)
+                lease_info = get_lease_data_cached()
+                property_details = []  # Cached separately via property_info()
+                return parsed_tenants, lease_info, property_details
+        except Exception:
+            logging.debug("Cache miss or retrieval error, fetching fresh")
 
     if isinstance(raw_data, tuple) and len(raw_data) > 0:
         payload = raw_data[0]
-        
     elif isinstance(raw_data, dict):
         payload = raw_data
     else:
         logging.error("Unexpected raw_data type: %s", type(raw_data))
-        return []
+        return [], {}, []
 
     tenants = payload["data"]
     if not isinstance(tenants, list):
@@ -169,6 +164,8 @@ def get_doorloop_tenants(raw_data):
     
     # Fetch property addresses inline to avoid circular dependency
     property_address_map = {}
+    removed_keys = ["state", "zip", "country", "lat", "lng", "isValidAddress"]
+    
     for pid in property_ids:
         try:
             # Use pure HTTP API client (no MCP, no async)
@@ -184,14 +181,14 @@ def get_doorloop_tenants(raw_data):
     
     # Get lease data from cache (refreshed every hour)
     tenant_lease_map = get_lease_data_cached()
+    
     parsed_obj = []
-    total_status = []
-    total_rent_due = 0
     for idx, tenant in enumerate(tenants):
         try:
             # safe lookups with defaults
-            # tenant_id = tenant.get("id")
+            tenant_id = tenant.get("id")
             name = tenant.get("fullName") or tenant.get("name") or ""
+
             # extract first email address if present
             email_addr , phone = None, None
             for e in tenant.get("emails", []) or []:
@@ -209,9 +206,7 @@ def get_doorloop_tenants(raw_data):
                 email_addr = portal.get("loginEmail")
 
             status = (tenant.get("portalInfo") or {}).get("status") or tenant.get("status") or "UNKNOWN"
-            if status and status.upper() == "ACTIVE":
-                total_status.append(status)
-                
+           
             # Get the property address instead of just the ID
             prop_id = property_ids[idx] if idx < len(property_ids) else None
             prop_address = property_address_map.get(prop_id, "N/A") if prop_id else "N/A"
@@ -219,7 +214,6 @@ def get_doorloop_tenants(raw_data):
             # Get rent due information from lease data
             lease_info = tenant_lease_map.get(name, {})
             rent_due = lease_info.get("overdueBalance", 0)
-            total_rent_due += int(rent_due)
             # total_balance = lease_info.get("totalBalanceDue", 0)
             # monthly_rent = lease_info.get("totalRecurringRent", 0)
            
@@ -240,22 +234,26 @@ def get_doorloop_tenants(raw_data):
             # continue parsing remaining tenants
             continue
     
-    # Cache the parsed tenants to Redis (once after loop)
-    # This caches with 30 minute TTL by default
-    cache_tenants_to_redis(parsed_obj)
+    # Cache the parsed tenants to Redis (30 minute TTL)
+    if redis:
+        try:
+            import json
+            redis.setex("doorloop:tenants:parsed", 1800, json.dumps(parsed_obj))
+            logging.info("Cached %d parsed tenants for 30 minutes", len(parsed_obj))
+        except Exception:
+            logging.exception("Failed to cache parsed tenants")
     
-    # Retrieve what we just cached (ensures consistency)
-    returned_ogj = cache_data_retireive('data')
-        
-    # Print/return full parsed list
-    logging.info("Parsed %d tenants from fresh data", len(parsed_obj))
-    return returned_ogj , total_status,total_rent_due
+    # Also fetch lease and property data for the 3-tuple return
+    lease_info = get_lease_data_cached()
+    property_details = property_info(raw_data)
+    
+    logging.info("Returning parsed tenants with lease and property info")
+    return parsed_obj, lease_info, property_details
 
 
-def property_info(raw_data ):
-    """Fetch property details (address) for up to `limit` property ids.
+def property_info(raw_data):
+    """Fetch property details (address). Uses Redis cache (15 min TTL) to reduce API calls.
     
-    Uses Redis cache first; falls back to API if not cached.
     Returns a list of dicts: [{'property_id': id, 'address': {...}}, ...]
     """
     if raw_data is None:
@@ -275,9 +273,22 @@ def property_info(raw_data ):
     addressobj = []
     removed_keys = ["state", "zip", "country", "lat", "lng", "isValidAddress"]
     
-    for pid in property_ids:  # Limit to first N property ids
+    for pid in property_ids:
         try:
-            # Fetch property data from pure HTTP API client (no MCP)
+            # Check cache first (15 min TTL)
+            cache_key = f"doorloop:property:{pid}"
+            if redis:
+                try:
+                    import json
+                    cached_prop = redis.get(cache_key)
+                    if cached_prop:
+                        logging.debug(f"Cache HIT for property {pid}")
+                        addressobj.append(json.loads(cached_prop))
+                        continue
+                except Exception:
+                    logging.debug(f"Cache miss for property {pid}")
+            
+            # Fetch from API if not cached
             prop_data = doorloop_api.retrieve_properties_id(pid)
             
             if not isinstance(prop_data, dict):
@@ -288,90 +299,27 @@ def property_info(raw_data ):
             address = prop_data.get("address") or {}
             filtered_address = {k: v for k, v in address.items() if k not in removed_keys}
             
-            addressobj.append({
+            prop_obj = {
                 "property_id": pid,
                 "address": filtered_address
-            })
+            }
+            addressobj.append(prop_obj)
+            
+            # Cache for 15 minutes
+            if redis:
+                try:
+                    import json
+                    redis.setex(cache_key, 900, json.dumps(prop_obj))
+                    logging.debug(f"Cached property {pid}")
+                except Exception:
+                    logging.debug("Failed to cache property")
+                    
         except Exception:
             logging.exception("Failed to retrieve property info for id %s", pid)
             continue
     
+    logging.info(f"Processed {len(addressobj)} properties")
     return addressobj
-
-def get_lease_info(raw_data:dict):
-    # Defensive checks: ensure we always return a tuple of two iterables
-    if not raw_data:
-        logging.error("get_lease_info: no data provided")
-        return [], []
-
-    lease_data = raw_data.get('data')
-    data_list = []
-    lease_status = []
-
-    # Normalize to an iterable of lease items
-    if isinstance(lease_data, dict):
-        lease_items = [lease_data]
-    elif isinstance(lease_data, list):
-        lease_items = lease_data
-    else:
-        logging.error("get_lease_info: unexpected lease_data type %s", type(lease_data))
-        return [], []
-
-    for data in lease_items:
-        try:
-            status = data.get('status')
-            if status == 'ACTIVE':
-                lease_status.append(status)
-
-            data_obj = {
-                "start_data": data.get("start"),
-                "end_data": data.get("end"),
-                "name": data.get("name"),
-                "totalRecurringRent": data.get("totalRecurringRent", 0),
-            }
-            data_list.append(data_obj)
-        except Exception:
-            logging.exception("Failed to parse lease item")
-
-    return data_list, lease_status
-
-
-def getting_month_rent(raw_data):
-    month_list = []
-    rent_list=[]
-    lease_data = raw_data.get('data')
-     # Normalize to an iterable of lease items
-    if isinstance(lease_data, dict):
-        lease_items = [lease_data]
-    elif isinstance(lease_data, list):
-        lease_items = lease_data
-    else:
-        logging.error("get_lease_info: unexpected lease_data type %s", type(lease_data))
-        return [], []
-    date_format = "%Y-%m-%d"
-    for data in lease_items:
-        try:
-            rent_list.append(data.get('totalRecurringRent'))
-            date_string = str(data.get('start'))
-            date_obj = datetime.strptime(date_string, date_format)
-            month_name = date_obj.strftime("%b")  # %B gives full month name (e.g., "January")
-            month_list.append(month_name)
-        except Exception:
-            logging.exception("Failed to parse lease item")
-    
-    return month_list, rent_list
-    
-    
-def fetch_accumulative_info(prop_raw_data,tenant_raw_data,lease_raw_data):
-    property_list, total_props  = get_propertys(raw_data=prop_raw_data)
-    tenant_obj, total_status,total_rent = get_doorloop_tenants(tenant_raw_data)
-    data_list , lease_status = get_lease_info(lease_raw_data)
-    month_list, rent_list = getting_month_rent(lease_raw_data)
-    return total_props,total_status,total_rent,lease_status,month_list, rent_list 
-    
-    
-# ---------------------------------fetching data for the bcakground -------------------------------------------------------------------------------------#
-
 
 
 def fetch_fresh_tenants():
@@ -404,6 +352,88 @@ def fetch_property_by_id(prop_id):
         logging.exception("Failed to fetch property %s", prop_id)
     return None
 
+
+def fetch_accumulative_info(prop_raw_data, tenant_raw_data, lease_raw_data):
+    """Aggregate property, tenant, and lease data to compute summary metrics.
+    
+    Returns:
+        tuple: (total_properties, active_tenants_list, total_rent_due, active_leases_list, month_list, rent_list)
+    """
+    total_properties = 0
+    active_tenants_list = []
+    total_rent_due = 0.0
+    active_leases_list = []
+    month_list = []
+    rent_list = []
+    
+    try:
+        # Count total properties
+        if isinstance(prop_raw_data, dict) and "data" in prop_raw_data:
+            properties = prop_raw_data.get("data", [])
+            if isinstance(properties, list):
+                total_properties = len(properties)
+        
+        # Extract active tenants
+        if isinstance(tenant_raw_data, dict) and "data" in tenant_raw_data:
+            tenants = tenant_raw_data.get("data", [])
+            if isinstance(tenants, list):
+                active_tenants_list = [t for t in tenants if t.get("portalInfo", {}).get("status") == "ACTIVE"]
+        
+        # Calculate total rent due and build month/rent lists
+        if isinstance(lease_raw_data, dict) and "data" in lease_raw_data:
+            leases = lease_raw_data.get("data", [])
+            if isinstance(leases, list):
+                active_leases_list = [l for l in leases if l.get("status") != "archived"]
+                for lease in leases:
+                    overdue = lease.get("overdueBalance", 0)
+                    if overdue > 0:
+                        total_rent_due += overdue
+                    rent_list.append(lease.get("totalRecurringRent", 0))
+        
+        # Create month list (placeholder - can be enhanced)
+        month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+        
+        logging.info(f"Aggregated: {total_properties} properties, {len(active_tenants_list)} active tenants, ${total_rent_due:,.2f} rent due")
+        
+    except Exception:
+        logging.exception("Failed to aggregate information")
+    
+    return total_properties, active_tenants_list, total_rent_due, active_leases_list, month_list, rent_list
+
+
+def get_lease_info(raw_data):
+    """Extract and process lease data from API response.
+    
+    Returns:
+        tuple: (data_list, lease_status_dict)
+    """
+    data_list = []
+    lease_status = {}
+    
+    try:
+        if isinstance(raw_data, dict) and "data" in raw_data:
+            leases = raw_data.get("data", [])
+            if isinstance(leases, list):
+                for lease in leases:
+                    lease_item = {
+                        "id": lease.get("id"),
+                        "name": lease.get("name"),
+                        "totalBalanceDue": lease.get("totalBalanceDue", 0),
+                        "overdueBalance": lease.get("overdueBalance", 0),
+                        "currentBalance": lease.get("currentBalance", 0),
+                        "totalRecurringRent": lease.get("totalRecurringRent", 0),
+                        "status": lease.get("status", "active"),
+                    }
+                    data_list.append(lease_item)
+                    lease_status[lease.get("id")] = lease.get("status", "active")
+        
+        logging.info(f"Extracted {len(data_list)} leases from API response")
+        
+    except Exception:
+        logging.exception("Failed to process lease data")
+    
+    return data_list, lease_status
+
                                 
 if __name__ == "__main__":
     # Configure logging
@@ -412,30 +442,36 @@ if __name__ == "__main__":
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
     
-    
     # Fetch data for testing using pure HTTP API client (no MCP)
+    data = doorloop_api.retrieve_tenants()
+    list_value = get_doorloop_tenants(raw_data=data)
     
-    # # # Start background refresh workers
-    if isinstance(redis, Redis):
-        logging.info("Starting background refresh workers...")
-        start_background_refresh(
-            tenant_fetch_fn=fetch_fresh_tenants,
-            property_ids_fn=fetch_property_ids,
-            property_fetch_fn=fetch_property_by_id,
-            tenant_interval=30,  # Refresh tenants every 30 minutes
-            property_interval=60  # Refresh properties every 60 minutes
-        )
-        logging.info("Background workers started successfully")
-    # lease_data = doorloop_api.retrieve_leases()
-    # print(get_lease_info(lease_data))
-    # #     # Keep the script running to allow background workers to operate
+    if list_value is not None and isinstance(list_value, list):
+        for item in list_value:
+            print(item)
+    else:
+        logging.warning("No tenant data returned or data is not a list: %s", type(list_value))
+    
+    # Start background refresh workers
+    # if isinstance(redis, Redis):
+    #     logging.info("Starting background refresh workers...")
+    #     start_background_refresh(
+    #         tenant_fetch_fn=fetch_fresh_tenants,
+    #         property_ids_fn=fetch_property_ids,
+    #         property_fetch_fn=fetch_property_by_id,
+    #         tenant_interval=30,  # Refresh tenants every 30 minutes
+    #         property_interval=60  # Refresh properties every 60 minutes
+    #     )
+    #     logging.info("Background workers started successfully")
+        
+        # Keep the script running to allow background workers to operate
         import time
         try:
             while True:
                 time.sleep(60)
         except KeyboardInterrupt:
             logging.info("Shutting down background workers...")
-    else:
-        logging.warning("Redis not available - background refresh disabled")
+    # else:
+    #     logging.warning("Redis not available - background refresh disabled")
   
    

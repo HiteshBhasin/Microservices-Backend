@@ -32,6 +32,7 @@ async def read_root(request: Request):
         "available_tools": [
             "retrieve_tenants",
             "retrieve_a_tenants",
+            "create_tenant",
             "retrieve_leases", 
             "retrieve_properties", 
             "retrieve_doorloop_communication",
@@ -116,6 +117,63 @@ def retrieve_a_tenants(id):
                 resp_json = None
             return {
                 "error": "Failed to fetch tenants",
+                "status": response.status_code,
+                "response": resp_json,
+            }
+    except requests.exceptions.RequestException as exc:
+        return {"error": "Request failed", "exception": str(exc)}
+
+
+@mcp.tool()
+def create_tenant(firstName: str, lastName: str, middleName: str = None, gender: str = None):
+    """Create a new tenant in DoorLoop API
+    
+    Args:
+        firstName: Tenant's first name (required)
+        lastName: Tenant's last name (required)
+        middleName: Tenant's middle name (optional)
+        gender: Gender - MALE, FEMALE, or PREFER_NOT_TO_SAY (optional)
+    """
+    api_key = os.getenv("DOORLOOP_API_KEY")
+    if not api_key:
+        return {"error": "DOORLOOP_API_KEY not found in environment variables"}
+
+    base_url = os.getenv("DOORLOOP_API_BASE", "https://app.doorloop.com")
+    endpoint = f"{base_url.rstrip('/')}/api/tenants"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+    
+    payload = {
+        "firstName": firstName,
+        "lastName": lastName,
+    }
+    
+    if middleName:
+        payload["middleName"] = middleName
+    if gender:
+        payload["gender"] = gender
+    
+    try:
+        response = requests.post(endpoint, json=payload, headers=headers, timeout=10)
+        content_type = response.headers.get("Content-Type", "")
+        
+        if response.ok:
+            if "application/json" in content_type:
+                return response.json()
+            try:
+                return response.json()
+            except Exception:
+                return {"status": response.status_code, "body": response.text[:1000]}
+        else:
+            try:
+                resp_json = response.json()
+            except Exception:
+                resp_json = None
+            return {
+                "error": "Failed to create tenant",
                 "status": response.status_code,
                 "response": resp_json,
             }

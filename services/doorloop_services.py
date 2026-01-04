@@ -72,6 +72,22 @@ class DoorloopClient:
     async def retrieve_tenants(self) -> Dict[str, Any]:
         return await self._call_with_fallback("retrieve_tenants", {}, direct_func=(getattr(direct, "retrieve_tenants") if direct else None))
 
+    async def create_tenant(self, firstName: str, lastName: str, middleName: str = None, gender: str = None) -> Dict[str, Any]:
+        """Create a new tenant in DoorLoop.
+        
+        Args:
+            firstName: Tenant's first name (required)
+            lastName: Tenant's last name (required)
+            middleName: Tenant's middle name (optional)
+            gender: Gender enum value (optional)
+        """
+        args = {"firstName": firstName, "lastName": lastName}
+        if middleName:
+            args["middleName"] = middleName
+        if gender:
+            args["gender"] = gender
+        return await self._call_with_fallback("create_tenant", args, direct_func=None)
+
     async def retrieve_properties(self) -> Dict[str, Any]:
         return await self._call_with_fallback("retrieve_properties", {}, direct_func=(getattr(direct, "retrieve_properties") if direct else None))
 

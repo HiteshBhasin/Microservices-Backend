@@ -30,6 +30,8 @@ class UserCredentials(BaseModel):
         return v
 
 class UserLogin(BaseModel):
+    fname: str
+    lname: str
     username: str
     password: str
     
@@ -47,6 +49,10 @@ class UserLogin(BaseModel):
         if not re.search(r"[@$!%*?&]", v):
             raise ValueError("Password must contain at least one special character")
         return v
+
+class SimpleLogin(BaseModel):
+    username: str
+    password: str
     
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -18,7 +18,7 @@ except Exception:
     pass
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
@@ -26,8 +26,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.connecteam import router as connecteam_router
 from routes.doorloop import router as doorloop_router
 from routes.zenya import router as zenya_router
+from utils.schema.schema import UserLogin, SimpleLogin
 import os
 import logging
+import hashlib
 
 # Ensure the repository root is on sys.path so imports like `from routes...`
 # work when running this module directly (python app/main.py).
@@ -40,6 +42,18 @@ async def lifespan(app: FastAPI):
     # Suppress noisy MCP async warnings (non-blocking errors)
     logging.getLogger("mcp").setLevel(logging.ERROR)
     logging.getLogger("anyio").setLevel(logging.ERROR)
+    
+    # Setup MongoDB connection for credential checking
+    mongo_uri = os.getenv("MONGODB")
+    if mongo_uri:
+        from pymongo import AsyncMongoClient
+        mongo_client = AsyncMongoClient(mongo_uri)
+        app.state.mongo_client = mongo_client
+        app.state.db = mongo_client["nesthost_db"]
+        app.state.collections = app.state.db["users"]
+        logging.info("MongoDB connection established")
+    else:
+        logging.warning("MONGODB environment variable not set")
     
     missing = []
     # Use ROOT path since MCP server scripts are in project root, not app directory
@@ -77,6 +91,9 @@ async def lifespan(app: FastAPI):
     
     # Shutdown code (optional)
     # Daemon threads will automatically stop when app shuts down
+    if hasattr(app.state, "mongo_client"):
+        await app.state.mongo_client.close()
+        logging.info("MongoDB connection closed")
     logging.info("Shutting down...")
 
 app = FastAPI(
@@ -113,6 +130,50 @@ app.include_router(zenya_router, prefix="/api/zenya", tags=["zenya"])
 @app.get("/", tags=["meta"])
 async def root():
     return {"ok": True, "service": "Microservices Backend", "version": app.version}
+
+@app.post("/register", tags=["auth"])
+async def register_credentials(cred: UserLogin, request: Request):
+    """Register a new user with credentials"""
+    hash_obj = hashlib.sha256(cred.password.encode("utf-8"))
+    encoded_obj = hash_obj.hexdigest()
+    collection = request.app.state.collections
+    
+    # Check if user already exists
+    existing_user = await collection.find_one({"username": cred.username})
+    if existing_user:
+        return {"error": "Username already exists"}
+    
+    new_user = {
+        "username": cred.username,
+        "Firstname": cred.fname,
+        "Lastname": cred.lname,
+        "password": encoded_obj
+    }
+    result = await collection.insert_one(new_user)
+    return {"message": "User registered successfully!", "user_id": str(result.inserted_id)}
+
+@app.post("/login", tags=["auth"])
+async def login_page(cred: SimpleLogin, request: Request):
+    """Login with username and password"""
+    collection = request.app.state.collections
+    user = await collection.find_one({"username": cred.username})
+    
+    if not user:
+        return {"error": "Invalid username or password"}
+    
+    # Hash the provided password and compare
+    hash_obj = hashlib.sha256(cred.password.encode("utf-8"))
+    encoded_password = hash_obj.hexdigest()
+    
+    if user["password"] == encoded_password:
+        return {
+            "message": "Login successful",
+            "username": user["username"],
+            "firstname": user.get("Firstname"),
+            "lastname": user.get("Lastname")
+        }
+    else:
+        return {"error": "Invalid username or password"}
 
 if __name__ == "__main__":
     try:
