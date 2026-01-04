@@ -45,22 +45,61 @@ def _unwrap_result(resp: Any) -> Any:
 
             
             
-@router.get("/properties")
-async def get_properties():
+@router.get("/rooms/{room_id}")
+async def get_rooms(room_id):
     _require_api_key()
     try:
-        resp = zenya_api_client.retrieve_properties()
+        resp = zenya_api_client.get_room(room_id=room_id)
         return _unwrap_result(resp)
     except(ConnectionError, ValueError, TimeoutError) as e:
         logging.warning(f"Primary Doorloop API failed: {e}")
         logging.info("Trying fallback service...")
         try:
-            properties = services.DoorloopClient()
-            properties_info  = properties.retrieve_properties()
-            if isinstance(properties_info, dict):
-                return _unwrap_result(properties_info)
+            return _unwrap_result(resp)
+            # properties = services.DoorloopClient()
+            # properties_info  = properties.retrieve_properties()
+            # if isinstance(properties_info, dict):
+            #     return _unwrap_result(properties_info)
         except HTTPException as e:
             logging.error(f"Fallback Connecteam service also failed: {e}")
             raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
                        
+            
+@router.get("/buildings/{building_id}")
+async def get_buildings(building_id):
+    _require_api_key()
+    try:
+        resp = zenya_api_client.get_building(building_id = building_id)
+        return _unwrap_result(resp)
+    except(ConnectionError, ValueError, TimeoutError) as e:
+        logging.warning(f"Primary Doorloop API failed: {e}")
+        logging.info("Trying fallback service...")
+        try:
+            return _unwrap_result(resp)
+            # properties = services.DoorloopClient()
+            # properties_info  = properties.retrieve_properties()
+            # if isinstance(properties_info, dict):
+            #     return _unwrap_result(properties_info)
+        except HTTPException as e:
+            logging.error(f"Fallback Connecteam service also failed: {e}")
+            raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
+
+# @router.get("/roomsbylocations/") #-> needs paramas. 
+# async def get_properties(building_id):
+#     _require_api_key()
+#     try:
+#         resp = zenya_api_client.get_building(building_id = building_id)
+#         return _unwrap_result(resp)
+#     except(ConnectionError, ValueError, TimeoutError) as e:
+#         logging.warning(f"Primary Doorloop API failed: {e}")
+#         logging.info("Trying fallback service...")
+#         try:
+#             return _unwrap_result(resp)
+#             # properties = services.DoorloopClient()
+#             # properties_info  = properties.retrieve_properties()
+#             # if isinstance(properties_info, dict):
+#             #     return _unwrap_result(properties_info)
+#         except HTTPException as e:
+#             logging.error(f"Fallback Connecteam service also failed: {e}")
+#             raise  HTTPException(status_code=500,detail="Both primary and fallback Doorloop services failed.")
 
