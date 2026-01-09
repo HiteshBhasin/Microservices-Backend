@@ -8,10 +8,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-property_id = os.getenv("GA4_PROPERTY_ID")
+property_id = os.getenv("GOOGLE_ANALYTICS_API_KEY_nesthost")
 
 credentials = service_account.Credentials.from_service_account_file(
-    "cogent-transit-483116-i8-e43751688229.json"
+    "silken-campus-387114-6ee7cf072b9b.json"
 )
 
 def get_active_users():

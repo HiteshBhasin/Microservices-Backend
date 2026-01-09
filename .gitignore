@@ -4,6 +4,7 @@ venv
 ai_agent\my_agent\.env
 .vscode
 cogent-transit-483116-i8-e43751688229.json
+silken-campus-387114-6ee7cf072b9b.json
 # Python cache
 __pycache__/
 *.pyc

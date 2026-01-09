@@ -25,3 +25,4 @@ redis
 sqlalchemy 
 mailchimp_marketing
 fastapi-mail
+google-analytics-data
