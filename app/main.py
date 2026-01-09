@@ -26,6 +26,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.connecteam import router as connecteam_router
 from routes.doorloop import router as doorloop_router
 from routes.zenya import router as zenya_router
+from routes.monday import router as monday_router
+from routes.google import router as google_router
 from utils.schema.schema import UserLogin, SimpleLogin
 import os
 import logging
@@ -126,6 +128,8 @@ app.add_middleware(
 app.include_router(connecteam_router, prefix="/api/connecteam", tags=["connecteam"])
 app.include_router(doorloop_router, prefix="/api/doorloop", tags=["doorloop"])
 app.include_router(zenya_router, prefix="/api/zenya", tags=["zenya"])
+app.include_router(monday_router, prefix="/api/monday", tags=["monday"])
+app.include_router(google_router, prefix="/api/google", tags=["google-analytics"])
 
 @app.get("/", tags=["meta"])
 async def root():
