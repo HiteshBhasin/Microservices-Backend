@@ -1,0 +1,317 @@
+================================================================================
+GIT COMMANDS REFERENCE - File Recovery & Troubleshooting Session
+================================================================================
+Date: January 9, 2026
+Purpose: Recover deleted/modified files and resolve git issues
+
+================================================================================
+1. CHECK CURRENT STATUS
+================================================================================
+
+Command: git status
+Purpose: Shows the current state of your working directory and staging area
+Output: Lists modified, deleted, untracked files and current branch
+When to use: Always run this first to understand what's changed
+
+Command: git status --porcelain
+Purpose: Machine-readable format of git status (shorter output)
+Output: Shows file status with symbols (M=modified, D=deleted, ??=untracked)
+When to use: When you need a quick, clean view of changes
+
+================================================================================
+2. VIEW COMMIT HISTORY
+================================================================================
+
+Command: git log --all --oneline --graph --date=local --pretty=format:'%h %ad %s' -10
+Purpose: View last 10 commits with date and message in a compact format
+Output: Commit hash, date, and commit message
+Breakdown:
+  --all         = Show all branches
+  --oneline     = Compact one-line format
+  --graph       = Show ASCII graph of branches
+  --date=local  = Use local timezone
+  --pretty      = Custom format (%h=short hash, %ad=date, %s=subject)
+  -10           = Show last 10 commits
+
+Command: git log --all --full-history --since="24 hours ago" --name-status
+Purpose: Show all commits from last 24 hours with file changes
+Output: Commit details + list of files added/modified/deleted
+When to use: Find what files were changed recently
+
+Command: git log --all --full-history --since="2 days ago" -- "*.sh" "*.json" "zenya.txt"
+Purpose: Show commits affecting specific file types in last 2 days
+Output: Only commits that touched shell scripts, JSON files, or zenya.txt
+When to use: Track changes to specific files or file types
+
+================================================================================
+3. VIEW CHANGES (DIFF)
+================================================================================
+
+Command: git diff HEAD
+Purpose: Show all uncommitted changes in your working directory
+Output: Line-by-line comparison of current files vs last commit
+When to use: See what you've changed before committing
+
+Command: git diff zenya.txt
+Purpose: Show uncommitted changes for a specific file
+Output: Changes in that file only
+When to use: Focus on one file's modifications
+
+Command: git diff --name-status HEAD~1 HEAD
+Purpose: Show files changed between last commit and previous commit
+Output: Status and filename (M=modified, A=added, D=deleted)
+When to use: Review what changed in the last commit
+
+Command: git diff app/main.py
+Purpose: Show merge conflict details in a specific file
+Output: Shows conflict markers (<<<<<<, ======, >>>>>>)
+When to use: During merge conflict resolution
+
+================================================================================
+4. REFLOG - TRACKING OPERATIONS
+================================================================================
+
+Command: git reflog --date=local -10
+Purpose: Show last 10 operations (commits, rebases, resets, etc.)
+Output: Timeline of what happened to HEAD pointer
+When to use: Find "lost" commits or undo mistakes
+Important: Reflog is your safety net - commits aren't truly lost if in reflog!
+
+Command: git reflog --all --since="2 days ago"
+Purpose: Show all reference changes in last 2 days
+Output: All branch movements and operations
+When to use: Track everything that happened recently across all branches
+
+================================================================================
+5. RECOVERING DELETED FILES
+================================================================================
+
+Command: git checkout HEAD~1 -- tests/test_google_analytics.py
+Purpose: Restore a deleted file from the previous commit
+Output: File is recovered and staged for commit
+Breakdown:
+  HEAD~1 = Previous commit (HEAD~2 would be 2 commits back)
+  --     = Separator between commit and file path
+  tests/test_google_analytics.py = File to restore
+
+Command: git checkout HEAD~1 -- services/google_analytics.py
+Purpose: Restore a modified file to its previous state
+Output: File is reverted to previous version and staged
+When to use: Undo unwanted changes to a file
+
+Command: git show HEAD~1:tests/test_google_analytics.py > tests/test_google_analytics.py.recovered
+Purpose: Export previous version of file without staging it
+Output: Creates a copy with .recovered extension
+When to use: Preview old version before deciding to restore
+
+================================================================================
+6. STASH - TEMPORARY STORAGE
+================================================================================
+
+Command: git stash list
+Purpose: List all stashed changes
+Output: Shows stash entries with index numbers
+When to use: Check if you have saved work in stash
+
+Command: git stash
+Purpose: Temporarily save uncommitted changes
+Output: Clean working directory, changes saved
+When to use: Need to switch branches but don't want to commit yet
+
+Command: git stash pop
+Purpose: Restore most recent stashed changes
+Output: Apply stash and remove it from stash list
+When to use: Continue work after switching back
+
+================================================================================
+7. SYNC WITH REMOTE
+================================================================================
+
+Command: git push
+Purpose: Upload local commits to remote repository
+Output: Updates remote branch with your commits
+Error: "rejected" means remote has changes you don't have locally
+
+Command: git pull origin Developing_mode
+Purpose: Download and merge remote changes into current branch
+Output: Updates local branch with remote commits
+When to use: Sync before pushing or when remote is ahead
+
+Command: git pull --rebase origin Developing_mode
+Purpose: Download remote changes and reapply your commits on top
+Output: Linear history instead of merge commit
+When to use: Keep clean history, avoid unnecessary merge commits
+Note: May cause conflicts that need manual resolution
+
+================================================================================
+8. MERGE CONFLICT RESOLUTION
+================================================================================
+
+Command: git add app/main.py
+Purpose: Mark conflict as resolved after manual editing
+Output: Stages the resolved file
+When to use: After you've edited the file to fix conflicts
+
+Command: git rebase --continue
+Purpose: Continue rebase after resolving conflicts
+Output: Applies next commit in rebase sequence
+When to use: After resolving each conflict during rebase
+
+Command: git rebase --abort
+Purpose: Cancel the rebase and return to pre-rebase state
+Output: Reverts to state before git pull --rebase
+When to use: If conflicts are too complex or you want to start over
+
+================================================================================
+9. FINDING LOST COMMITS
+================================================================================
+
+Command: git fsck --lost-found
+Purpose: Find "dangling" commits (not connected to any branch)
+Output: Lists orphaned commits that may contain lost work
+When to use: After accidental resets or when files seem to disappear
+
+Command: git show --name-status f666679e3283184d8fe6d1c0dc8cff385ca0b7b2
+Purpose: View details of a specific commit (from fsck results)
+Output: Commit message, author, date, and files changed
+When to use: Inspect dangling commits to find your lost work
+
+Command: git show f666679:routes/google.py
+Purpose: View contents of a file from a specific commit
+Output: File contents as they were in that commit
+When to use: Preview file before deciding to restore
+
+================================================================================
+10. FILE OPERATIONS
+================================================================================
+
+Command: git add <file>
+Purpose: Stage file for next commit
+Output: File added to staging area
+When to use: Before committing changes
+
+Command: git commit -m "message"
+Purpose: Save staged changes with a description
+Output: Creates new commit with your changes
+When to use: After staging files you want to save
+
+Command: git restore <file>
+Purpose: Discard uncommitted changes in working directory
+Output: File reverted to last committed version
+When to use: Undo changes you don't want to keep
+Warning: This permanently deletes uncommitted changes!
+
+================================================================================
+11. BRANCH OPERATIONS
+================================================================================
+
+Command: git branch
+Purpose: List all local branches (* marks current branch)
+Output: List of branch names
+When to use: See what branches exist
+
+Command: git checkout <branch>
+Purpose: Switch to a different branch
+Output: Updates working directory to branch's state
+When to use: Move between branches
+
+Command: git checkout -b <new-branch>
+Purpose: Create and switch to a new branch
+Output: Creates branch and checks it out
+When to use: Start new feature or experiment
+
+================================================================================
+TYPICAL WORKFLOWS
+================================================================================
+
+WORKFLOW 1: RECOVER A DELETED FILE
+1. git status                          # See that file is deleted
+2. git log --name-status -5            # Find when it was deleted
+3. git checkout HEAD~1 -- path/to/file # Restore from previous commit
+4. git status                          # Verify file is restored
+5. git commit -m "Restore deleted file"
+
+WORKFLOW 2: SYNC WITH REMOTE (WHEN BEHIND)
+1. git status                          # Check current state
+2. git pull --rebase origin branch     # Get remote changes
+3. [If conflicts] Edit files manually  # Fix conflicts
+4. git add <conflicted-files>          # Mark as resolved
+5. git rebase --continue               # Continue rebase
+6. git push                            # Upload your changes
+
+WORKFLOW 3: FIND LOST WORK
+1. git reflog                          # See recent operations
+2. git fsck --lost-found               # Find dangling commits
+3. git show <commit-hash>              # View lost commit
+4. git checkout <commit-hash> -- <file># Restore specific file
+5. git commit -m "Recover lost work"
+
+WORKFLOW 4: UNDO LAST COMMIT (KEEP CHANGES)
+1. git reset --soft HEAD~1             # Undo commit, keep changes staged
+2. git status                          # Verify files still staged
+3. Make corrections
+4. git commit -m "Fixed commit"
+
+WORKFLOW 5: UNDO LAST COMMIT (DISCARD CHANGES)
+1. git reset --hard HEAD~1             # Undo commit and discard changes
+Warning: This permanently deletes the commit and changes!
+
+================================================================================
+IMPORTANT CONCEPTS
+================================================================================
+
+HEAD: Pointer to your current commit
+HEAD~1: One commit before HEAD (parent)
+HEAD~2: Two commits before HEAD (grandparent)
+
+origin: Default name for remote repository
+origin/main: Remote branch named "main"
+origin/Developing_mode: Remote branch named "Developing_mode"
+
+Staging Area: Files marked for next commit (git add)
+Working Directory: Your actual files on disk
+Repository: Git's database of all commits
+
+Fast-forward: Moving branch pointer forward (no merge needed)
+Merge: Combining two branches
+Rebase: Reapplying commits on top of another branch
+
+================================================================================
+SAFETY TIPS
+================================================================================
+
+1. Always run "git status" first
+2. Use "git stash" before switching branches with uncommitted changes
+3. Reflog saves you - lost commits are usually recoverable within 30 days
+4. Pull before push to avoid conflicts
+5. Use descriptive commit messages
+6. Commit often - small commits are easier to manage
+7. Never force push (git push -f) unless you're sure
+8. Create backup branches before risky operations
+
+================================================================================
+TROUBLESHOOTING COMMANDS
+================================================================================
+
+Problem: "Your branch is behind origin"
+Solution: git pull origin <branch>
+
+Problem: "Merge conflict"
+Solution: Edit files → git add → git commit OR git rebase --continue
+
+Problem: "Changes not staged for commit"
+Solution: git add <files> then git commit
+
+Problem: Accidentally deleted file
+Solution: git checkout HEAD -- <file>
+
+Problem: Want to undo last commit
+Solution: git reset --soft HEAD~1 (keeps changes)
+      OR git reset --hard HEAD~1 (discards changes)
+
+Problem: Can't find old work
+Solution: git reflog OR git fsck --lost-found
+
+================================================================================
+END OF REFERENCE
+================================================================================
